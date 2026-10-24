@@ -55,8 +55,9 @@ without raising session/queue/frame limits. Forty mixed cycles are scheduled ove
 sessions, retire its grant, and account for all catalog rows through pagination.
 No restart, pruning or capacity reset is allowed during observation.
 
-After five warmup cycles, fixed acceptance requires identical idle FD counts,
-RSS <=64 MiB, RSS range <=8 MiB and last-ten minus first-ten mean <=4 MiB. Those
+Every RSS sample, including initial and final, must be <=64 MiB. After five
+warmup cycles, fixed acceptance requires identical idle FD counts, RSS range
+<=8 MiB and last-ten minus first-ten mean <=4 MiB. Those
 are test failure gates for one VM workload, not runtime quotas or a no-leak proof.
 Catalog rows/file blocks are expected to increase because history is retained.
 Full per-cycle samples and fixed thresholds appear in JSON/HTML; measured values

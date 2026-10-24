@@ -1,6 +1,6 @@
 """Versioned evidence contract; explicit checks also run under python -O."""
 import copy,html,json,math,hashlib,uuid
-CONTRACT='grantweft-closeout-v7'
+CONTRACT='grantweft-closeout-review-v8'
 STAGES=('initial','create','dependencies','upload','install','provenance','native','linux','linux-read','cases','cases-read','recovery','recovery-read','service','service-read','prepare','prepared-read','schedule-reboot','finish','finished-read','boot-prepare-normal','boot-prepared-normal-read','boot-schedule-normal','boot-finish-normal','boot-finished-normal-read','boot-prepare-readonly','boot-prepared-readonly-read','boot-schedule-readonly','boot-finish-readonly','boot-finished-readonly-read','sustain','sustained-read','closeout-cleanup','closeout-cleanup-read','delete','final')
 CLOSE_REASONS=('EOFError','ConnectionResetError','SSLEOFError','SSLZeroReturnError')
 
@@ -59,12 +59,12 @@ def verify(v):
     require(v['source_changed'] is False,'Source changed during qualification')
     require(hashlib.sha256(json.dumps(v['source'],sort_keys=True,separators=(',',':')).encode()).hexdigest()==v['source_sha256'],'Invalid source fingerprint')
     for key,system in [('native','Darwin'),('linux','Linux')]:
-        r=v[key];require(r['platform']==system and r['passed'] is True and r['count']>=49 and r['count']==len(r['tests'])==len(set(r['tests'])) and not (r['failures'] or r['errors'] or r['skipped']),'Unit failure/platform/count')
+        r=v[key];require(r['platform']==system and r['passed'] is True and r['count']>=51 and r['count']==len(r['tests'])==len(set(r['tests'])) and not (r['failures'] or r['errors'] or r['skipped']),'Unit failure/platform/count')
         require(r['source']==v['source'] and r['source_sha256']==v['source_sha256'],'Unit source mismatch')
     require(v['native']['tests']==v['linux']['tests'],'Platform test sets differ')
     names=('test_slow_commit_does_not_start_new_ttl','test_revoke_during_delayed_approval_cannot_reopen','test_process_pause_crosses_ttl_no_fresh_transfer_after_resume','test_second_process_cannot_take_lock_or_recover','test_bounded_db_queue_does_not_block_revoke_fence','test_slow_db_does_not_block_live_expiry','test_db_timeout_late_completion_cannot_reactivate','test_slow_consumer_revoke_discards_unsent_data','test_delayed_connected_session_cannot_survive_revoke','test_history_result_is_stable_after_expiry_and_restart','test_slow_approval_history_retains_original_commit','test_observed_backpressure_then_revoke_stops_transfer','test_full_ops_and_events_still_stop_access_and_recover_with_limits','test_grant_full_preserves_revoke_and_expiry_without_gc','test_catalog_full_expiry_does_not_need_new_audit_slot','test_storage_repair_requires_restart_and_preserves_history','test_slow_commit_after_retirement_stays_denied_through_repair','test_expiry_write_failure_degrades_and_repair_does_not_revive','test_sqlite_full_closes_live_access_and_recovers_with_page_budget','test_duplicate_identity_exits_before_creating_store_or_worker','test_readiness_notification_requires_socket_and_sends_ready','test_startup_receipt_is_not_visible_until_complete')
     require(all('test_gateway.GatewayTests.'+n in v['linux']['tests'] for n in names),'Formal test missing')
-    for name in ('test_close_observer_rejects_live_idle_socket_timeout','test_close_observer_requires_positive_eof','test_cleanup_continues_after_forced_kill','test_cleanup_exception_still_saves_failed_receipt','test_startup_process_registered_before_readiness_failure','test_service_status_rejects_allowed_or_incomplete_old_authority','test_service_catalog_requires_old_grant_invalidation','test_boot_journal_witness_rejects_shutdown_cleanup_or_replacement','test_sustained_observer_rejects_process_identity_change','test_sustained_resource_limits_are_fixed_and_detect_growth'):
+    for name in ('test_close_observer_rejects_live_idle_socket_timeout','test_close_observer_requires_positive_eof','test_cleanup_continues_after_forced_kill','test_cleanup_exception_still_saves_failed_receipt','test_startup_process_registered_before_readiness_failure','test_service_status_rejects_allowed_or_incomplete_old_authority','test_service_catalog_requires_old_grant_invalidation','test_boot_journal_witness_rejects_shutdown_cleanup_or_replacement','test_sustained_observer_rejects_process_identity_change','test_sustained_resource_limits_are_fixed_and_detect_growth','test_readonly_degraded_catalog_rejects_live_or_missing_authority','test_sustained_cycle_requires_new_matching_committed_grant'):
         require('test_review.EvidenceObserverTests.'+name in v['linux']['tests'],'Observer negative control missing')
     require(v['host_mounts']=='none' and v['wheel_modules_match'] is True and v['installed_source_absent'] is True,'Unqualified installation')
     require(v['installed_modules']=={k:h for k,h in v['source'].items() if k.startswith('grantweft/')},'Installed modules differ')
@@ -279,6 +279,17 @@ def controls(v):
                   lambda x:x['closeout']['sustained']['cycles'][10]['terminal'].update(state='ACTIVE'),
                   lambda x:x['closeout']['cleanup'].update(mount_removed=False),
                   lambda x:x['limits'].update(boot_zero_gap_tested=True)]
+    mutations += [lambda x:x['closeout']['readonly']['prepared']['degraded'].update(sessions=1),
+                  lambda x:x['closeout']['readonly']['prepared']['degraded']['grants'][0].update(access='ALLOWED',sessions=1),
+                  lambda x:x['closeout']['readonly']['prepared']['degraded'].update(grants=[]),
+                  lambda x:x['closeout']['readonly']['prepared']['degraded_after_permission_repair'].update(health='READY'),
+                  lambda x:x['closeout']['readonly']['prepared']['degraded_old_data_refusals'].clear(),
+                  lambda x:x['closeout']['readonly']['prepared']['unit_after_permission_repair'].update(InvocationID='0'*32),
+                  lambda x:x['closeout']['sustained']['cycles'][0]['revoke']['original_result']['grant'].update(id='unrelated-grant'),
+                  lambda x:x['closeout']['sustained']['cycles'][0]['revoke'].update(historical=True),
+                  lambda x:x['closeout']['sustained']['cycles'][1].update(grant_id=x['closeout']['sustained']['cycles'][0]['grant_id']),
+                  lambda x:x['closeout']['sustained']['cycles'][1]['terminal'].update(epoch=0),
+                  lambda x:x['closeout']['sustained']['initial'].update(rss_kib=1048576)]
     for mutate in mutations:
         b=copy.deepcopy(v);mutate(b)
         try:verify(b)

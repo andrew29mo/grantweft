@@ -1,10 +1,15 @@
 # Evidence and provenance
 
-- [Current JSON](latest.json) / [HTML](latest.html): closeout-v7, matching frozen
-  sources/installed runtime, 49 identical tests/platform (38 formal + eleven controls),
+- [Current JSON](latest.json) / [HTML](latest.html): closeout-review-v8, matching frozen
+  sources/installed runtime, 51 identical tests/platform (38 formal + thirteen controls),
   seven storage scenarios, installed systemd lifecycle, retained manual-start reboot,
   two enabled-systemd boot cases with old-journal witnesses, readonly repair,
-  forty same-process cycles / 600 seconds, 122 corruption controls and cleanup.
+  forty same-process cycles / 600 seconds, 133 corruption controls and cleanup.
+- [Initial closeout](closeout-initial-01.json) / [HTML](closeout-initial-01.html):
+  exact archived v7 bytes, 49 tests/platform / 122 controls; actual run consistent,
+  superseded by stronger authority/grant/resource evidence relationships.
+- [Closeout review observations](closeout-review-observations.json) and
+  [findings](../docs/CLOSEOUT_REVIEW.md): modified copies, not VM incidents.
 - [Previous reviewed deployment](systemd-reviewed-01.json) / [HTML](systemd-reviewed-01.html):
   exact archived v6 bytes, 46 tests/platform / 95 controls; historical manual-start boot scope.
 - [Closeout attempt 01](closeout-attempt-01.json) / [HTML](closeout-attempt-01.html):

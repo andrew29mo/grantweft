@@ -1,4 +1,5 @@
 """Explicit boot/sustained evidence checks, usable with Python -O."""
+import uuid
 from .report import (require,number,no_errors,active_unit,process_identity,
                      retained_catalog,denied_state,all_refusals,refusal,trial,CLOSE_REASONS)
 
@@ -9,20 +10,41 @@ def identity(sample,initial):
     for field in ('MainPID','InvocationID','NRestarts'):require(sample['unit'][field]==initial['unit'][field],'Sustained process restarted')
     require(sample['process_start_ticks']==initial['process_start_ticks'] and type(sample['process_start_ticks']) is int and sample['process_start_ticks']>0,'Process identity changed')
     for field in ('rss_kib','fds','disk_allocated_bytes'):require(type(sample[field]) is int and sample[field]>0,'Resource sample missing')
+    require(sample['rss_kib']<=POLICY['rss_absolute_kib'],'Absolute RSS limit exceeded')
+
+def cycle_grant(row,epoch,seen):
+    gid=row['grant_id']
+    require(isinstance(gid,str) and str(uuid.UUID(gid))==gid and gid not in seen,'Cycle grant not new/unique')
+    terminal=row['terminal']
+    require(terminal['id']==gid and terminal['epoch']==epoch and terminal['persistence']=='COMMITTED' and
+            terminal['state']==('REVOKED' if row['kind']=='revoke' else 'EXPIRED') and
+            type(terminal['revision']) is int and terminal['revision']==3,'Terminal grant identity/state mismatch')
+    if row['kind']=='revoke':
+        result=row['revoke'];g=result['original_result']['grant']
+        require(result['ok'] is True and result['historical'] is False and result['cleanup']=='COMPLETE' and
+                result['original_result']['epoch']==epoch and
+                all(g[k]==terminal[k] for k in ('id','state','revision','epoch')),'Revoke did not commit this cycle grant')
+    seen.add(gid)
+
+def degraded_catalog(status,catalog,epoch):
+    rows=denied_state(status,epoch,True)
+    persisted={g['id']:g for g in catalog['grants']}
+    require(len(persisted)==len(catalog['grants'])==catalog['counts']['grants'] and rows.keys()==persisted.keys(),'DEGRADED catalog coverage incomplete')
+    for gid,g in persisted.items():require(all(rows[gid][k]==g[k] for k in ('id','state','revision','epoch')),'DEGRADED status differs from catalog')
+    return rows
 
 def check_sustained(r):
     no_errors(r);require(r['passed'] is True and r['policy']==POLICY,'Sustained policy changed')
     require(number(r['seconds']) and POLICY['minimum_seconds']<=r['seconds']<=POLICY['maximum_seconds'],'Sustained observation too short/long')
     rows=r['cycles'];require(len(rows)==POLICY['cycles'] and r['config_limits']==dict(max_ops=512,max_events=512,max_grants=96),'Wrong finite workload/config')
     initial=r['initial'];identity(initial,initial);identity(r['final'],initial)
-    last=r['initial_status'];epoch=last['epoch'];denied_state(last,epoch,False)
+    last=r['initial_status'];epoch=last['epoch'];seen=set(denied_state(last,epoch,False))
     for i,row in enumerate(rows):
         no_errors(row);require(row['passed'] is True and row['index']==i and row['kind']==('revoke' if i%2==0 else 'expiry'),'Cycle missing/failed')
         trial(row['roundtrip']);refusal(row['old_data_refusal'],'NO_ACCESS')
         require(row['closure']['connection_ended'] is True and row['closure']['close_reason'] in CLOSE_REASONS,'Sustained closure missing')
-        if row['kind']=='revoke':require(row['revoke']['ok'] is True and row['revoke']['original_result']['grant']['state']=='REVOKED' and row['revoke']['cleanup']=='COMPLETE','Revoke not committed')
+        cycle_grant(row,epoch,seen)
         require(number(row['elapsed_seconds']) and i*15<=row['elapsed_seconds']<(i+1)*15 and 0<row['work_seconds']<15,'Cycle schedule exceeded')
-        require(row['terminal']=={'state':'REVOKED' if row['kind']=='revoke' else 'EXPIRED','persistence':'COMMITTED'},'Terminal state not persisted')
         s=row['status'];require(s['health']=='READY' and s['degraded'] is False and s['sessions']==0 and s['all_denied'] is True,'Live authority after cycle')
         if epoch is None:epoch=s['epoch']
         require(s['epoch']==epoch,'Sustained epoch changed')
@@ -76,7 +98,13 @@ def check_closeout(v):
         require(polls and polls[-1]['exit_code']==0 and polls[-1]['timed_out'] is False and polls[-1]['boot_id']==r['boot_after'],'Boot polling missing')
         if mode=='readonly':
             refusal(p['live_refusal'],'STORAGE_FAILED');refusal(p['degraded_refusal'],'DEGRADED')
-            require(p['degraded']['degraded'] is True and p['degraded']['health']=='DEGRADED' and p['degraded']['failure']['sqlite_code'].startswith('SQLITE_READONLY'),'No actual preboot storage failure')
+            before=degraded_catalog(p['degraded'],p['before_shutdown']['catalog'],p['epoch'])
+            after=degraded_catalog(p['degraded_after_permission_repair'],p['before_shutdown']['catalog'],p['epoch'])
+            require(before.keys()==after.keys(),'Online repair changed old grant coverage')
+            all_refusals(p['degraded_old_data_refusals'],after)
+            active_unit(p['unit_after_permission_repair'])
+            for key in ('MainPID','InvocationID','NRestarts'):require(p['unit'][key]==p['unit_after_permission_repair'][key],'DEGRADED authority restarted during online repair')
+            require(p['degraded']['failure']['sqlite_code'].startswith('SQLITE_READONLY') and p['degraded_after_permission_repair']['failure']==p['degraded']['failure'],'No actual retained preboot storage failure')
             f=r['failed_start'];same_journal(p['before_shutdown'],f['catalog_after_failed_starts'])
             for u in (f['unit'],f['stable_unit']):require(u['MainPID']=='0' and u['ActiveState']=='failed' and u['NRestarts']=='3','Readonly service did not stop retrying')
             require(f['service_uid_pids']==[] and f['readonly_error_traces']==3 and f['limit_message']=='Start request repeated too quickly' and f['stable_seconds']>=1,'Readonly rate limit missing')

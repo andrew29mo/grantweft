@@ -109,6 +109,8 @@ class EvidenceObserverTests(unittest.TestCase):
                        lambda x:x['privileges'].update(uids=[0]*4)):
             bad=copy.deepcopy(s);change(bad)
             with self.assertRaises(ValueError):identity(bad,s)
+        bad=copy.deepcopy(s);bad['rss_kib']=1048576
+        with self.assertRaisesRegex(ValueError,'Absolute RSS'):identity(bad,bad)
     def test_sustained_resource_limits_are_fixed_and_detect_growth(self):
         from tools.closeout_contract import check_resources
         samples=[{'rss_kib':25000,'fds':10} for _ in range(35)]
@@ -118,3 +120,33 @@ class EvidenceObserverTests(unittest.TestCase):
                         samples[:20]+[{'rss_kib':30000,'fds':10} for _ in range(15)]):
             with self.assertRaises(ValueError):check_resources(changed,samples[-1])
         with self.assertRaises(ValueError):check_resources(samples,{'rss_kib':25000,'fds':11})
+    def test_readonly_degraded_catalog_rejects_live_or_missing_authority(self):
+        from tools.closeout_contract import degraded_catalog
+        g=dict(id='old',state='ACTIVE',revision=2,epoch=5)
+        catalog={'grants':[g],'counts':{'grants':1}}
+        status={'ok':True,'epoch':5,'degraded':True,'health':'DEGRADED','sessions':0,
+                'remaining_after_cursor':0,'next_cursor':None,
+                'grants':[g|{'access':'DENIED','sessions':0}]}
+        self.assertEqual(set(degraded_catalog(status,catalog,5)),{'old'})
+        for mutate in (lambda x:x.update(sessions=1),
+                       lambda x:x['grants'][0].update(access='ALLOWED',sessions=1),
+                       lambda x:x.update(grants=[]),
+                       lambda x:x['grants'][0].update(revision=3),
+                       lambda x:x.update(epoch=6)):
+            bad=copy.deepcopy(status);mutate(bad)
+            with self.assertRaises(ValueError):degraded_catalog(bad,catalog,5)
+    def test_sustained_cycle_requires_new_matching_committed_grant(self):
+        from tools.closeout_contract import cycle_grant
+        gid='f458daee-50c0-4821-9e3b-fbd458301aaa'
+        terminal=dict(id=gid,state='REVOKED',revision=3,epoch=7,persistence='COMMITTED')
+        row={'grant_id':gid,'kind':'revoke','terminal':terminal,
+             'revoke':{'ok':True,'historical':False,'cleanup':'COMPLETE',
+                       'original_result':{'epoch':7,'grant':{k:v for k,v in terminal.items() if k!='persistence'}}}}
+        seen=set();cycle_grant(row,7,seen);self.assertEqual(seen,{gid})
+        with self.assertRaises(ValueError):cycle_grant(row,7,seen)
+        for mutate in (lambda x:x['revoke']['original_result']['grant'].update(id='unrelated'),
+                       lambda x:x['revoke'].update(historical=True),
+                       lambda x:x['terminal'].update(epoch=6),
+                       lambda x:x['terminal'].update(revision=4)):
+            bad=copy.deepcopy(row);mutate(bad)
+            with self.assertRaises(ValueError):cycle_grant(bad,7,set())

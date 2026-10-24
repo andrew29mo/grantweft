@@ -18,7 +18,7 @@ uses 2 vCPU / 2 GiB / requested 15-GiB data disk, no host mounts and no default
 context activation, installs Python/OpenSSL/iproute2/util-linux from the guest
 package manager, installs the no-dependency wheel, removes product source from
 import reach and verifies installed module SHA-256. Tools/tests remain a checkout.
-Both platforms run the same source-bound test IDs (38 formal-service tests plus eleven evidence/cleanup
+Both platforms run the same source-bound test IDs (38 formal-service tests plus thirteen evidence/cleanup
 controls in the closeout contract). OS/SQLite/OpenSSL versions
 are captured; no firmware, hardware network or physical-storage claim follows.
 
@@ -64,7 +64,7 @@ Existing Colima profiles/statuses must remain unchanged. Raw commands, paths,
 certificates, keys, databases, wheels and logs stay under ignored results or inside
 the deleted VM. Only sanitized receipts are eligible for Git.
 
-The closeout-v7 offline verifier requires complete ordered stages, actual platform
+The closeout-review-v8 offline verifier requires complete ordered stages, actual platform
 labels, postboot fresh-workload results, observed closure reason, recovered grant
 states, raw stale-refusal outcomes and successful boot observations. Old receipts
 without this contract are historical and are not accepted as current qualification.
@@ -210,3 +210,13 @@ active. The strict observer rejected it. Cases now explicitly revoke/probe their
 fresh grants, and sustained startup checks complete denied state. The failed
 receipt remains failed; no threshold is weakened and no restart clears the
 sustained workload.
+
+## Closeout review qualification
+
+The v8 contract retains the workload and numerical POLICY from v7 while adding
+readonly preboot/permission-repair complete denial and catalog coverage, actual
+old-grant refusals without process replacement, unique per-cycle grant/terminal/
+revoke bindings and the initial absolute RSS check. Two additional observer tests
+count separately from the unchanged 38 formal implementation tests. The complete
+fresh-VM run is repeated with installed-runtime provenance. Historical v7 evidence
+is retained; it is not retroactively labelled a v8 pass. See [review](CLOSEOUT_REVIEW.md).

@@ -96,9 +96,10 @@ sessions/queues/buffers remain unchanged. The workload is budgeted below these
 limits. A separate earlier fault matrix covers intentional exhaustion; this run
 must not consume its last slot or hide expected rejection as completed work.
 
-Thresholds are fixed in code before the run: after five warmup cycles, all 35 idle
-FD samples and the final sample must match; absolute RSS <=64 MiB, post-warmup RSS
-range <=8 MiB, last-ten minus first-ten sample mean <=4 MiB. RSS can retain allocator
+Thresholds are fixed in code before the run: initial, cycle and final RSS must
+all be <=64 MiB. After five warmup cycles, all 35 idle FD samples and the final
+sample must match; post-warmup RSS range <=8 MiB and last-ten minus first-ten
+sample mean <=4 MiB. RSS can retain allocator
 pages; these gates detect this bounded workload's growth, not prove absence of
 leaks. Every failed cycle remains in the receipt. Catalog rows and disk allocation
 are expected to grow with retained history; there is no GC/rollover claim.
@@ -132,3 +133,12 @@ workload-isolation defect, not revival of an old epoch's authority.
 The RSS trend gate uses the post-warmup cycle checkpoints followed by the final
 post-schedule sample. Its end-ten mean therefore includes the final sample and
 the last nine cycle checkpoints; the first ten are cycles 6–15.
+
+## Reviewed evidence relationships
+
+The reviewed contract requires the readonly DEGRADED state before reboot and
+after permission repair to cover every persisted grant with DENIED/zero sessions,
+plus actual owner-authenticated NO_ACCESS and unchanged process identity. Each
+cycle's unique new grant ID and terminal revision/epoch are tied to its committed
+nonhistorical revoke result. Initial RSS explicitly shares the existing absolute
+limit; no workload or numerical threshold is relaxed. See [review](CLOSEOUT_REVIEW.md).

@@ -39,8 +39,8 @@ state directory. Type=notify separates completed initialization from process
 startup; authenticated status reports current READY/DEGRADED health. See
 [deployment and repair commands](docs/DEPLOYMENT.md).
 
-The source-bound closeout run passes **49 identical tests on macOS and installed
-Linux** (38 formal implementation/CLI/readiness tests plus eleven observer controls),
+The source-bound reviewed closeout run passes **51 identical tests on macOS and installed
+Linux** (38 formal implementation/CLI/readiness tests plus thirteen observer controls),
 seven storage/recovery scenarios and the actual installed systemd lifecycle.
 
 The enabled service now has two normal-VM-reboot cases: automatic boot recovery
@@ -53,13 +53,17 @@ fixture, not a claim about arbitrary production host networking.
 A **40-cycle, approximately ten-minute** mixed revoke/expiry run uses one service
 process throughout. Every cycle verifies ordered bytes, positive connection
 closure, denied retired access and zero idle sessions. Idle FDs remain **10**;
-after five warmup cycles, RSS samples range **26,552–28,468 KiB**.
+after five warmup cycles, RSS samples range **26,412–28,188 KiB**.
 RSS rises during this bounded observation; passing fixed gates does not prove
 absence of leaks or long-term stability. History is retained: grants grow 14→54
 of a configured 96; operations/events each 28→128 of 512. No GC or rollover.
 
-**122 report corruption controls** are rejected. Failed attempts and the
-previous deployment qualification are retained. All owned service/fixture
+**133 report corruption controls** are rejected. Failed attempts and the
+previous deployment qualification are retained. Two agents reviewed source/raw
+evidence and the repairs; their offline review is not independent VM reproduction.
+The review binds complete DEGRADED authority to the catalog, each cycle to its
+actual grant/revoke result, and initial RSS to the unchanged absolute limit. See
+[findings](docs/CLOSEOUT_REVIEW.md). All owned service/fixture
 resources and the dedicated VM/disk are cleaned. See [current results](docs/EXPLORATION_RESULTS.md),
 [boot and sustained acceptance](docs/CLOSEOUT.md) and [JSON/HTML](evidence/README.md).
 

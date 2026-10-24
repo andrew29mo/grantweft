@@ -4,7 +4,7 @@ Four explorations must qualify the same minimal production modules. Model/review
 agreement is not evidence. The four groups qualified review-v2 (34 tests/platform: 28 formal service + six observer/cleanup controls,
 installed Linux namespace trials and one normal VM reboot). Receipts, failed
 attempts and exact limits live in evidence/README.md. The review repairs are documented in [REVIEW.md](REVIEW.md).
-The deployment run extends this to 49 tests/platform: 38 formal service + eleven controls,
+The deployment run extends this to 51 tests/platform: 38 formal service + thirteen controls,
 and seven installed-service recovery scenarios. No implementation is a production
 deployment guarantee.
 
@@ -62,3 +62,8 @@ The reviewed deployment gate also requires stage-local isolation, active process
 identity bound to MainPID on each initialized instance, complete denied/zero-session
 status, owner-authenticated old-grant refusals before/after repair and exact old
 catalog state/revision/epoch transitions. Missing or contradictory evidence fails.
+
+The closeout review binds both DEGRADED snapshots to complete catalog coverage,
+requires actual old-grant refusals after permission repair, rejects duplicate or
+unrelated cycle grants/revoke results, and applies the unchanged absolute RSS
+gate to the initial sample too. See [review findings](CLOSEOUT_REVIEW.md).

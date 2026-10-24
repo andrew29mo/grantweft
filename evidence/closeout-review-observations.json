@@ -1,0 +1,13 @@
+{
+  "kind": "modified-copy review observations; not VM incidents",
+  "reviewed_commit": "5f501e14f8ec184e68897522fffd5155307cb22f",
+  "source_receipt": "closeout-initial-01.json",
+  "original_run_contradictions_observed": false,
+  "accepted_before_fix": [
+    "readonly degraded status with live session and ALLOWED grant",
+    "cycle revoke response for unrelated grant ID",
+    "repeated cycle grant ID",
+    "initial RSS 1048576 KiB despite 65536 KiB absolute gate"
+  ],
+  "scope": "Independent read-only agent review and main-agent reproduction. Actual historical run remains internally consistent. These counterexamples test structural checks, not telemetry authenticity."
+}

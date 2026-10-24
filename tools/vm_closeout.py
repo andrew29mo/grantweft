@@ -97,10 +97,18 @@ def prepare(mode):
             v['degraded_refusal']=rec.expect_code('a',dict(action='request',operation=str(uuid.uuid4()),epoch=epoch,service='demo',duration=30),'DEGRADED')
             if not v['degraded']['failure']['sqlite_code'].startswith('SQLITE_READONLY'):raise RuntimeError('Live storage fault not observed')
             os.chmod(svc.STATE,0o700)
-            if not svc.status()['degraded']:raise RuntimeError('Online storage repair revived authority')
+            v['degraded_after_permission_repair']=svc.denied_status(epoch,True)
+            v['degraded_old_data_refusals']=svc.deny_all(v['degraded_after_permission_repair'])
+            v['unit_after_permission_repair']=svc.show()
+            for key in ('MainPID','InvocationID','NRestarts'):
+                if v['unit_after_permission_repair'][key]!=v['unit'][key]:raise RuntimeError('Online storage repair restarted authority')
             MODE.write_text('ro')
         v['before_shutdown']=snapshot()
         if not {'ACTIVE','PENDING'}<={g['state'] for g in v['before_shutdown']['catalog']['grants']}:raise RuntimeError('Missing live pre-reboot authority')
+        if mode=='readonly':
+            from .closeout_contract import degraded_catalog
+            degraded_catalog(v['degraded'],v['before_shutdown']['catalog'],epoch)
+            degraded_catalog(v['degraded_after_permission_repair'],v['before_shutdown']['catalog'],epoch)
         v['enabled']=vm.call(['systemctl','is-enabled',svc.UNIT]).strip()
         v['passed']=True
     except BaseException as exc:v['error']=type(exc).__name__;raise
@@ -142,10 +150,10 @@ def complete(mode):
     finally:receipt('boot-finished-'+mode,v)
 
 def sustain():
-    from .closeout_contract import check_sustained
+    from .closeout_contract import check_sustained,cycle_grant,identity
     procs=[];v={'passed':False,'cycles':[],'policy':{'cycles':40,'warmup_cycles':5,'interval_seconds':15,'minimum_seconds':600,'maximum_seconds':720,'rss_absolute_kib':65536,'rss_range_kib':8192,'rss_end_mean_growth_kib':4096,'idle_fd_growth':0},'scope':'Linux VM formal systemd main process; idle samples after each mixed revoke/expiry cycle, same process throughout; finite configured catalog, no GC/rollover or long-term claim'}
     try:
-        epoch=svc.status()['epoch'];v['initial_status']=svc.denied_status(epoch,False);v['initial']=sample();v['config_limits']={k:json.loads(svc.CONFIG.read_text())[k] for k in ('max_ops','max_events','max_grants')};begin=time.monotonic()
+        epoch=svc.status()['epoch'];v['initial_status']=svc.denied_status(epoch,False);v['initial']=sample();v['config_limits']={k:json.loads(svc.CONFIG.read_text())[k] for k in ('max_ops','max_events','max_grants')};seen={g['id'] for g in v['initial_status']['grants']};identity(v['initial'],v['initial']);begin=time.monotonic()
         for i in range(40):
             row={'index':i,'passed':False};v['cycles'].append(row);start=time.monotonic()
             # Alternate explicit revoke and natural expiry; real holders prove positive closure.
@@ -164,7 +172,9 @@ def sustain():
             if any(x['access']!='DENIED' or x['sessions'] for x in grants) or s['degraded'] or s['epoch']!=epoch:raise RuntimeError('Sustained access did not retire')
             target=next(x for x in grants if x['id']==g['id'])
             if target['state']!=('REVOKED' if kind=='revoke' else 'EXPIRED') or target['persistence']!='COMMITTED':raise RuntimeError('Terminal state did not persist')
-            row.update(kind=kind,terminal={'state':target['state'],'persistence':target['persistence']},grant_id=g['id'],status={'epoch':s['epoch'],'health':s['health'],'degraded':s['degraded'],'sessions':s['sessions'],'facts':s['facts'],'capacity':s['capacity'],'grant_count':len(grants),'all_denied':True},sample=sample(),elapsed_seconds=time.monotonic()-begin,work_seconds=time.monotonic()-start,passed=True)
+            row.update(kind=kind,terminal={k:target[k] for k in ('id','state','revision','epoch','persistence')},grant_id=g['id'],status={'epoch':s['epoch'],'health':s['health'],'degraded':s['degraded'],'sessions':s['sessions'],'facts':s['facts'],'capacity':s['capacity'],'grant_count':len(grants),'all_denied':True},sample=sample(),elapsed_seconds=time.monotonic()-begin,work_seconds=time.monotonic()-start,passed=True)
+            cycle_grant(row,epoch,seen)
+            identity(row['sample'],v['initial'])
             receipt('sustained-progress',v)
             until=begin+(i+1)*15
             if time.monotonic()>until:raise TimeoutError('Sustained cycle exceeded fixed schedule')
