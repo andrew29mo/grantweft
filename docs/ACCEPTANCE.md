@@ -4,7 +4,7 @@ Four explorations must qualify the same minimal production modules. Model/review
 agreement is not evidence. The four groups qualified review-v2 (34 tests/platform: 28 formal service + six observer/cleanup controls,
 installed Linux namespace trials and one normal VM reboot). Receipts, failed
 attempts and exact limits live in evidence/README.md. The review repairs are documented in [REVIEW.md](REVIEW.md).
-The deployment run extends this to 44 tests/platform: 38 formal service + six controls,
+The deployment run extends this to 46 tests/platform: 38 formal service + eight controls,
 and seven installed-service recovery scenarios. No implementation is a production
 deployment guarantee.
 
@@ -57,3 +57,8 @@ invocation/epoch after crash, alive DEGRADED without automatic restart, retained
 catalog on repair, real stop-timeout SIGKILL and three invalid-config failures
 followed by explicit journal rate-limit evidence, stable stopped restart count
 and explicit repaired recovery.
+
+The reviewed deployment gate also requires stage-local isolation, active process
+identity bound to MainPID on each initialized instance, complete denied/zero-session
+status, owner-authenticated old-grant refusals before/after repair and exact old
+catalog state/revision/epoch transitions. Missing or contradictory evidence fails.

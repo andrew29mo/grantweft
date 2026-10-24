@@ -39,24 +39,30 @@ state directory. Type=notify separates completed initialization from process
 startup; authenticated status reports current READY/DEGRADED health. See
 [deployment and repair commands](docs/DEPLOYMENT.md).
 
-The source-bound run passes **44 tests on macOS and installed Linux** (38 formal
-service/CLI/readiness tests plus six observer controls), seven storage/recovery
+The source-bound run passes **46 tests on macOS and installed Linux** (38 formal
+service/CLI/readiness tests plus eight observer controls), seven storage/recovery
 scenarios, and the actual installed systemd lifecycle. It verifies normal stop,
 SIGKILL restart/new epoch, DEGRADED repair without silent resumption, stop-timeout
 SIGKILL cleanup, and three invalid-config startup failures reaching the configured
 restart limit. Old grants/operations remain unusable; fresh approval works.
 
 Catalog/history/lock identities are retained during repair. Exact historical
-approval replay cannot reactivate access. **72 report corruption controls** are
-rejected. Failed and superseded attempts are retained. The main agent ran this
-qualification; the earlier agents review covers the preceding recovery milestone.
+approval replay cannot reactivate access. **95 report corruption controls** are
+rejected. Failed and superseded attempts are retained. Two agents reviewed the deployment and validation; the main agent ran this
+qualification, followed by an offline review of its raw evidence. See
+[deployment review](docs/DEPLOYMENT_REVIEW.md).
+
+The reviewed checks bind every sampled process to an active MainPID, full UID
+columns and the shipped argv. DEGRADED and repaired states require complete
+DENIED/zero-session status plus owner-authenticated NO_ACCESS for every old grant.
+Catalog transitions retain old rows and invalidate their former authority.
 
 One systemd-service VM trial verifies twenty ordered 8-KiB roundtrips in
-**1.98 ms after admission**, with **25,316 KiB** sampled RSS,
-**12 FDs** and **32,768** managed allocated bytes (with an additional held tunnel). SIGKILL takeover was
-observed in **1.11 s** in one controlled trial. These are point samples,
-not speedups, peaks, outage bounds or production guarantees. See
-[results and boundaries](docs/EXPLORATION_RESULTS.md) / [JSON and HTML](evidence/README.md).
+**1.87 ms after admission**, with **25,308 KiB** sampled RSS,
+**12 FDs** and **32,768** managed allocated bytes including one held idle
+tunnel. SIGKILL takeover is observed in **1.18 s** in this controlled trial.
+These are point samples, not speedups, peaks, outage bounds or production guarantees.
+See [results](docs/EXPLORATION_RESULTS.md) / [JSON and HTML](evidence/README.md).
 
 DEGRADED can disrupt unrelated grants. Capacity recovery raises finite limits;
 automatic GC/rollover and long-term operation are unqualified. The unit was not

@@ -18,7 +18,7 @@ uses 2 vCPU / 2 GiB / requested 15-GiB data disk, no host mounts and no default
 context activation, installs Python/OpenSSL/iproute2/util-linux from the guest
 package manager, installs the no-dependency wheel, removes product source from
 import reach and verifies installed module SHA-256. Tools/tests remain a checkout.
-Both platforms run the same source-bound test IDs (37 formal-service tests plus six evidence/cleanup
+Both platforms run the same source-bound test IDs (38 formal-service tests plus eight evidence/cleanup
 controls in milestone 1). OS/SQLite/OpenSSL versions
 are captured; no firmware, hardware network or physical-storage claim follows.
 
@@ -64,7 +64,7 @@ Existing Colima profiles/statuses must remain unchanged. Raw commands, paths,
 certificates, keys, databases, wheels and logs stay under ignored results or inside
 the deleted VM. Only sanitized receipts are eligible for Git.
 
-The systemd-v5 offline verifier requires complete ordered stages, actual platform
+The systemd-review-v6 offline verifier requires complete ordered stages, actual platform
 labels, postboot fresh-workload results, observed closure reason, recovered grant
 states, raw stale-refusal outcomes and successful boot observations. Old receipts
 without this contract are historical and are not accepted as current qualification.
@@ -159,3 +159,10 @@ the old boot UUID for 120 seconds. It is not a passing run. The timer now specif
 AccuracySec=1s, retaining the same boot-observation deadline and additional timer/
 journal/job diagnostics on failure. VM creation/DNS delays remain infrastructure
 stage timings, separate from service-performance measurements.
+
+The deployment review retains the unchanged runtime wheel/unit and adds stronger
+actual-service observations: per-instance identity bound to MainPID, complete
+zero-session DENIED status, owner-authenticated refusal for every old grant,
+explicit DEGRADED admission refusal and full repaired catalog transitions. Two
+new observer tests are evidence controls, not additional product features. The
+prior systemd-v5 evidence is retained as historical; it does not qualify v6 sources.

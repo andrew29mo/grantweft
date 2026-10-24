@@ -1,10 +1,14 @@
 # Evidence and provenance
 
-- [Current JSON](latest.json) / [HTML](latest.html): systemd-v5, matching frozen
-  sources/installed runtime, 44 identical tests/platform (38 formal + six controls),
+- [Current JSON](latest.json) / [HTML](latest.html): systemd-review-v6, matching frozen
+  sources/installed runtime, 46 identical tests/platform (38 formal + eight controls),
   seven storage/capacity/late-commit recovery scenarios, installed systemd lifecycle,
   one manual-start normal VM reboot,
-  72 corruption controls and complete cleanup.
+  95 corruption controls and complete cleanup.
+- [Original deployment](systemd-initial-01.json) / [HTML](systemd-initial-01.html):
+  v5, 44 tests/platform and 72 controls; historical source-specific qualification.
+- [Deployment review observations](systemd-review-observations.json) and
+  [findings](../docs/DEPLOYMENT_REVIEW.md): altered receipt copies, not VM incidents.
 - [Previous reviewed recovery](recovery-reviewed-01.json) / [HTML](recovery-reviewed-01.html):
   v4, 42 tests/platform and 60 controls; historical source-specific qualification.
 - [Service attempt 01](service-attempt-01.json) / [HTML](service-attempt-01.html):

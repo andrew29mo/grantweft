@@ -113,3 +113,12 @@ still starts the gateway manually after a pre-recovery journal witness. Formal
 boot-autostart recovery, power loss, boot-zero-gap, sustained resources and the
 clean-VM operator walkthrough beyond this scripted fixture remain future gates.
 No physical-device, WAN, unlimited retention or production-readiness guarantee.
+
+## Reviewed service evidence
+
+The reviewed qualification additionally binds observed /proc identity to each
+initialized systemd MainPID, checks the systemd stage's own isolated topology,
+and snapshots all old grants before fresh approval. DEGRADED and repaired states
+require complete zero-session DENIED status and owner-authenticated NO_ACCESS for
+every old grant. Catalog/state/revision preservation is directly asserted, not
+inferred only from one failed data probe. See [deployment review](DEPLOYMENT_REVIEW.md).

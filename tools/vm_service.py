@@ -39,7 +39,7 @@ def privileges(pid):
     argv=Path('/proc',str(pid),'cmdline').read_bytes().rstrip(b'\0').decode().split('\0')
     expected=['/opt/grantweft/venv/bin/python','-m','grantweft.gateway','--config','/etc/grantweft/config.json','--root','/var/lib/grantweft','--notify']
     if argv!=expected:raise RuntimeError('Unexpected service command')
-    return {'argv':argv,'uid':uid,'uids':list(map(int,lines['Uid'].split())),'effective_capabilities':lines['CapEff'],'no_new_privileges':int(lines['NoNewPrivs'])}
+    return {'pid':pid,'argv':argv,'uid':uid,'uids':list(map(int,lines['Uid'].split())),'effective_capabilities':lines['CapEff'],'no_new_privileges':int(lines['NoNewPrivs'])}
 def owned_pids():
     uid=pwd.getpwnam('grantweft').pw_uid;out=[]
     for p in Path('/proc').iterdir():
@@ -53,10 +53,30 @@ def stopped(pid):
     s=show();pids=owned_pids()
     if int(s['MainPID']) or pids or Path('/proc',str(pid)).exists():raise RuntimeError('Service process leaked')
     return {'unit':s,'service_uid_pids':pids,'old_pid_absent':True}
-def admission_pair(epoch,g):return {'old_data':recovery.denied(g),'old_operation':recovery.stale(epoch,g)}
+def admission_pair(epoch,g):return {'grant_id':g['id'],'old_data':recovery.denied(g),'old_operation':recovery.stale(epoch,g)}
 def saved_catalog():return recovery.catalog_snapshot(STATE)
 def unchanged(a,b):
     if a['counts']!=b['counts'] or a['history_sha256']!=b['history_sha256'] or a['file_ids']!=b['file_ids']:raise RuntimeError('Catalog/history/lock replaced')
+
+def denied_status(epoch, degraded):
+    snapshot=status()
+    if (snapshot['epoch']!=epoch or snapshot['degraded'] is not degraded or
+        snapshot['health']!=('DEGRADED' if degraded else 'READY') or
+        snapshot['sessions']!=0 or snapshot['remaining_after_cursor']!=0 or
+        any(g['access']!='DENIED' or g['sessions']!=0 for g in snapshot['grants'])):
+        raise RuntimeError('Old authority not completely denied')
+    return snapshot
+
+def restored(a,b):
+    unchanged(a,b)
+    old={g['id']:g for g in a['grants']};new={g['id']:g for g in b['grants']}
+    if not old or len(old)!=a['counts']['grants'] or old.keys()!=new.keys():raise RuntimeError('Old catalog rows lost')
+    for gid,g in old.items():
+        expected=g|({'state':'INVALIDATED','revision':g['revision']+1} if g['state'] in ('PENDING','ACTIVE') else {})
+        if new[gid]!=expected:raise RuntimeError('Old catalog authority revived')
+
+def deny_all(snapshot):
+    return {g['id']:recovery.denied(g,g['owner']) for g in snapshot['grants']}
 
 def main():
     if not __debug__:raise RuntimeError('Normal Python required')
@@ -79,34 +99,37 @@ def main():
         s,epoch=start();pid=int(s['MainPID']);v['initial']={'unit':s,'epoch':epoch,'privileges':privileges(pid)}
         g,trial=fresh(epoch);h=recovery.holder(procs,g,'service-normal')
         sample=Path('/proc',str(pid),'status').read_text()
-        v['workload']={'roundtrip':trial,'rss_kib':int(next(x for x in sample.splitlines() if x.startswith('VmRSS:')).split()[1]),'fds':len(list(Path('/proc',str(pid),'fd').iterdir())),'disk_allocated_bytes':sum(f.stat().st_blocks*512 for f in STATE.iterdir() if f.is_file()),'scope':'Linux VM single systemd main process point sample after fresh roundtrips; not peak/endurance'}
+        v['workload']={'roundtrip':trial,'rss_kib':int(next(x for x in sample.splitlines() if x.startswith('VmRSS:')).split()[1]),'fds':len(list(Path('/proc',str(pid),'fd').iterdir())),'disk_allocated_bytes':sum(f.stat().st_blocks*512 for f in STATE.iterdir() if f.is_file()),'scope':'Linux VM main-process point sample after fresh roundtrips with one additional held idle tunnel; not peak/endurance'}
         begin=time.monotonic();ctl('stop',UNIT)
         v['normal_stop']={'seconds':time.monotonic()-begin,'closure':recovery.closure(h),**stopped(pid)}
         time.sleep(1.3)
         if show()['ActiveState']!='inactive' or owned_pids():raise RuntimeError('Explicit stop unexpectedly restarted')
         v['normal_stop']['remained_stopped_after_seconds']=1.3
-        s,epoch2=start();v['normal_restart']={'epoch':epoch2,**admission_pair(epoch,g)}
+        s,epoch2=start();v['normal_restart']={'unit':s,'privileges':privileges(int(s['MainPID'])),'status_after_boot':denied_status(epoch2,False),'epoch':epoch2,**admission_pair(epoch,g)}
         if epoch2<=epoch:raise RuntimeError('Restart epoch unchanged')
-        g,_=fresh(epoch2);h=recovery.holder(procs,g,'service-crash');old=s;begin=time.monotonic()
+        g,_=fresh(epoch2);h=recovery.holder(procs,g,'service-crash');old=s;before_crash=status();begin=time.monotonic()
         ctl('kill','--kill-whom=main','--signal=SIGKILL',UNIT)
         vm.wait(lambda:show()['ActiveState']=='active' and int(show()['MainPID']) not in (0,int(old['MainPID'])),timeout=12)
         s=show();r=status();epoch3=r['epoch']
         if s['InvocationID']==old['InvocationID'] or int(s['NRestarts'])<int(old['NRestarts'])+1 or epoch3<=epoch2:raise RuntimeError('No actual crash takeover')
-        v['crash_takeover']={'observed_seconds':time.monotonic()-begin,'before':old,'after':s,'epoch_before':epoch2,'epoch_after':epoch3,'closure':recovery.closure(h),'privileges':privileges(int(s['MainPID'])),**admission_pair(epoch2,g)}
+        v['crash_takeover']={'observed_seconds':time.monotonic()-begin,'before':old,'after':s,'status_before':before_crash,'status_after_boot':denied_status(epoch3,False),'epoch_before':epoch2,'epoch_after':epoch3,'closure':recovery.closure(h),'privileges':privileges(int(s['MainPID'])),**admission_pair(epoch2,g)}
         v['crash_takeover']['fresh_roundtrip']=fresh(epoch3)[1]
         # Exhaust real catalog capacity under the unchanged official ExecStart.
         limit=status()['capacity']['ops']['used']+2;ctl('stop',UNIT);cfg['max_ops']=limit;configure(cfg)
         s,epoch4=start();g,_=fresh(epoch4);h=recovery.holder(procs,g,'service-degraded')
         req=dict(action='revoke',operation=str(uuid.uuid4()),epoch=epoch4,grant=g['id'],revision=g['revision'])
-        refusal=recovery.expect_code('approver',req,'CATALOG_FULL');closed=recovery.closure(h);r=status()
-        if not r['degraded']:raise RuntimeError('No DEGRADED')
+        refusal=recovery.expect_code('approver',req,'CATALOG_FULL');closed=recovery.closure(h)
+        vm.wait(lambda:status()['sessions']==0)
+        r=denied_status(epoch4,True);old_denials=deny_all(r)
+        blocked=recovery.expect_code('a',dict(action='request',operation=str(uuid.uuid4()),epoch=epoch4,service='demo',duration=30),'DEGRADED')
         time.sleep(1.3);same=show()
         if same['MainPID']!=s['MainPID'] or same['InvocationID']!=s['InvocationID'] or same['NRestarts']!=s['NRestarts']:raise RuntimeError('DEGRADED auto-restarted')
-        v['degraded']={'refusal':refusal,'closure':closed,'status':r,'unit_before':s,'unit_after_wait':same,'wait_seconds':1.3}
+        v['degraded']={'old_data_refusals':old_denials,'admission_refusal':blocked,'refusal':refusal,'closure':closed,'status':r,'unit_before':s,'unit_after_wait':same,'wait_seconds':1.3}
         ctl('stop',UNIT);before=saved_catalog();cfg['max_ops']=limit+16;configure(cfg)
-        s,epoch5=start();after=saved_catalog();unchanged(before,after)
+        s,epoch5=start();after=saved_catalog();restored(before,after)
+        after_status=denied_status(epoch5,False);after_denials=deny_all(after_status)
         if epoch5<=epoch4:raise RuntimeError('Repair epoch unchanged')
-        v['repair']={'catalog_before':before,'catalog_after':after,'epoch_before':epoch4,'epoch_after':epoch5,**admission_pair(epoch4,g),'fresh_roundtrip':fresh(epoch5)[1]}
+        v['repair']={'unit':s,'privileges':privileges(int(s['MainPID'])),'status_after_boot':after_status,'old_data_refusals':after_denials,'catalog_before':before,'catalog_after':after,'epoch_before':epoch4,'epoch_after':epoch5,**admission_pair(epoch4,g),'fresh_roundtrip':fresh(epoch5)[1]}
         # A stopped main cannot process TERM: exercise the shipped stop timeout/cgroup kill.
         s=show();g,_=fresh(epoch5);h=recovery.holder(procs,g,'service-forced-stop',close_timeout=10);pid=int(s['MainPID'])
         # SIGSTOP alone is insufficient: systemd sends SIGCONT during stop.
@@ -131,7 +154,7 @@ def main():
         if evidence['unit']['Result']!='timeout':raise RuntimeError('Stop timeout not exercised')
         reset_failed();s,epoch6=start()
         if epoch6<=epoch5:raise RuntimeError('Forced-stop recovery epoch unchanged')
-        v['forced_stop']['recovery']={'epoch_before':epoch5,'epoch_after':epoch6,**admission_pair(epoch5,g),'fresh_roundtrip':fresh(epoch6)[1]}
+        v['forced_stop']['recovery']={'unit':s,'privileges':privileges(int(s['MainPID'])),'status_after_boot':denied_status(epoch6,False),'epoch_before':epoch5,'epoch_after':epoch6,**admission_pair(epoch5,g),'fresh_roundtrip':fresh(epoch6)[1]}
         ctl('stop',UNIT);before=saved_catalog()
         broken=json.loads(json.dumps(cfg));broken['principals']['b']['sha256']=broken['principals']['a']['sha256'];configure(broken)
         reset_failed();r=subprocess.run(['systemctl','start',UNIT],capture_output=True,text=True,timeout=12)
@@ -149,7 +172,7 @@ def main():
         v['restart_limit']={'limit_message':'Start request repeated too quickly','unit_after_wait':stable,'stable_seconds':1.3,'failure_reason':'DUPLICATE_IDENTITY','observed_failure_traces':traces,'unit':s,'initial_start_exit_code':r.returncode,'service_uid_pids':owned_pids(),'catalog_before':before,'catalog_after':after}
         configure(cfg);reset_failed();s,epoch7=start()
         if epoch7<=epoch6:raise RuntimeError('Repaired config epoch unchanged')
-        v['restart_limit']['repair']={'unit':s,'epoch_before':epoch6,'epoch_after':epoch7,'fresh_roundtrip':fresh(epoch7)[1]}
+        v['restart_limit']['repair']={'unit':s,'privileges':privileges(int(s['MainPID'])),'status_after_boot':denied_status(epoch7,False),'epoch_before':epoch6,'epoch_after':epoch7,'fresh_roundtrip':fresh(epoch7)[1]}
         ctl('stop',UNIT);v['final_stopped']=stopped(int(s['MainPID']))
         v['passed']=True
     except BaseException as exc:

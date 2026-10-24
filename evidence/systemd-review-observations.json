@@ -1,0 +1,12 @@
+{
+  "kind": "manual_pre_fix_verifier_counterexamples_not_VM_failure",
+  "parent": "fc92369bf459bb1620e0dc5b035a6f2b49a3a603",
+  "accepted_by_old_verifier": {
+    "missing_service_isolation": true,
+    "root_takeover_fields": true,
+    "no_live_takeover": true,
+    "degraded_claims_allowed": true,
+    "repair_retains_active": true
+  },
+  "interpretation": "Existing raw observations are consistent; altered copies expose acceptance gaps, not observed root takeover or authority revival."
+}
