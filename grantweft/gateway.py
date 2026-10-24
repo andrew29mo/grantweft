@@ -2,6 +2,7 @@
 import argparse
 import asyncio
 import contextlib
+import copy
 import fcntl
 import hashlib
 import json
@@ -48,7 +49,7 @@ class Gateway:
         self.grants = {}; self.ops = {}; self.inflight = {}; self.denied = set()
         self.sessions = {}; self.connections = {'data':set(), 'control':set()}
         self.degraded = False; self.generation = 1; self.ready = False
-        self.servers = []; self.tasks = set(); self.facts = {'admitted':0,'refused':0,'closed':0,'forwarded_bytes':0}
+        self.servers = []; self.tasks = set(); self.facts = {'admitted':0,'refused':0,'closed':0,'forwarded_bytes':0,'backpressure_events':0}
         self.fingerprint = {v['sha256']:k for k,v in self.cfg['principals'].items()}
         if len(self.fingerprint) != len(self.cfg['principals']):
             raise Refused('DUPLICATE_IDENTITY')
@@ -205,7 +206,7 @@ class Gateway:
         self.inflight[key]=canonical
         try:
             result=await self.db(principal,op)
-            row=result['result']['grant']; self.ops[key]=(canonical,result['result'])
+            row=copy.deepcopy(result['result']['grant']); self.ops[key]=(canonical,copy.deepcopy(result['result']))
             if token!=self.generation or self.degraded:
                 raise Refused('RETIRED_COMPLETION')
             # No approval completion can clear a prior expiry/revocation fence.
@@ -291,7 +292,10 @@ class Gateway:
                         if eof:raise Refused('DUPLICATE_EOF')
                         eof=True;bw.write_eof();await bw.drain()
                     elif k==DATA and not eof:
-                        bw.write(b);self.facts['forwarded_bytes']+=len(b);await bw.drain()
+                        bw.write(b);self.facts['forwarded_bytes']+=len(b)
+                        if bw.transport.get_write_buffer_size()>MAX_FRAME:
+                            self.facts['backpressure_events']+=1
+                        await bw.drain()
                     elif k==CLOSE:return
                     else:raise Refused('FRAME_STATE')
             async def to_client():

@@ -18,7 +18,8 @@ uses 2 vCPU / 2 GiB / requested 15-GiB data disk, no host mounts and no default
 context activation, installs Python/OpenSSL/iproute2/util-linux from the guest
 package manager, installs the no-dependency wheel, removes product source from
 import reach and verifies installed module SHA-256. Tools/tests remain a checkout.
-Both platforms run the same source-bound unit test IDs. OS/SQLite/OpenSSL versions
+Both platforms run the same source-bound test IDs (28 formal-service tests plus six evidence/cleanup
+controls in the reviewed run). OS/SQLite/OpenSSL versions
 are captured; no firmware, hardware network or physical-storage claim follows.
 
 Root creates only test network namespaces inside this VM:
@@ -39,7 +40,7 @@ and client subprocesses do not establish an untrusted-root threat model.
 
 The installed formal gateway is tested separately from the backend fixture. A
 controlled VM trial records 20 ordered 8-KiB roundtrips, live-session revocation,
-client-observed termination, sampled gateway RSS, fd count and managed allocated
+client-observed positive EOF/reset termination (not timeout), sampled gateway RSS, fd count and managed allocated
 bytes. Those are Linux VM observations; native test elapsed time is not a native
 performance/RSS comparison. No baseline speedup or SLO is claimed.
 
@@ -51,6 +52,10 @@ be refused; fresh request/approval must work. Fixture namespaces/processes are
 explicitly cleaned, not part of service persistence. The service is manually
 started, not systemd-autostart qualified. No abrupt-power-loss test.
 
+Children are registered before readiness waits; cleanup attempts every owned
+process/namespace and always attempts failure-receipt preservation. Cleanup errors
+prevent case success. Partial guest receipts are fetched before deleting the VM.
+
 Every subprocess stage has exit/timeout recording; stage failure or source changes
 prevent a passing receipt. The runner retains JSON/HTML on failure and deletes
 its owned VM/data disk in finally. A timeout kills the host stage process group;
@@ -58,3 +63,8 @@ VM deletion is the final containment boundary for possible remote leftovers.
 Existing Colima profiles/statuses must remain unchanged. Raw commands, paths,
 certificates, keys, databases, wheels and logs stay under ignored results or inside
 the deleted VM. Only sanitized receipts are eligible for Git.
+
+The review-v2 offline verifier requires complete ordered stages, actual platform
+labels, postboot fresh-workload results, observed closure reason, recovered grant
+states, raw stale-refusal outcomes and successful boot observations. Old receipts
+without this contract are historical and are not accepted as current qualification.

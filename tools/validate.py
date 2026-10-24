@@ -2,7 +2,7 @@
 import argparse,base64,datetime,hashlib,io,json,os,signal,subprocess,sys,tarfile,time,zipfile
 from pathlib import Path
 from .unit import manifest,fingerprint
-from .report import verify,controls,render
+from .report import verify,controls,render,CONTRACT
 ROOT=Path(__file__).resolve().parents[1]
 
 def main():
@@ -17,7 +17,7 @@ def main():
     with zipfile.ZipFile(wheel) as z:modules={n:hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist() if n.startswith('grantweft/') and n.endswith('.py')}
     if modules!={k:h for k,h in source.items() if k.startswith('grantweft/')}:p.error('Wheel differs from source')
     env=dict(os.environ,COLIMA_HOME=str(task_home),PATH=str(binpath)+os.pathsep+os.environ['PATH'])
-    v={'passed':False,'recorded_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source':source,'source_sha256':fingerprint(source),'source_changed':False,'host_mounts':'none','wheel_modules_match':True,'wheel_sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'stages':[]}
+    v={'contract':CONTRACT,'passed':False,'recorded_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source':source,'source_sha256':fingerprint(source),'source_changed':False,'host_mounts':'none','wheel_modules_match':True,'wheel_sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'stages':[]}
     def persist():
         (out/'evidence.json').write_text(json.dumps(v,indent=2,allow_nan=False)+'\n');(out/'report.html').write_text(render(v))
     def run(name,args,timeout=60,stdin=None):
@@ -57,12 +57,13 @@ def main():
             name='prepared' if action=='prepare' else action
             v[name]=json.loads(ssh(name+'-read',['sudo','cat','/opt/grantweft/lab/'+name+'.json']))
         ssh('schedule-reboot',['sudo','systemd-run','--unit=grantweft-test-reboot','--on-active=2s','/usr/bin/systemctl','reboot'])
-        until=time.monotonic()+120;new=None
+        until=time.monotonic()+120;new=None;v['reboot_polls']=[]
         while time.monotonic()<until:
             try:
                 r=subprocess.run([str(colima),'--profile',a.profile,'ssh','--','cat','/proc/sys/kernel/random/boot_id'],env=env,capture_output=True,text=True,timeout=5)
+                v['reboot_polls'].append({'exit_code':r.returncode,'timed_out':False,'boot_id':r.stdout.strip() if r.returncode==0 else None})
                 if r.returncode==0 and len(r.stdout.strip())==36 and r.stdout.strip()!=v['prepared']['boot_before']:new=r.stdout.strip();break
-            except subprocess.TimeoutExpired:pass
+            except subprocess.TimeoutExpired:v['reboot_polls'].append({'exit_code':None,'timed_out':True,'boot_id':None})
             time.sleep(1)
         if new is None:raise TimeoutError('Boot identity did not change')
         guest('finish','/opt/grantweft/venv/bin/python -m tools.vm_cases finish',timeout=120)
@@ -71,6 +72,10 @@ def main():
         v['passed']=True
     except BaseException as exc:
         v['error']=type(exc).__name__+': '+str(exc).replace(str(ROOT),'<checkout>')
+        if created:
+            for name in ('cases','prepared','finished'):
+                try:v['failed_'+name]=json.loads(ssh('failed-'+name,['sudo','cat','/opt/grantweft/lab/'+name+'.json'],timeout=5))
+                except Exception:pass
     finally:
         if created:
             try:

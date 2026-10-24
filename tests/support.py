@@ -33,11 +33,14 @@ def fingerprint(path):
 class Backend(socketserver.ThreadingTCPServer):
     allow_reuse_address=True;daemon_threads=True
     def __init__(self,host='127.0.0.1',port=0,mode='echo'):
-        self.mode=mode;self.received=bytearray();self.conn=0;self.closed=0
+        self.mode=mode;self.received=bytearray();self.conn=0;self.closed=0;self.allow_read=threading.Event()
         parent=self
         class Handler(socketserver.BaseRequestHandler):
             def handle(self):
                 parent.conn+=1;self.request.settimeout(4)
+                if parent.mode=='blocked':
+                    self.request.setsockopt(socket.SOL_SOCKET,socket.SO_RCVBUF,4096)
+                    parent.allow_read.wait(4)
                 try:
                     while True:
                         b=self.request.recv(16384)
@@ -51,7 +54,7 @@ class Backend(socketserver.ThreadingTCPServer):
                 finally:parent.closed+=1
         super().__init__((host,port),Handler)
         self.thread=threading.Thread(target=self.serve_forever,daemon=True);self.thread.start()
-    def close(self):self.shutdown();self.server_close();self.thread.join()
+    def close(self):self.allow_read.set();self.shutdown();self.server_close();self.thread.join()
 
 class Harness:
     def __init__(self,pki,root=None,backend=None,**limits):

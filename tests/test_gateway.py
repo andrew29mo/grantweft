@@ -29,13 +29,16 @@ class GatewayTests(unittest.TestCase):
     def h(self,**kw):
         h=Harness(self.pki,**kw);self.items.append(h);return h
     def denied(self,h,g,who='a'):
-        with self.assertRaises((Refused,EOFError,OSError)):h.access(g,who)
+        with self.assertRaisesRegex(Refused,'NO_ACCESS'):h.access(g,who)
     def ended(self,s):
         s.settimeout(1)
         try:
-            k,b=receive(s)
-            self.assertNotEqual(k,DATA)
-        except (EOFError,OSError):pass
+            while True:
+                k,b=receive(s)
+                self.assertNotEqual(k,DATA)
+        except TimeoutError:
+            self.fail('CLOSE_NOT_OBSERVED: socket timeout is not termination')
+        except (EOFError,ConnectionResetError,ssl.SSLEOFError,ssl.SSLZeroReturnError):pass
         finally:s.close()
     def test_real_mtls_approval_payload_and_identity(self):
         h=self.h();g=h.request();self.denied(h,g)
@@ -47,10 +50,10 @@ class GatewayTests(unittest.TestCase):
         self.assertEqual(bytes(h.backend.received),payload)
     def test_unknown_and_missing_client_certificate(self):
         h=self.h()
-        with self.assertRaises((Refused,ssl.SSLError,EOFError,OSError)):h.call('unknown',{'action':'status'})
+        with self.assertRaisesRegex(Refused,'IDENTITY'):h.call('unknown',{'action':'status'})
         ctx=ssl.create_default_context(cafile=str(self.pki/'ca.pem'))
         with socket.create_connection(('127.0.0.1',h.ready['ports']['control'])) as raw:
-            with self.assertRaises((ssl.SSLError,EOFError,OSError)):
+            with self.assertRaises((ssl.SSLError,EOFError,ConnectionResetError)):
                 with ctx.wrap_socket(raw,server_hostname='127.0.0.1') as s:
                     s.sendall(HEADER.pack(OPEN,2)+b'{}')
                     if not s.recv(10):raise EOFError('TLS rejected without client certificate')
@@ -221,7 +224,43 @@ class GatewayTests(unittest.TestCase):
             f=pool.submit(h.access,g);h.wait(lambda:(h.barriers/'entered-connect').exists())
             self.assertEqual(h.status()['sessions'],1)
             h.mutate('approver','revoke',g);hold.unlink()
-            with self.assertRaises((Refused,EOFError,OSError)):f.result(timeout=3)
+            with self.assertRaises((Refused,EOFError,ConnectionResetError,ssl.SSLError)):f.result(timeout=3)
         self.assertEqual(h.status()['sessions'],0);self.assertEqual(bytes(h.backend.received),b'')
         fresh=h.approve(h.request())
         with h.access(fresh) as s:send(s,DATA,b'new-session');self.assertEqual(receive(s),(DATA,b'new-session'))
+    def test_history_result_is_stable_after_expiry_and_restart(self):
+        h=self.h();g=h.request(duration=.25)
+        p={'action':'approve','operation':str(uuid.uuid4()),'epoch':h.ready['epoch'],'grant':g['id'],'revision':g['revision']}
+        initial=h.call('approver',p)['original_result']
+        time.sleep(.4)
+        self.assertEqual(h.call('approver',p)['original_result'],initial)
+        h.stop(kill=True);h.start()
+        self.assertEqual(h.call('approver',p)['original_result'],initial)
+    def test_observed_backpressure_then_revoke_stops_transfer(self):
+        backend=Backend(mode='blocked');h=self.h(backend=backend)
+        try:
+            g=h.approve(h.request(duration=10));s=h.access(g)
+            def flood():
+                s.settimeout(2)
+                try:
+                    for _ in range(1024):send(s,DATA,b'x'*16384)
+                except OSError:pass
+            with concurrent.futures.ThreadPoolExecutor() as pool:
+                upload=pool.submit(flood)
+                h.wait(lambda:h.status()['facts']['backpressure_events']>0,seconds=3)
+                r=h.mutate('approver','revoke',g)
+                self.assertEqual(r['cleanup'],'COMPLETE')
+                self.ended(s);upload.result(timeout=3)
+            self.assertEqual(h.status()['sessions'],0)
+        finally:backend.close()
+    def test_slow_approval_history_retains_original_commit(self):
+        h=self.h();g=h.request(duration=.25);hold=h.barriers/'hold-approve';hold.touch()
+        p={'action':'approve','operation':str(uuid.uuid4()),'epoch':h.ready['epoch'],'grant':g['id'],'revision':g['revision']}
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            f=pool.submit(h.call,'approver',p);h.wait(lambda:(h.barriers/'entered-approve').exists())
+            time.sleep(.4);hold.unlink();result=f.result(timeout=3)
+        self.assertFalse(result['ok']);original=result['original_result']
+        self.assertEqual(original['grant']['state'],'ACTIVE')
+        self.assertEqual(h.call('approver',p)['original_result'],original)
+        h.stop(kill=True);h.start()
+        self.assertEqual(h.call('approver',p)['original_result'],original)

@@ -1,0 +1,20 @@
+{
+  "kind": "manual pre-fix review observations",
+  "reviewed_commit": "f42981dbe6987b39e3948abd0f54f5b1c5101548",
+  "history_regression": {
+    "formal_mtls_test_count": 1,
+    "failures": 1,
+    "observation": "Approval original_result changed from ACTIVE/revision 2 to EXPIRED/revision 3 before restart; immutable copy fixes it."
+  },
+  "observer_counterexamples": {
+    "socket_timeout_was_accepted_as_connection_ended": true,
+    "old_verifier_accepted_empty_stages": true,
+    "old_verifier_accepted_missing_postboot_fresh_roundtrip": true,
+    "old_verifier_accepted_linux_labelled_Darwin": true
+  },
+  "evidence_scope": "Agent read-only experiments and parent actual failing formal regression. Does not claim an independently rerun VM or product reauthorization exploit.",
+  "prior_receipt": "attempt-03.json",
+  "prior_receipt_status": "superseded: timeout closure observer and incomplete report validation weaken qualification; raw observations preserved",
+  "parent_reproduced_old_timeout_false_positive": true,
+  "parent_reproduced_old_verifier_counterexamples": true
+}

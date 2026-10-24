@@ -1,79 +1,88 @@
-# Four exploration outcomes
+# Reviewed exploration outcomes
 
-Final source fingerprint:
-`4fad58e67d7dfb592afb6428724f4abdae733bf173a980c845faf3853e6df93b`.
-[JSON](../evidence/latest.json) and [HTML](../evidence/latest.html) contain the same
-complete record. This is a controlled exploration qualification, not an operational
-MVP or production deployment claim.
+Current source fingerprint:
+`e56c6648ae3439fc3148e9b3b28b0ba473fd7fc6e4c7b602f24ab9466569a204`.
+[JSON](../evidence/latest.json) and [HTML](../evidence/latest.html) retain the same
+complete `grantweft-review-v2` record. This is a bounded exploration qualification,
+not an operational MVP, independently reproduced third-party audit or production
+readiness claim. Two agents inspected the implementation/evidence; the parent
+ran the new installed-package VM qualification.
 
-| Group | Observed result | Important boundary |
+## Actual outcomes
+
+| Group | Observed evidence | Boundary |
 | --- | --- | --- |
-| Identity / transaction | Formal mTLS clients, separate approver, ownership refusal; fixed deadline and delayed commit; deduplicated history after revoke/restart | SQLite journal mode DELETE, synchronous FULL; no physical power-loss test |
-| Transfer / revoke | Real ordered payload, half-close response, malformed frames, live/idle/slow sessions, deterministic post-connect/pre-admission pause then revoke | Cannot retract kernel/in-flight bytes or backend effects; not every kernel/TLS callback schedule tested |
-| Time / storage / capacity | Elapsed expiry and SIGSTOP/resume; blocked DB does not block live expiry; queue/session/catalog/handshake limits; storage-error hook and late completion retire access | No real suspend, ENOSPC/EROFS filesystem or external DoS qualification; saturation can retire the service |
-| Recovery / topology | Same 25 test IDs/platform; installed wheel/module provenance; nobody UID; three namespaces/no bypass; real boot-ID change, unchanged pre-recovery journal, old authorization refused and fresh grant usable | Service manually started after ordinary VM reboot; no systemd-autostart, boot-zero-gap, power-loss or session continuity claim |
+| Identity / transaction | Real mTLS, separate approver, owner refusal; precommit fixed deadline, delayed commit and immutable original results before/after restart | DELETE/FULL SQLite; no physical power-loss qualification |
+| Transfer / revoke | Ordered bytes, half-close, malformed frames, deterministic post-connect pause/revoke, live/idle termination with positive EOF/reset | No recall of kernel/in-flight bytes or backend effects |
+| Pressure / storage / time | Queue/session/catalog/handshake refusal, blocked DB plus elapsed expiry, SIGSTOP/resume, late result cannot reactivate; backend write queue exceeds high watermark before revoke | No actual suspend, ENOSPC/EROFS/FULL filesystem, unlimited pressure or Internet DoS qualification |
+| Recovery / topology | Installed wheel and matching module hashes, UID 65534, client/gateway/backend namespaces, observed forwarding=0, actual reboot and preserved pre-recovery journal; stale refusal and fresh verified access | Manual gateway startup after normal reboot; no systemd-autostart, power loss, boot-zero-gap or session continuity |
 
-Native macOS suite: 25 tests, zero failures/errors/skips, 20.95 s.
-Linux installed-wheel suite: same 25 IDs, zero failures/errors/skips, 23.35 s.
-Test-suite durations include fixtures and are not a platform performance comparison.
-Linux used Python 3.12.3, SQLite 3.45.1 and OpenSSL 3.0.13 (guest packages).
-The service uses SQLite rollback journals, not WAL; this record is not a statement
-that arbitrary SQLite builds or WAL workloads are qualified.
+Both platforms passed the same 34 unique test IDs with zero failures/errors/skips:
+28 tests start the actual gateway/mTLS/backend implementation; six explicitly test
+observers, stream-fragmentation checks and cleanup failure handling. The latter
+are evidence controls, not substitutes for formal product tests.
+Native suite: 23.34 s; installed Linux suite: 25.93 s. Fixture-inclusive suite times
+are not comparative performance. Linux used Python 3.12.3, SQLite 3.45.1 and
+OpenSSL 3.0.13 from the guest. No arbitrary runtime-build qualification follows.
 
-## Controlled Linux VM observations
+## Linux VM measurements
 
-- Twenty 8,192-byte roundtrips, 163,840 verified bytes each direction, 2.571 ms.
-  Timer starts after mTLS/backend admission; it excludes setup, approval and
-  session establishment. No baseline, repeated distribution or speedup claim.
-- Revocation RPC: 32.610 ms, including spawning the namespace fixture client,
-  mTLS, control request, durable update and the local cleanup response.
-- The already-open client observed connection termination 43.866 ms after its
-  own wait began, which precedes the revoke RPC; this is a different interval,
-  not a directly comparable revocation latency. Session count after revoke: zero.
-- One gateway process sampled after the roundtrip workload: 25,056 KiB RSS,
-  10 fds; allocated managed-store bytes: 32,768. This excludes TLS client/backend
-  processes, PKI/configuration, virtual environment, VM filesystem and raw logs;
-  it is not whole-system memory, deployment size, peak or a hard resource bound.
+- Twenty 8,192-byte roundtrips, 163,840 verified bytes per direction: 2.682 ms.
+  Timer starts after mTLS/backend admission and excludes approval/setup. Responses
+  are reassembled across DATA frames, not assumed to preserve TCP read boundaries.
+- Live-session revoke RPC: 37.707 ms, including namespace client startup, mTLS,
+  request, persistence and local cleanup response. The client observed actual
+  `EOFError`, not an idle timeout. Session count after revoke: zero.
+- Client closure interval: 39.929 ms from its own wait start, which precedes the
+  RPC measurement. These are distinct intervals, not comparable latency samples.
+- Gateway point observation after the roundtrip trial: 25,044 KiB RSS, 10 fds.
+  Allocated managed-store bytes: 32,768. Store count excludes PKI/configuration,
+  venv, VM filesystem and logs. Gateway RSS excludes fixture clients/backend.
 
-No continuous resource-growth qualification is claimed. The tiny controlled
-backend and VM network do not represent WAN or production workloads.
+These are single controlled VM observations, not a baseline comparison, native
+performance, physical-device result, peak memory, deployment size, long-term bound
+or SLO. Previous values remain in the historical receipt, not treated as a speedup
+or regression comparison.
 
-## Recovery witness
+## Normal reboot witness
 
-Before reboot the actual gateway was SIGKILLed, leaving PENDING/ACTIVE rows in
-SQLite. The fixture then saved the catalog bytes hash, sorted grant rows and
-operation count. After a changed boot ID and before any new gateway, those
-witnesses matched exactly. Only then did the installed gateway start, increment
-epoch and invalidate old grants. Actual old data admission and stale mutation
-were refused; a newly requested/approved grant passed twenty fresh roundtrips.
-Namespace/backend fixtures are recreated after boot, not persistent service units.
+The gateway was SIGKILLed with PENDING and ACTIVE grants. Catalog bytes hash,
+sorted grant rows and operation count were saved before reboot. After the boot ID
+changed, all three matched before the new gateway ran. Then epoch advanced to 3,
+old grants became INVALIDATED/DENIED, actual old data admission returned NO_ACCESS
+and an old mutation returned STALE_EPOCH. A new request/approval completed twenty
+verified roundtrips. Namespace/backend fixtures were recreated after boot; they
+are not installed boot services.
 
-## Failures retained, not promoted to passes
+Direct backend access had a timed-out connect attempt while the gateway path
+successfully reached the same backend, and kernel ip_forward was read back as 0.
+That timeout means this bounded direct-connect attempt did not establish; it is
+not used as proof of closing an already-established session or WAN isolation.
 
-- `initial-portable-failure.json`: first 18-test draft had 15 errors and one
-  failure. Normal Store commands incorrectly accessed the internal action field;
-  corrected command dispatch. Missing-certificate denial can be EOF as well as
-  TLS error; the test now explicitly requires rejection instead of rejecting a
-  valid EOF outcome. Actual certificate checks remain enabled.
-- `attempt-01.json/html`: both platforms passed 24 tests, but VM topology failed
-  moving interface `br`: ip interpreted its name as the broadcast option. The
-  run failed and its VM cleanup succeeded.
-- `attempt-02.json/html`: both platforms passed 25 tests, but the corresponding
-  link-up call still lacked explicit `dev`; the run failed and cleanup succeeded.
-  Every variable interface link-set call was then made explicit. A source change
-  during that run is also recorded; it is not a qualifying receipt.
-- The pre-recovery journal comparison was normalized to JSON lists before the
-  final run; Python tuple/list representation must not masquerade as a journal
-  change. Byte hash equality remains an independent check.
+## Controls, failures and cleanup
 
-Final run: frozen source unchanged, all stages successful without timeouts,
-19 corrupted report variants rejected, owned processes/namespaces reaped, VM and
-its data disk removed, and preexisting Colima profile statuses unchanged.
+The new verifier rejected 33 corrupted records and also ran under `python -O`.
+It requires the correct platforms, full stage order, exact unique test accounting,
+source consistency, positive closure reason, pre/postboot witnesses, raw refusal
+outcomes, a fresh verified workload and complete cleanup. It does not provide
+cryptographic protection against fabrication of an entire receipt.
 
-## Remaining decisions
+All qualification stages exited successfully without timeout. Every case cleaned
+its registered processes and namespaces, with no cleanup errors. The dedicated
+VM/data disk were removed and the existing relay profile remained Stopped.
 
-Simultaneous approval/revoke revision conflicts currently cause global DEGRADED,
-not smooth per-grant reconciliation. Historical records have finite row caps and
-no GC/rollover. A complete operator recovery workflow, certificate lifetime/
-replacement, supported service packaging and broader storage/pressure testing
-remain operational MVP gates. See [acceptance](ACCEPTANCE.md).
+The original 25-test run is retained as [attempt 03](../evidence/attempt-03.json),
+with matching HTML. Its closure observer and incomplete validator were flawed;
+it is not current qualification. Initial draft and two failed topology attempts
+remain unchanged. [Original results](INITIAL_EXPLORATION_RESULTS.md) preserve their
+context; [review findings](REVIEW.md) explain actual counterexamples and repairs.
+
+## Remaining operational limitations
+
+Concurrent approval/revoke revision conflict still fences access globally and
+enters DEGRADED. It does not transparently reconcile the affected grant. Restart
+invalidates previous grants and requires new approval. Catalog/audit rows have
+finite caps and no automatic GC/rollover. Credential lifetime/replacement,
+operational packaging/recovery workflow, real filesystem capacity faults and
+broader control-plane pressure remain MVP gates. Untested power loss, actual
+suspend, systemd autostart, boot-zero-gap and long-term stability are not passed.

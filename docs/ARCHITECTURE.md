@@ -30,6 +30,8 @@ are not qualified; authorization TTL is the implemented session boundary.
 1. Authenticate, enforce exact request fields, role, epoch and grant revision.
 2. For an existing operation UUID/principal, require identical canonical payload,
    return original outcome explicitly labelled historical plus current state.
+   Immutable durable results and mutable runtime grant objects are deep copies;
+   expiry/persistence markers cannot mutate an earlier operation result.
    New epoch checks do not prevent reading one's retained historical outcome.
 3. For a new approval, freeze `CLOCK_BOOTTIME now + approved duration` before
    entering the bounded queue. No retry/commit callback can extend this deadline.
@@ -43,6 +45,9 @@ are not qualified; authorization TTL is the implemented session boundary.
 6. Revocation/cancellation sets a local terminal fence and aborts sessions before
    attempting persistence. Queue-full/storage errors cannot undo that fence.
    Expiry is checked before each socket write as well as by a 20-ms polling loop.
+
+Positive EOF/reset is required by the revised qualification observers. A socket
+waiting timeout cannot prove termination; cleanup counts alone are not sufficient.
 
 No waiting database operation runs on the socket-authority loop. SQLite lock wait
 is 200 ms; application wait is 2 s, but blocked OS I/O is not thereby cancelled.

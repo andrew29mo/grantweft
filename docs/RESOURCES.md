@@ -34,3 +34,8 @@ service. This first version requires explicit operator repair/restart and new
 approval; no retention/archival policy is implemented. Resource measurements must
 include runtime TLS overhead and all owned child processes, rather than treating
 watermarks as proven RSS caps.
+
+The review adds an actual transport-queue high-watermark observation before the
+blocked-consumer revoke test. This counter is an observed pressure event, not a
+maximum memory guarantee. Denial requires a formal refusal response; termination
+requires EOF/reset, with timeout reported as failed observation.

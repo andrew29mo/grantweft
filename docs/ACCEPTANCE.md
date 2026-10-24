@@ -1,9 +1,10 @@
 # Architecture decision and MVP acceptance
 
 Four explorations must qualify the same minimal production modules. Model/reviewer
-agreement is not evidence. The four groups now have passing source-bound evidence (25 tests/platform,
+agreement is not evidence. The four groups now have passing source-bound evidence (34 tests/platform: 28 formal service + six observer/cleanup controls,
 installed Linux namespace trials and one normal VM reboot). Receipts, failed
-attempts and exact limits live in evidence/README.md. No implementation is a production deployment guarantee.
+attempts and exact limits live in evidence/README.md. The review repairs are documented in [REVIEW.md](REVIEW.md).
+No implementation is a production deployment guarantee.
 
 | Exploration | Required formal evidence |
 | --- | --- |
