@@ -1,0 +1,1722 @@
+{
+  "contract": "grantweft-recovery-v3",
+  "passed": false,
+  "recorded_at_utc": "2026-10-24T13:41:13.782890+00:00",
+  "source": {
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/gateway.py": "cba748ba9d9ef49e5fc2ef110ba881c11424adb9417de4b4b0cc517e05cd306a",
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+    "pyproject.toml": "d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090",
+    "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+    "tests/test_gateway.py": "ac8fdc2ab73f8edeb9bd004c6bebd991f7867ae650dfdab4a5c60c7fa28457a0",
+    "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+    "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+    "tools/probe.py": "8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411",
+    "tools/report.py": "041bf3aff03657b17dfb0b4508692ab074f90997597e5260b818dab3a4d04658",
+    "tools/unit.py": "58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7",
+    "tools/validate.py": "6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36",
+    "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+    "tools/vm_recovery.py": "6e0b58350747e46fb5934cae3642f2b336e3a528fb0123748b005b5eccdb17ec"
+  },
+  "source_sha256": "cbacddd9b9388c3eaf11f9a473996be1058562215b6f8f9ebb686cd809b6caaa",
+  "source_changed": false,
+  "host_mounts": "none",
+  "wheel_modules_match": true,
+  "wheel_sha256": "432b3ca6224103d758c8792b117f32a24f95294798e62f134333d81d4a666884",
+  "stages": [
+    {
+      "name": "initial",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.3429459579929244
+    },
+    {
+      "name": "create",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 22.196903333009686
+    },
+    {
+      "name": "dependencies",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 18.322814207989722
+    },
+    {
+      "name": "upload",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.2896049580012914
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.5717480420134962
+    },
+    {
+      "name": "provenance",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.25344766600755975
+    },
+    {
+      "name": "native",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 30.662570540996967
+    },
+    {
+      "name": "linux",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 37.11488016700605
+    },
+    {
+      "name": "linux-read",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.431271666981047
+    },
+    {
+      "name": "cases",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 4.616744792001555
+    },
+    {
+      "name": "cases-read",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.23949112501577474
+    },
+    {
+      "name": "recovery",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 26.87672487500822
+    },
+    {
+      "name": "failed-cases",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.32610949999070726
+    },
+    {
+      "name": "failed-recovery",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.4389220409793779
+    },
+    {
+      "name": "failed-prepared",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.23663249998935498
+    },
+    {
+      "name": "failed-finished",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.2148111659917049
+    },
+    {
+      "name": "delete",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.6253327500016894
+    },
+    {
+      "name": "final",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.19830441699014045
+    }
+  ],
+  "installed_modules": {
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/gateway.py": "cba748ba9d9ef49e5fc2ef110ba881c11424adb9417de4b4b0cc517e05cd306a",
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4"
+  },
+  "installed_source_absent": true,
+  "sqlite": "3.45.1",
+  "openssl": "OpenSSL 3.0.13 30 Jan 2024",
+  "python": "3.12.3",
+  "native": {
+    "passed": true,
+    "count": 41,
+    "tests": [
+      "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
+      "test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence",
+      "test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants",
+      "test_gateway.GatewayTests.test_catalog_full_expiry_does_not_need_new_audit_slot",
+      "test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations",
+      "test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate",
+      "test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke",
+      "test_gateway.GatewayTests.test_deny_cancel_and_request_expiry",
+      "test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect",
+      "test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive",
+      "test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits",
+      "test_gateway.GatewayTests.test_grant_full_preserves_revoke_and_expiry_without_gc",
+      "test_gateway.GatewayTests.test_history_result_is_stable_after_expiry_and_restart",
+      "test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart",
+      "test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected",
+      "test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof",
+      "test_gateway.GatewayTests.test_observed_backpressure_then_revoke_stops_transfer",
+      "test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state",
+      "test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume",
+      "test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control",
+      "test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity",
+      "test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions",
+      "test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen",
+      "test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover",
+      "test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke",
+      "test_gateway.GatewayTests.test_slow_approval_history_retains_original_commit",
+      "test_gateway.GatewayTests.test_slow_commit_after_retirement_stays_denied_through_repair",
+      "test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl",
+      "test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data",
+      "test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry",
+      "test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget",
+      "test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves",
+      "test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history",
+      "test_gateway.GatewayTests.test_truncated_frame_is_not_payload",
+      "test_gateway.GatewayTests.test_unknown_and_missing_client_certificate",
+      "test_review.EvidenceObserverTests.test_cleanup_continues_after_forced_kill",
+      "test_review.EvidenceObserverTests.test_cleanup_exception_still_saves_failed_receipt",
+      "test_review.EvidenceObserverTests.test_close_observer_rejects_live_idle_socket_timeout",
+      "test_review.EvidenceObserverTests.test_close_observer_requires_positive_eof",
+      "test_review.EvidenceObserverTests.test_echo_observer_accepts_fragmentation_and_checks_order",
+      "test_review.EvidenceObserverTests.test_startup_process_registered_before_readiness_failure"
+    ],
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 30.55190370901255,
+    "platform": "Darwin",
+    "source": {
+      "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+      "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+      "grantweft/gateway.py": "cba748ba9d9ef49e5fc2ef110ba881c11424adb9417de4b4b0cc517e05cd306a",
+      "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+      "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+      "pyproject.toml": "d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090",
+      "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+      "tests/test_gateway.py": "ac8fdc2ab73f8edeb9bd004c6bebd991f7867ae650dfdab4a5c60c7fa28457a0",
+      "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+      "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+      "tools/probe.py": "8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411",
+      "tools/report.py": "041bf3aff03657b17dfb0b4508692ab074f90997597e5260b818dab3a4d04658",
+      "tools/unit.py": "58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7",
+      "tools/validate.py": "6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36",
+      "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+      "tools/vm_recovery.py": "6e0b58350747e46fb5934cae3642f2b336e3a528fb0123748b005b5eccdb17ec"
+    },
+    "source_sha256": "cbacddd9b9388c3eaf11f9a473996be1058562215b6f8f9ebb686cd809b6caaa"
+  },
+  "linux": {
+    "passed": true,
+    "count": 41,
+    "tests": [
+      "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
+      "test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence",
+      "test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants",
+      "test_gateway.GatewayTests.test_catalog_full_expiry_does_not_need_new_audit_slot",
+      "test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations",
+      "test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate",
+      "test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke",
+      "test_gateway.GatewayTests.test_deny_cancel_and_request_expiry",
+      "test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect",
+      "test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive",
+      "test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits",
+      "test_gateway.GatewayTests.test_grant_full_preserves_revoke_and_expiry_without_gc",
+      "test_gateway.GatewayTests.test_history_result_is_stable_after_expiry_and_restart",
+      "test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart",
+      "test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected",
+      "test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof",
+      "test_gateway.GatewayTests.test_observed_backpressure_then_revoke_stops_transfer",
+      "test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state",
+      "test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume",
+      "test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control",
+      "test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity",
+      "test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions",
+      "test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen",
+      "test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover",
+      "test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke",
+      "test_gateway.GatewayTests.test_slow_approval_history_retains_original_commit",
+      "test_gateway.GatewayTests.test_slow_commit_after_retirement_stays_denied_through_repair",
+      "test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl",
+      "test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data",
+      "test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry",
+      "test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget",
+      "test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves",
+      "test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history",
+      "test_gateway.GatewayTests.test_truncated_frame_is_not_payload",
+      "test_gateway.GatewayTests.test_unknown_and_missing_client_certificate",
+      "test_review.EvidenceObserverTests.test_cleanup_continues_after_forced_kill",
+      "test_review.EvidenceObserverTests.test_cleanup_exception_still_saves_failed_receipt",
+      "test_review.EvidenceObserverTests.test_close_observer_rejects_live_idle_socket_timeout",
+      "test_review.EvidenceObserverTests.test_close_observer_requires_positive_eof",
+      "test_review.EvidenceObserverTests.test_echo_observer_accepts_fragmentation_and_checks_order",
+      "test_review.EvidenceObserverTests.test_startup_process_registered_before_readiness_failure"
+    ],
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 36.60049056099999,
+    "platform": "Linux",
+    "source": {
+      "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+      "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+      "grantweft/gateway.py": "cba748ba9d9ef49e5fc2ef110ba881c11424adb9417de4b4b0cc517e05cd306a",
+      "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+      "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+      "pyproject.toml": "d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090",
+      "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+      "tests/test_gateway.py": "ac8fdc2ab73f8edeb9bd004c6bebd991f7867ae650dfdab4a5c60c7fa28457a0",
+      "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+      "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+      "tools/probe.py": "8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411",
+      "tools/report.py": "041bf3aff03657b17dfb0b4508692ab074f90997597e5260b818dab3a4d04658",
+      "tools/unit.py": "58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7",
+      "tools/validate.py": "6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36",
+      "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+      "tools/vm_recovery.py": "6e0b58350747e46fb5934cae3642f2b336e3a528fb0123748b005b5eccdb17ec"
+    },
+    "source_sha256": "cbacddd9b9388c3eaf11f9a473996be1058562215b6f8f9ebb686cd809b6caaa"
+  },
+  "cases": {
+    "passed": true,
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "gateway_uid": 65534,
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "roundtrip_trial": {
+      "roundtrips": 20,
+      "payload_bytes_per_roundtrip": 8192,
+      "seconds": 0.0019358380000085162,
+      "verified_bytes_each_direction": 163840
+    },
+    "resources": {
+      "rss_kib": 25052,
+      "fds": 10,
+      "disk_allocated_bytes": 32768,
+      "scope": "single Linux VM process observation after 20 roundtrips; not peak or long-term"
+    },
+    "revocation_trial": {
+      "rpc_seconds": 0.07637210599999378,
+      "client_observation": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 0.06399987000000351
+      },
+      "cleanup": "COMPLETE",
+      "sessions_after": 0
+    },
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        0,
+        -15,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "error": "RuntimeError: recovery failed/timeout; see ignored private log",
+  "failed_cases": {
+    "passed": true,
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "gateway_uid": 65534,
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "roundtrip_trial": {
+      "roundtrips": 20,
+      "payload_bytes_per_roundtrip": 8192,
+      "seconds": 0.0019358380000085162,
+      "verified_bytes_each_direction": 163840
+    },
+    "resources": {
+      "rss_kib": 25052,
+      "fds": 10,
+      "disk_allocated_bytes": 32768,
+      "scope": "single Linux VM process observation after 20 roundtrips; not peak or long-term"
+    },
+    "revocation_trial": {
+      "rpc_seconds": 0.07637210599999378,
+      "client_observation": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 0.06399987000000351
+      },
+      "cleanup": "COMPLETE",
+      "sessions_after": 0
+    },
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        0,
+        -15,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "failed_recovery": {
+    "passed": false,
+    "gateway_uid": 65534,
+    "scenarios": [
+      {
+        "mode": "ops_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07562498000000062
+        },
+        "fault_to_closure_seconds": 0.06469781399999874,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": true,
+              "limit": 2,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "CATALOG_FULL",
+            "observed_boottime": 111.438861097,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 141.33225710099998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "5b5de7a3-fa92-4f80-8108-5bb5e551f743",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0019218879999982619,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 143.75556678700002,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "34bc5062-4b9a-4a43-aff8-b61332959834",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 141.33225710099998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "5b5de7a3-fa92-4f80-8108-5bb5e551f743",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25292,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "events_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07269398700000806
+        },
+        "fault_to_closure_seconds": 0.06810018899999193,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": true,
+              "limit": 2,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "CATALOG_FULL",
+            "observed_boottime": 116.080624505,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 145.97625870299998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "f3615928-2bb8-48ef-a529-6a26cb45c386",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.002155180000002588,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 148.412601793,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "5d42bbe9-0735-43fe-899b-8e4640ac2ad5",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 145.97625870299998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "f3615928-2bb8-48ef-a529-6a26cb45c386",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25288,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "grant_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "GRANT_FULL"
+        },
+        "revoke": {
+          "cleanup": "COMPLETE",
+          "current": {
+            "capacity": {
+              "events": {
+                "exact": true,
+                "full": false,
+                "limit": 256,
+                "used": 3
+              },
+              "grants": {
+                "exact": true,
+                "full": true,
+                "limit": 1,
+                "used": 1
+              },
+              "ops": {
+                "exact": true,
+                "full": false,
+                "limit": 256,
+                "used": 3
+              }
+            },
+            "db_queued": 0,
+            "degraded": false,
+            "epoch": 1,
+            "facts": {
+              "admitted": 1,
+              "backpressure_events": 0,
+              "closed": 1,
+              "forwarded_bytes": 26,
+              "refused": 2
+            },
+            "failure": null,
+            "grants": [
+              {
+                "access": "DENIED",
+                "deadline": 150.656547558,
+                "duration": 30.0,
+                "epoch": 1,
+                "id": "5e918d35-57a4-41fe-b33b-e83adbe53545",
+                "owner": "a",
+                "persistence": "COMMITTED",
+                "revision": 3,
+                "service": "demo",
+                "sessions": 0,
+                "state": "REVOKED"
+              }
+            ],
+            "health": "READY",
+            "next_cursor": null,
+            "ok": true,
+            "recovery": {
+              "method": "REPAIR_THEN_RESTART",
+              "old_grants_survive": false,
+              "online_reset_supported": false,
+              "required": false
+            },
+            "remaining_after_cursor": 0,
+            "sessions": 0
+          },
+          "historical": false,
+          "ok": true,
+          "original_result": {
+            "epoch": 1,
+            "grant": {
+              "deadline": 150.656547558,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "5e918d35-57a4-41fe-b33b-e83adbe53545",
+              "owner": "a",
+              "revision": 3,
+              "service": "demo",
+              "state": "REVOKED"
+            }
+          }
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07247116400000664
+        },
+        "fault_to_closure_seconds": 0.06605073499999037,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            },
+            "grants": {
+              "exact": true,
+              "full": true,
+              "limit": 1,
+              "used": 1
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 150.656547558,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "5e918d35-57a4-41fe-b33b-e83adbe53545",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "REVOKED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.004144017000001554,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 5
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 5
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 150.656547558,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "5e918d35-57a4-41fe-b33b-e83adbe53545",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "REVOKED"
+            },
+            {
+              "access": "ALLOWED",
+              "deadline": 153.059145956,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "ebe379dd-7082-46c8-9482-a506f77baee8",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25296,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "sqlite_full",
+        "passed": true,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.42221763899999587
+        },
+        "fault_to_closure_seconds": 0.4134311720000028,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 14
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 13
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 14
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "request",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 125.771720715,
+            "sqlite_code": "SQLITE_FULL"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 185.548738455,
+              "duration": 30,
+              "epoch": 1,
+              "id": "0684a531-1eb3-4bc7-8a02-b305c90b1de1",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.675491389,
+              "duration": 30,
+              "epoch": 1,
+              "id": "1299d1f8-1785-4cae-b201-3bd3cd603b81",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.517829247,
+              "duration": 30,
+              "epoch": 1,
+              "id": "60b36621-6479-4330-99b2-470c72fe3790",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.709720304,
+              "duration": 30,
+              "epoch": 1,
+              "id": "6b5ca556-c469-46a3-83e9-05b2dbc5a903",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.45327757799998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "756b20e1-1a24-4cf8-8538-1d0a827e5341",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.483948633,
+              "duration": 30,
+              "epoch": 1,
+              "id": "79fdcb30-91d3-4dd8-9659-393df7a04292",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.579720595,
+              "duration": 30,
+              "epoch": 1,
+              "id": "8f910146-a101-4147-b140-af165420e455",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.740722012,
+              "duration": 30,
+              "epoch": 1,
+              "id": "99d13e3b-3285-4906-94e0-383907b2f574",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.389427558,
+              "duration": 30,
+              "epoch": 1,
+              "id": "c4174d5d-90f0-485d-9ae9-def9f33df0be",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.641740657,
+              "duration": 30,
+              "epoch": 1,
+              "id": "c9d8d4d6-42b0-40a3-b5a2-5920545ddce6",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 155.31444994999998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d195cb1f-204a-4831-8d29-5ee27a0339c9",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.42211482099998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "dc34f85f-d91b-445b-88cc-09189842ad23",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.610186207,
+              "duration": 30,
+              "epoch": 1,
+              "id": "e9998ab2-06e3-493b-82fc-72253f1fdc49",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0019259729999987485,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 16
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 14
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 16
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 185.548738455,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "0684a531-1eb3-4bc7-8a02-b305c90b1de1",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.675491389,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "1299d1f8-1785-4cae-b201-3bd3cd603b81",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.517829247,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "60b36621-6479-4330-99b2-470c72fe3790",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "ALLOWED",
+              "deadline": 158.090188516,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "68b96905-b734-429f-b0c0-7dccdbfc0c0e",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.709720304,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "6b5ca556-c469-46a3-83e9-05b2dbc5a903",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.45327757799998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "756b20e1-1a24-4cf8-8538-1d0a827e5341",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.483948633,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "79fdcb30-91d3-4dd8-9659-393df7a04292",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.579720595,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "8f910146-a101-4147-b140-af165420e455",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.740722012,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "99d13e3b-3285-4906-94e0-383907b2f574",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.389427558,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "c4174d5d-90f0-485d-9ae9-def9f33df0be",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.641740657,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "c9d8d4d6-42b0-40a3-b5a2-5920545ddce6",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 155.31444994999998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d195cb1f-204a-4831-8d29-5ee27a0339c9",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.42211482099998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "dc34f85f-d91b-445b-88cc-09189842ad23",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 185.610186207,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "e9998ab2-06e3-493b-82fc-72253f1fdc49",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25328,
+          "fds": 10,
+          "disk_allocated_bytes": 53248
+        }
+      },
+      {
+        "mode": "disk_full",
+        "passed": true,
+        "free_bytes_after_fill": 0,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.0444791349999889
+        },
+        "fault_to_closure_seconds": 0.03393167400000152,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "request",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 130.412897755,
+            "sqlite_code": "SQLITE_FULL"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 160.339928869,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "a4afb17d-420f-4e23-9055-c8058eb7f991",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0019480609999789067,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 160.339928869,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "a4afb17d-420f-4e23-9055-c8058eb7f991",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "ALLOWED",
+              "deadline": 162.739744827,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "cb77eb6e-4dc9-4b4c-a073-74f07da80f2d",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25296,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "read_only",
+        "passed": false
+      }
+    ],
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "error": "CalledProcessError",
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        -15,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "vm_deleted": true,
+  "disk_removed": true,
+  "preexisting_profiles_unchanged": true
+}

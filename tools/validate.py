@@ -52,7 +52,11 @@ def main():
         run('native',[sys.executable,'-m','tools.unit','--output',out/'native.json']);v['native']=json.loads((out/'native.json').read_text())
         guest('linux','/opt/grantweft/venv/bin/python -m tools.unit --output /opt/grantweft/linux.json',timeout=120)
         v['linux']=json.loads(ssh('linux-read',['sudo','cat','/opt/grantweft/linux.json']))
-        for action in ('cases','prepare'):
+        guest('cases','/opt/grantweft/venv/bin/python -m tools.vm_cases cases',timeout=120)
+        v['cases']=json.loads(ssh('cases-read',['sudo','cat','/opt/grantweft/lab/cases.json']))
+        guest('recovery','/opt/grantweft/venv/bin/python -m tools.vm_recovery',timeout=120)
+        v['recovery']=json.loads(ssh('recovery-read',['sudo','cat','/opt/grantweft/lab/recovery.json']))
+        for action in ('prepare',):
             guest(action,'/opt/grantweft/venv/bin/python -m tools.vm_cases '+action,timeout=120)
             name='prepared' if action=='prepare' else action
             v[name]=json.loads(ssh(name+'-read',['sudo','cat','/opt/grantweft/lab/'+name+'.json']))
@@ -73,7 +77,7 @@ def main():
     except BaseException as exc:
         v['error']=type(exc).__name__+': '+str(exc).replace(str(ROOT),'<checkout>')
         if created:
-            for name in ('cases','prepared','finished'):
+            for name in ('cases','recovery','prepared','finished'):
                 try:v['failed_'+name]=json.loads(ssh('failed-'+name,['sudo','cat','/opt/grantweft/lab/'+name+'.json'],timeout=5))
                 except Exception:pass
     finally:

@@ -66,8 +66,12 @@ pressure cases are qualified, not arbitrary control-plane/CPU/Internet DoS.
 The old raw receipt is preserved as `attempt-03.json/html`; it must not qualify
 revised code. The immutable history defect, observer false positive and report
 counterexamples are summarized in [manual review observations](../evidence/review-observations.json).
-[Current results](EXPLORATION_RESULTS.md) identify the actual new run, test split,
+[Historical reviewed results](REVIEWED_EXPLORATION_RESULTS.md) identify that review run, test split,
 timings/RSS and cleanup. No reviewer independently reran a VM; the parent runs the
 revised reproducible runner and retains its complete evidence. Power loss, actual
 suspend, systemd autostart, boot-zero-gap and long-term stability remain untested.
 No license grant or visibility change is part of this review.
+
+Milestone 1 adds explicit diagnostics and repair/restart qualification; see
+[recovery contract](RECOVERY.md) and [current outcomes](EXPLORATION_RESULTS.md).
+The earlier two-agent review is not an independent audit of later changes.

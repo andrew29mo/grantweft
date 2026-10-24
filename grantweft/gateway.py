@@ -18,7 +18,7 @@ from .protocol import DATA, EOF, CLOSE, OPEN, OK, ERROR, MAX_FRAME, Refused, abo
 from .store import Store, clock
 
 DEFAULTS = dict(db_queue=8, max_ops=256, max_events=256, max_grants=64,
-                max_sessions=16, per_principal=4, data_connections=20,
+                max_store_pages=1024, max_sessions=16, per_principal=4, data_connections=20,
                 control_connections=8, handshake_seconds=2, db_seconds=2,
                 pending_seconds=60, frame_seconds=10)
 
@@ -28,8 +28,9 @@ class Gateway:
         for key,value in self.cfg.items():
             if key in DEFAULTS and (type(value) not in (int,float) or not math.isfinite(value) or value<=0):
                 raise Refused('CONFIG_LIMIT')
-        for key in ('db_queue','max_ops','max_events','max_grants','max_sessions','per_principal','data_connections','control_connections'):
+        for key in ('db_queue','max_ops','max_events','max_grants','max_store_pages','max_sessions','per_principal','data_connections','control_connections'):
             if type(self.cfg[key]) is not int or self.cfg[key]>4096:raise Refused('CONFIG_LIMIT')
+        if self.cfg['max_store_pages']<8:raise Refused('CONFIG_LIMIT')
         service=self.cfg['service']
         import ipaddress
         ipaddress.ip_address(service['host'])
@@ -48,7 +49,7 @@ class Gateway:
         self.store = Store(str(self.root/'catalog.sqlite'), self.cfg, barriers)
         self.grants = {}; self.ops = {}; self.inflight = {}; self.denied = set()
         self.sessions = {}; self.connections = {'data':set(), 'control':set()}
-        self.degraded = False; self.generation = 1; self.ready = False
+        self.degraded = False; self.failure = None; self.catalog = {}; self.generation = 1; self.ready = False
         self.servers = []; self.tasks = set(); self.facts = {'admitted':0,'refused':0,'closed':0,'forwarded_bytes':0,'backpressure_events':0}
         self.fingerprint = {v['sha256']:k for k,v in self.cfg['principals'].items()}
         if len(self.fingerprint) != len(self.cfg['principals']):
@@ -77,6 +78,7 @@ class Gateway:
 
     async def start(self):
         state = await self.db('', {'action':'_boot'})
+        self.catalog = state['counts']
         self.epoch = state['epoch']; self.grants = {r['id']:r for r in state['grants']}
         self.ops = {(r['principal'],r['id']):(r['payload'],json.loads(r['result'])) for r in state['ops']}
         ctx = self.ssl_context()
@@ -139,7 +141,15 @@ class Gateway:
         total=len(grants);grants=grants[:16]
         return {'ok':True,'epoch':self.epoch,'degraded':self.degraded,'grants':grants,'remaining_after_cursor':total-len(grants),'next_cursor':grants[-1]['id'] if total>len(grants) else None,
                 'sessions':sum(self.grants[s['grant']]['owner']==principal or self.cfg['principals'][principal]['role']=='approver' for s in self.sessions.values()),
-                'facts':dict(self.facts),'db_queued':self.store.queue.qsize()}
+                'facts':dict(self.facts),'db_queued':self.store.queue.qsize(),
+                'health':'DEGRADED' if self.degraded else 'READY',
+                'failure':copy.deepcopy(self.failure),
+                'recovery':{'required':self.degraded,'method':'REPAIR_THEN_RESTART',
+                            'old_grants_survive':False,'online_reset_supported':False},
+                'capacity':{name:{'used':self.catalog.get(name,0),'limit':self.cfg['max_'+name],
+                                  'full':self.catalog.get(name,0)>=self.cfg['max_'+name],
+                                  'exact':not (self.degraded or self.inflight)}
+                            for name in ('ops','events','grants')}}
 
     def fence(self, grant):
         self.denied.add(grant)
@@ -151,7 +161,10 @@ class Gateway:
                 if task is not None and task is not asyncio.current_task():
                     task.cancel()
 
-    def retire(self):
+    def retire(self, code='AUTHORITY_RETIRED', action=None, exc=None):
+        if self.failure is None:
+            self.failure={'code':code,'action':action,'observed_boottime':clock(),
+                          'sqlite_code':getattr(exc,'sqlite_errorname',None)}
         self.degraded = True; self.generation += 1
         for gid in self.grants:
             self.fence(gid)
@@ -207,6 +220,9 @@ class Gateway:
         try:
             result=await self.db(principal,op)
             row=copy.deepcopy(result['result']['grant']); self.ops[key]=(canonical,copy.deepcopy(result['result']))
+            if not result['historical']:
+                self.catalog['ops']+=1; self.catalog['events']+=1
+                if action=='request':self.catalog['grants']+=1
             if token!=self.generation or self.degraded:
                 raise Refused('RETIRED_COMPLETION')
             # No approval completion can clear a prior expiry/revocation fence.
@@ -224,12 +240,12 @@ class Gateway:
             return {'ok':True,'historical':result['historical'],'original_result':result['result'],
                     'cleanup':'PENDING' if any(s['grant']==row['id'] for s in self.sessions.values()) else 'COMPLETE',
                     'current':self.status(principal)}
-        except Refused:
+        except Refused as exc:
             if action in ('revoke','cancel'):
-                self.retire(); g['persistence']='FAILED'
+                self.retire(str(exc),action); g['persistence']='FAILED'
             raise
         except BaseException as exc:
-            self.retire()
+            self.retire('STORAGE_FAILED',action,exc)
             if g:g['persistence']='FAILED'
             if isinstance(exc,asyncio.CancelledError):raise
             raise Refused('STORAGE_FAILED') from exc
@@ -240,8 +256,8 @@ class Gateway:
         try:
             await self.db('',{'action':'_mark','grant':g['id'],'epoch':g['epoch'],'revision':g['revision'],'state':state})
             g['state']=state;g['revision']+=1;g['persistence']='COMMITTED'
-        except Exception:
-            g['persistence']='FAILED';self.retire()
+        except Exception as exc:
+            g['persistence']='FAILED';self.retire('EXPIRY_PERSIST_FAILED','expire',exc)
 
     async def expirer(self):
         marking=set()

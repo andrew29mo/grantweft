@@ -1,0 +1,1802 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Grantweft recovery milestone</title><style>body{font:16px system-ui;max-width:1050px;margin:32px auto;padding:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><h1>Grantweft: bounded recovery milestone</h1><p>Formal mTLS service, installed package, client/gateway/backend namespaces. Positive EOF/reset is required; timeout is not termination. Controlled Linux VM observations, not native/physical performance or an SLO. Normal reboot only; no power loss, actual suspend or systemd autostart qualification. Approval/revocation revision conflicts conservatively degrade the service. Actual tmpfs exhaustion, live directory write denial, readonly-filesystem startup and SQLite page-budget failures are exercised. Recovery preserves the catalog and requires repair plus restart; no online reset or automatic GC. Production readiness is not claimed.</p><p>Passed: False</p><pre>{
+  &quot;contract&quot;: &quot;grantweft-recovery-v3&quot;,
+  &quot;passed&quot;: false,
+  &quot;recorded_at_utc&quot;: &quot;2026-10-24T13:44:57.574128+00:00&quot;,
+  &quot;source&quot;: {
+    &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+    &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+    &quot;grantweft/gateway.py&quot;: &quot;0654e4e89edf96f9f1ab57385534fa40f7f5b788efa0e51b7bf200b129660ed6&quot;,
+    &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+    &quot;grantweft/store.py&quot;: &quot;f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4&quot;,
+    &quot;pyproject.toml&quot;: &quot;d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090&quot;,
+    &quot;tests/support.py&quot;: &quot;2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596&quot;,
+    &quot;tests/test_gateway.py&quot;: &quot;ac8fdc2ab73f8edeb9bd004c6bebd991f7867ae650dfdab4a5c60c7fa28457a0&quot;,
+    &quot;tests/test_review.py&quot;: &quot;a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc&quot;,
+    &quot;tools/endpoint.py&quot;: &quot;f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a&quot;,
+    &quot;tools/probe.py&quot;: &quot;8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411&quot;,
+    &quot;tools/report.py&quot;: &quot;3b82bd4894dc800e9addb58b2d6acba8e0c3360be6c422d0a76c39ee968d2f4a&quot;,
+    &quot;tools/unit.py&quot;: &quot;58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7&quot;,
+    &quot;tools/validate.py&quot;: &quot;6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36&quot;,
+    &quot;tools/vm_cases.py&quot;: &quot;1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f&quot;,
+    &quot;tools/vm_recovery.py&quot;: &quot;35ae0dfa5e555df1770bcab44a88be4ffcf4a4743f95c7c6f39c1672281f8dbf&quot;
+  },
+  &quot;source_sha256&quot;: &quot;f1505360a0456ff6c6ec4588a4b04d17025bf117ac7ece3187948a6c2806efea&quot;,
+  &quot;source_changed&quot;: false,
+  &quot;host_mounts&quot;: &quot;none&quot;,
+  &quot;wheel_modules_match&quot;: true,
+  &quot;wheel_sha256&quot;: &quot;251df089e1137ecba0c7de6d5f36f8e6118cb82af88a1ccba2f1102970f1bea0&quot;,
+  &quot;stages&quot;: [
+    {
+      &quot;name&quot;: &quot;initial&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.31884824999724515
+    },
+    {
+      &quot;name&quot;: &quot;create&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 21.2554666660144
+    },
+    {
+      &quot;name&quot;: &quot;dependencies&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 16.714078541990602
+    },
+    {
+      &quot;name&quot;: &quot;upload&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.2851009590085596
+    },
+    {
+      &quot;name&quot;: &quot;install&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 1.6017725419951603
+    },
+    {
+      &quot;name&quot;: &quot;provenance&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.3310253340168856
+    },
+    {
+      &quot;name&quot;: &quot;native&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 30.699828915996477
+    },
+    {
+      &quot;name&quot;: &quot;linux&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 37.32899870802066
+    },
+    {
+      &quot;name&quot;: &quot;linux-read&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.3353959170053713
+    },
+    {
+      &quot;name&quot;: &quot;cases&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 4.466530709003564
+    },
+    {
+      &quot;name&quot;: &quot;cases-read&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.23994579198188148
+    },
+    {
+      &quot;name&quot;: &quot;recovery&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 27.27497545798542
+    },
+    {
+      &quot;name&quot;: &quot;failed-cases&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.27135970900417306
+    },
+    {
+      &quot;name&quot;: &quot;failed-recovery&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.2219236249802634
+    },
+    {
+      &quot;name&quot;: &quot;failed-prepared&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.28765716700581834
+    },
+    {
+      &quot;name&quot;: &quot;failed-finished&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.2320153750188183
+    },
+    {
+      &quot;name&quot;: &quot;delete&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 1.5953988750115968
+    },
+    {
+      &quot;name&quot;: &quot;final&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.19828279101056978
+    }
+  ],
+  &quot;installed_modules&quot;: {
+    &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+    &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+    &quot;grantweft/gateway.py&quot;: &quot;0654e4e89edf96f9f1ab57385534fa40f7f5b788efa0e51b7bf200b129660ed6&quot;,
+    &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+    &quot;grantweft/store.py&quot;: &quot;f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4&quot;
+  },
+  &quot;installed_source_absent&quot;: true,
+  &quot;sqlite&quot;: &quot;3.45.1&quot;,
+  &quot;openssl&quot;: &quot;OpenSSL 3.0.13 30 Jan 2024&quot;,
+  &quot;python&quot;: &quot;3.12.3&quot;,
+  &quot;native&quot;: {
+    &quot;passed&quot;: true,
+    &quot;count&quot;: 41,
+    &quot;tests&quot;: [
+      &quot;test_gateway.GatewayTests.test_application_half_close_preserves_reply&quot;,
+      &quot;test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence&quot;,
+      &quot;test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants&quot;,
+      &quot;test_gateway.GatewayTests.test_catalog_full_expiry_does_not_need_new_audit_slot&quot;,
+      &quot;test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations&quot;,
+      &quot;test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate&quot;,
+      &quot;test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke&quot;,
+      &quot;test_gateway.GatewayTests.test_deny_cancel_and_request_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect&quot;,
+      &quot;test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive&quot;,
+      &quot;test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits&quot;,
+      &quot;test_gateway.GatewayTests.test_grant_full_preserves_revoke_and_expiry_without_gc&quot;,
+      &quot;test_gateway.GatewayTests.test_history_result_is_stable_after_expiry_and_restart&quot;,
+      &quot;test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart&quot;,
+      &quot;test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected&quot;,
+      &quot;test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof&quot;,
+      &quot;test_gateway.GatewayTests.test_observed_backpressure_then_revoke_stops_transfer&quot;,
+      &quot;test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state&quot;,
+      &quot;test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume&quot;,
+      &quot;test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control&quot;,
+      &quot;test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen&quot;,
+      &quot;test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover&quot;,
+      &quot;test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_approval_history_retains_original_commit&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_commit_after_retirement_stays_denied_through_repair&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget&quot;,
+      &quot;test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves&quot;,
+      &quot;test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history&quot;,
+      &quot;test_gateway.GatewayTests.test_truncated_frame_is_not_payload&quot;,
+      &quot;test_gateway.GatewayTests.test_unknown_and_missing_client_certificate&quot;,
+      &quot;test_review.EvidenceObserverTests.test_cleanup_continues_after_forced_kill&quot;,
+      &quot;test_review.EvidenceObserverTests.test_cleanup_exception_still_saves_failed_receipt&quot;,
+      &quot;test_review.EvidenceObserverTests.test_close_observer_rejects_live_idle_socket_timeout&quot;,
+      &quot;test_review.EvidenceObserverTests.test_close_observer_requires_positive_eof&quot;,
+      &quot;test_review.EvidenceObserverTests.test_echo_observer_accepts_fragmentation_and_checks_order&quot;,
+      &quot;test_review.EvidenceObserverTests.test_startup_process_registered_before_readiness_failure&quot;
+    ],
+    &quot;failures&quot;: 0,
+    &quot;errors&quot;: 0,
+    &quot;skipped&quot;: 0,
+    &quot;seconds&quot;: 30.58324212502339,
+    &quot;platform&quot;: &quot;Darwin&quot;,
+    &quot;source&quot;: {
+      &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+      &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+      &quot;grantweft/gateway.py&quot;: &quot;0654e4e89edf96f9f1ab57385534fa40f7f5b788efa0e51b7bf200b129660ed6&quot;,
+      &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+      &quot;grantweft/store.py&quot;: &quot;f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4&quot;,
+      &quot;pyproject.toml&quot;: &quot;d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090&quot;,
+      &quot;tests/support.py&quot;: &quot;2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596&quot;,
+      &quot;tests/test_gateway.py&quot;: &quot;ac8fdc2ab73f8edeb9bd004c6bebd991f7867ae650dfdab4a5c60c7fa28457a0&quot;,
+      &quot;tests/test_review.py&quot;: &quot;a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc&quot;,
+      &quot;tools/endpoint.py&quot;: &quot;f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a&quot;,
+      &quot;tools/probe.py&quot;: &quot;8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411&quot;,
+      &quot;tools/report.py&quot;: &quot;3b82bd4894dc800e9addb58b2d6acba8e0c3360be6c422d0a76c39ee968d2f4a&quot;,
+      &quot;tools/unit.py&quot;: &quot;58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7&quot;,
+      &quot;tools/validate.py&quot;: &quot;6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36&quot;,
+      &quot;tools/vm_cases.py&quot;: &quot;1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f&quot;,
+      &quot;tools/vm_recovery.py&quot;: &quot;35ae0dfa5e555df1770bcab44a88be4ffcf4a4743f95c7c6f39c1672281f8dbf&quot;
+    },
+    &quot;source_sha256&quot;: &quot;f1505360a0456ff6c6ec4588a4b04d17025bf117ac7ece3187948a6c2806efea&quot;
+  },
+  &quot;linux&quot;: {
+    &quot;passed&quot;: true,
+    &quot;count&quot;: 41,
+    &quot;tests&quot;: [
+      &quot;test_gateway.GatewayTests.test_application_half_close_preserves_reply&quot;,
+      &quot;test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence&quot;,
+      &quot;test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants&quot;,
+      &quot;test_gateway.GatewayTests.test_catalog_full_expiry_does_not_need_new_audit_slot&quot;,
+      &quot;test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations&quot;,
+      &quot;test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate&quot;,
+      &quot;test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke&quot;,
+      &quot;test_gateway.GatewayTests.test_deny_cancel_and_request_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect&quot;,
+      &quot;test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive&quot;,
+      &quot;test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits&quot;,
+      &quot;test_gateway.GatewayTests.test_grant_full_preserves_revoke_and_expiry_without_gc&quot;,
+      &quot;test_gateway.GatewayTests.test_history_result_is_stable_after_expiry_and_restart&quot;,
+      &quot;test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart&quot;,
+      &quot;test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected&quot;,
+      &quot;test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof&quot;,
+      &quot;test_gateway.GatewayTests.test_observed_backpressure_then_revoke_stops_transfer&quot;,
+      &quot;test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state&quot;,
+      &quot;test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume&quot;,
+      &quot;test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control&quot;,
+      &quot;test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen&quot;,
+      &quot;test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover&quot;,
+      &quot;test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_approval_history_retains_original_commit&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_commit_after_retirement_stays_denied_through_repair&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget&quot;,
+      &quot;test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves&quot;,
+      &quot;test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history&quot;,
+      &quot;test_gateway.GatewayTests.test_truncated_frame_is_not_payload&quot;,
+      &quot;test_gateway.GatewayTests.test_unknown_and_missing_client_certificate&quot;,
+      &quot;test_review.EvidenceObserverTests.test_cleanup_continues_after_forced_kill&quot;,
+      &quot;test_review.EvidenceObserverTests.test_cleanup_exception_still_saves_failed_receipt&quot;,
+      &quot;test_review.EvidenceObserverTests.test_close_observer_rejects_live_idle_socket_timeout&quot;,
+      &quot;test_review.EvidenceObserverTests.test_close_observer_requires_positive_eof&quot;,
+      &quot;test_review.EvidenceObserverTests.test_echo_observer_accepts_fragmentation_and_checks_order&quot;,
+      &quot;test_review.EvidenceObserverTests.test_startup_process_registered_before_readiness_failure&quot;
+    ],
+    &quot;failures&quot;: 0,
+    &quot;errors&quot;: 0,
+    &quot;skipped&quot;: 0,
+    &quot;seconds&quot;: 36.932157972,
+    &quot;platform&quot;: &quot;Linux&quot;,
+    &quot;source&quot;: {
+      &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+      &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+      &quot;grantweft/gateway.py&quot;: &quot;0654e4e89edf96f9f1ab57385534fa40f7f5b788efa0e51b7bf200b129660ed6&quot;,
+      &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+      &quot;grantweft/store.py&quot;: &quot;f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4&quot;,
+      &quot;pyproject.toml&quot;: &quot;d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090&quot;,
+      &quot;tests/support.py&quot;: &quot;2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596&quot;,
+      &quot;tests/test_gateway.py&quot;: &quot;ac8fdc2ab73f8edeb9bd004c6bebd991f7867ae650dfdab4a5c60c7fa28457a0&quot;,
+      &quot;tests/test_review.py&quot;: &quot;a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc&quot;,
+      &quot;tools/endpoint.py&quot;: &quot;f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a&quot;,
+      &quot;tools/probe.py&quot;: &quot;8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411&quot;,
+      &quot;tools/report.py&quot;: &quot;3b82bd4894dc800e9addb58b2d6acba8e0c3360be6c422d0a76c39ee968d2f4a&quot;,
+      &quot;tools/unit.py&quot;: &quot;58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7&quot;,
+      &quot;tools/validate.py&quot;: &quot;6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36&quot;,
+      &quot;tools/vm_cases.py&quot;: &quot;1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f&quot;,
+      &quot;tools/vm_recovery.py&quot;: &quot;35ae0dfa5e555df1770bcab44a88be4ffcf4a4743f95c7c6f39c1672281f8dbf&quot;
+    },
+    &quot;source_sha256&quot;: &quot;f1505360a0456ff6c6ec4588a4b04d17025bf117ac7ece3187948a6c2806efea&quot;
+  },
+  &quot;cases&quot;: {
+    &quot;passed&quot;: true,
+    &quot;topology&quot;: {
+      &quot;namespaces&quot;: [
+        &quot;gw-client&quot;,
+        &quot;gw-router&quot;,
+        &quot;gw-backend&quot;
+      ],
+      &quot;client&quot;: &quot;10.70.0.2&quot;,
+      &quot;gateway_front&quot;: &quot;10.70.0.1&quot;,
+      &quot;gateway_back&quot;: &quot;10.71.0.1&quot;,
+      &quot;backend&quot;: &quot;10.71.0.2:9000&quot;,
+      &quot;forwarding&quot;: false,
+      &quot;observed_ip_forward&quot;: 0
+    },
+    &quot;gateway_uid&quot;: 65534,
+    &quot;direct_backend&quot;: {
+      &quot;direct_backend_refused&quot;: true,
+      &quot;failure_reason&quot;: &quot;TimeoutError&quot;
+    },
+    &quot;roundtrip_trial&quot;: {
+      &quot;roundtrips&quot;: 20,
+      &quot;payload_bytes_per_roundtrip&quot;: 8192,
+      &quot;seconds&quot;: 0.002406851000003485,
+      &quot;verified_bytes_each_direction&quot;: 163840
+    },
+    &quot;resources&quot;: {
+      &quot;rss_kib&quot;: 25044,
+      &quot;fds&quot;: 10,
+      &quot;disk_allocated_bytes&quot;: 32768,
+      &quot;scope&quot;: &quot;single Linux VM process observation after 20 roundtrips; not peak or long-term&quot;
+    },
+    &quot;revocation_trial&quot;: {
+      &quot;rpc_seconds&quot;: 0.04190523499998733,
+      &quot;client_observation&quot;: {
+        &quot;connection_ended&quot;: true,
+        &quot;close_reason&quot;: &quot;EOFError&quot;,
+        &quot;observed_seconds&quot;: 0.049028773999992836
+      },
+      &quot;cleanup&quot;: &quot;COMPLETE&quot;,
+      &quot;sessions_after&quot;: 0
+    },
+    &quot;cleanup&quot;: {
+      &quot;owned_processes_reaped&quot;: true,
+      &quot;namespaces_removed&quot;: true,
+      &quot;exit_codes&quot;: [
+        0,
+        -15,
+        0
+      ],
+      &quot;errors&quot;: []
+    }
+  },
+  &quot;error&quot;: &quot;RuntimeError: recovery failed/timeout; see ignored private log&quot;,
+  &quot;failed_cases&quot;: {
+    &quot;passed&quot;: true,
+    &quot;topology&quot;: {
+      &quot;namespaces&quot;: [
+        &quot;gw-client&quot;,
+        &quot;gw-router&quot;,
+        &quot;gw-backend&quot;
+      ],
+      &quot;client&quot;: &quot;10.70.0.2&quot;,
+      &quot;gateway_front&quot;: &quot;10.70.0.1&quot;,
+      &quot;gateway_back&quot;: &quot;10.71.0.1&quot;,
+      &quot;backend&quot;: &quot;10.71.0.2:9000&quot;,
+      &quot;forwarding&quot;: false,
+      &quot;observed_ip_forward&quot;: 0
+    },
+    &quot;gateway_uid&quot;: 65534,
+    &quot;direct_backend&quot;: {
+      &quot;direct_backend_refused&quot;: true,
+      &quot;failure_reason&quot;: &quot;TimeoutError&quot;
+    },
+    &quot;roundtrip_trial&quot;: {
+      &quot;roundtrips&quot;: 20,
+      &quot;payload_bytes_per_roundtrip&quot;: 8192,
+      &quot;seconds&quot;: 0.002406851000003485,
+      &quot;verified_bytes_each_direction&quot;: 163840
+    },
+    &quot;resources&quot;: {
+      &quot;rss_kib&quot;: 25044,
+      &quot;fds&quot;: 10,
+      &quot;disk_allocated_bytes&quot;: 32768,
+      &quot;scope&quot;: &quot;single Linux VM process observation after 20 roundtrips; not peak or long-term&quot;
+    },
+    &quot;revocation_trial&quot;: {
+      &quot;rpc_seconds&quot;: 0.04190523499998733,
+      &quot;client_observation&quot;: {
+        &quot;connection_ended&quot;: true,
+        &quot;close_reason&quot;: &quot;EOFError&quot;,
+        &quot;observed_seconds&quot;: 0.049028773999992836
+      },
+      &quot;cleanup&quot;: &quot;COMPLETE&quot;,
+      &quot;sessions_after&quot;: 0
+    },
+    &quot;cleanup&quot;: {
+      &quot;owned_processes_reaped&quot;: true,
+      &quot;namespaces_removed&quot;: true,
+      &quot;exit_codes&quot;: [
+        0,
+        -15,
+        0
+      ],
+      &quot;errors&quot;: []
+    }
+  },
+  &quot;failed_recovery&quot;: {
+    &quot;passed&quot;: false,
+    &quot;gateway_uid&quot;: 65534,
+    &quot;scenarios&quot;: [
+      {
+        &quot;mode&quot;: &quot;ops_full&quot;,
+        &quot;passed&quot;: true,
+        &quot;admission_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;CATALOG_FULL&quot;
+        },
+        &quot;refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;CATALOG_FULL&quot;
+        },
+        &quot;closure&quot;: {
+          &quot;connection_ended&quot;: true,
+          &quot;close_reason&quot;: &quot;EOFError&quot;,
+          &quot;observed_seconds&quot;: 0.06411944799999958
+        },
+        &quot;fault_to_closure_seconds&quot;: 0.06511313699999732,
+        &quot;status_before_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 2
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 1
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: true,
+              &quot;limit&quot;: 2,
+              &quot;used&quot;: 2
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: true,
+          &quot;epoch&quot;: 1,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 26,
+            &quot;refused&quot;: 3
+          },
+          &quot;failure&quot;: {
+            &quot;action&quot;: &quot;revoke&quot;,
+            &quot;code&quot;: &quot;CATALOG_FULL&quot;,
+            &quot;observed_boottime&quot;: 109.467180473,
+            &quot;sqlite_code&quot;: null
+          },
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 139.320835528,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;8a1bf6a9-a209-4e5f-ab1f-ba933f29d6e3&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;FAILED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;DEGRADED&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: true
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;old_data_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;epoch_before&quot;: 1,
+        &quot;epoch_after&quot;: 2,
+        &quot;old_after_restart_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;stale_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STALE_EPOCH&quot;
+        },
+        &quot;fresh_roundtrip&quot;: {
+          &quot;roundtrips&quot;: 20,
+          &quot;payload_bytes_per_roundtrip&quot;: 8192,
+          &quot;seconds&quot;: 0.002010355999999547,
+          &quot;verified_bytes_each_direction&quot;: 163840
+        },
+        &quot;status_after_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 4
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 2
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 4
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: false,
+          &quot;epoch&quot;: 2,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 327680,
+            &quot;refused&quot;: 3
+          },
+          &quot;failure&quot;: null,
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;ALLOWED&quot;,
+              &quot;deadline&quot;: 141.802536154,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 2,
+              &quot;id&quot;: &quot;73e56e03-c55e-4d8a-a9d3-696cd9544a01&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 139.320835528,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;8a1bf6a9-a209-4e5f-ab1f-ba933f29d6e3&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 3,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;READY&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: false
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;resources&quot;: {
+          &quot;rss_kib&quot;: 25296,
+          &quot;fds&quot;: 10,
+          &quot;disk_allocated_bytes&quot;: 32768
+        }
+      },
+      {
+        &quot;mode&quot;: &quot;events_full&quot;,
+        &quot;passed&quot;: true,
+        &quot;admission_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;CATALOG_FULL&quot;
+        },
+        &quot;refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;CATALOG_FULL&quot;
+        },
+        &quot;closure&quot;: {
+          &quot;connection_ended&quot;: true,
+          &quot;close_reason&quot;: &quot;EOFError&quot;,
+          &quot;observed_seconds&quot;: 0.06719305200000747
+        },
+        &quot;fault_to_closure_seconds&quot;: 0.06115174199999274,
+        &quot;status_before_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: true,
+              &quot;limit&quot;: 2,
+              &quot;used&quot;: 2
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 1
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 2
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: true,
+          &quot;epoch&quot;: 1,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 26,
+            &quot;refused&quot;: 3
+          },
+          &quot;failure&quot;: {
+            &quot;action&quot;: &quot;revoke&quot;,
+            &quot;code&quot;: &quot;CATALOG_FULL&quot;,
+            &quot;observed_boottime&quot;: 114.144880247,
+            &quot;sqlite_code&quot;: null
+          },
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 144.040193086,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;9a8bc540-4b3f-46b1-a16d-f294643efa63&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;FAILED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;DEGRADED&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: true
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;old_data_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;epoch_before&quot;: 1,
+        &quot;epoch_after&quot;: 2,
+        &quot;old_after_restart_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;stale_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STALE_EPOCH&quot;
+        },
+        &quot;fresh_roundtrip&quot;: {
+          &quot;roundtrips&quot;: 20,
+          &quot;payload_bytes_per_roundtrip&quot;: 8192,
+          &quot;seconds&quot;: 0.0019513359999905333,
+          &quot;verified_bytes_each_direction&quot;: 163840
+        },
+        &quot;status_after_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 4
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 2
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 4
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: false,
+          &quot;epoch&quot;: 2,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 327680,
+            &quot;refused&quot;: 3
+          },
+          &quot;failure&quot;: null,
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 144.040193086,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;9a8bc540-4b3f-46b1-a16d-f294643efa63&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 3,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;ALLOWED&quot;,
+              &quot;deadline&quot;: 146.482097833,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 2,
+              &quot;id&quot;: &quot;e768b845-fd0f-4fee-9414-eabed592550d&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;READY&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: false
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;resources&quot;: {
+          &quot;rss_kib&quot;: 25296,
+          &quot;fds&quot;: 10,
+          &quot;disk_allocated_bytes&quot;: 32768
+        }
+      },
+      {
+        &quot;mode&quot;: &quot;grant_full&quot;,
+        &quot;passed&quot;: true,
+        &quot;admission_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;GRANT_FULL&quot;
+        },
+        &quot;revoke&quot;: {
+          &quot;cleanup&quot;: &quot;COMPLETE&quot;,
+          &quot;current&quot;: {
+            &quot;capacity&quot;: {
+              &quot;events&quot;: {
+                &quot;exact&quot;: false,
+                &quot;full&quot;: false,
+                &quot;limit&quot;: 256,
+                &quot;used&quot;: 3
+              },
+              &quot;grants&quot;: {
+                &quot;exact&quot;: false,
+                &quot;full&quot;: true,
+                &quot;limit&quot;: 1,
+                &quot;used&quot;: 1
+              },
+              &quot;ops&quot;: {
+                &quot;exact&quot;: false,
+                &quot;full&quot;: false,
+                &quot;limit&quot;: 256,
+                &quot;used&quot;: 3
+              }
+            },
+            &quot;db_queued&quot;: 0,
+            &quot;degraded&quot;: false,
+            &quot;epoch&quot;: 1,
+            &quot;facts&quot;: {
+              &quot;admitted&quot;: 1,
+              &quot;backpressure_events&quot;: 0,
+              &quot;closed&quot;: 1,
+              &quot;forwarded_bytes&quot;: 26,
+              &quot;refused&quot;: 2
+            },
+            &quot;failure&quot;: null,
+            &quot;grants&quot;: [
+              {
+                &quot;access&quot;: &quot;DENIED&quot;,
+                &quot;deadline&quot;: 148.726874401,
+                &quot;duration&quot;: 30.0,
+                &quot;epoch&quot;: 1,
+                &quot;id&quot;: &quot;c5fa6384-9ca2-488c-8173-ebebda87b895&quot;,
+                &quot;owner&quot;: &quot;a&quot;,
+                &quot;persistence&quot;: &quot;COMMITTED&quot;,
+                &quot;revision&quot;: 3,
+                &quot;service&quot;: &quot;demo&quot;,
+                &quot;sessions&quot;: 0,
+                &quot;state&quot;: &quot;REVOKED&quot;
+              }
+            ],
+            &quot;health&quot;: &quot;READY&quot;,
+            &quot;next_cursor&quot;: null,
+            &quot;ok&quot;: true,
+            &quot;recovery&quot;: {
+              &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+              &quot;old_grants_survive&quot;: false,
+              &quot;online_reset_supported&quot;: false,
+              &quot;required&quot;: false
+            },
+            &quot;remaining_after_cursor&quot;: 0,
+            &quot;sessions&quot;: 0
+          },
+          &quot;historical&quot;: false,
+          &quot;ok&quot;: true,
+          &quot;original_result&quot;: {
+            &quot;epoch&quot;: 1,
+            &quot;grant&quot;: {
+              &quot;deadline&quot;: 148.726874401,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;c5fa6384-9ca2-488c-8173-ebebda87b895&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;revision&quot;: 3,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;state&quot;: &quot;REVOKED&quot;
+            }
+          }
+        },
+        &quot;closure&quot;: {
+          &quot;connection_ended&quot;: true,
+          &quot;close_reason&quot;: &quot;EOFError&quot;,
+          &quot;observed_seconds&quot;: 0.07191476499998828
+        },
+        &quot;fault_to_closure_seconds&quot;: 0.0658043039999967,
+        &quot;status_before_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 3
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: true,
+              &quot;limit&quot;: 1,
+              &quot;used&quot;: 1
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 3
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: false,
+          &quot;epoch&quot;: 1,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 26,
+            &quot;refused&quot;: 2
+          },
+          &quot;failure&quot;: null,
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 148.726874401,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;c5fa6384-9ca2-488c-8173-ebebda87b895&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 3,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;REVOKED&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;READY&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: false
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;old_data_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;epoch_before&quot;: 1,
+        &quot;epoch_after&quot;: 2,
+        &quot;old_after_restart_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;stale_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STALE_EPOCH&quot;
+        },
+        &quot;fresh_roundtrip&quot;: {
+          &quot;roundtrips&quot;: 20,
+          &quot;payload_bytes_per_roundtrip&quot;: 8192,
+          &quot;seconds&quot;: 0.0020712230000015097,
+          &quot;verified_bytes_each_direction&quot;: 163840
+        },
+        &quot;status_after_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 5
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 2
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 5
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: false,
+          &quot;epoch&quot;: 2,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 327680,
+            &quot;refused&quot;: 3
+          },
+          &quot;failure&quot;: null,
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 148.726874401,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;c5fa6384-9ca2-488c-8173-ebebda87b895&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 3,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;REVOKED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;ALLOWED&quot;,
+              &quot;deadline&quot;: 151.13410325,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 2,
+              &quot;id&quot;: &quot;f65f59e4-1c3b-4b19-9d93-74bfbc5cbe96&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;READY&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: false
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;resources&quot;: {
+          &quot;rss_kib&quot;: 25304,
+          &quot;fds&quot;: 10,
+          &quot;disk_allocated_bytes&quot;: 32768
+        }
+      },
+      {
+        &quot;mode&quot;: &quot;sqlite_full&quot;,
+        &quot;passed&quot;: true,
+        &quot;refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STORAGE_FAILED&quot;
+        },
+        &quot;closure&quot;: {
+          &quot;connection_ended&quot;: true,
+          &quot;close_reason&quot;: &quot;EOFError&quot;,
+          &quot;observed_seconds&quot;: 0.4147329439999936
+        },
+        &quot;fault_to_closure_seconds&quot;: 0.40322966700000507,
+        &quot;status_before_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 14
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 13
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 14
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: true,
+          &quot;epoch&quot;: 1,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 26,
+            &quot;refused&quot;: 2
+          },
+          &quot;failure&quot;: {
+            &quot;action&quot;: &quot;request&quot;,
+            &quot;code&quot;: &quot;STORAGE_FAILED&quot;,
+            &quot;observed_boottime&quot;: 123.778998179,
+            &quot;sqlite_code&quot;: &quot;SQLITE_FULL&quot;
+          },
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.592549126,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;037bbe8f-79a4-455f-9d7c-3c9392d30f47&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.561837521,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;34229d50-71bc-4e92-97df-ea9e78738610&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.532035116,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;34c51c85-d193-496a-b602-f4c747df4f2b&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.656253683,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;4a8ae1b2-0a70-4a72-8136-211696d2e7c8&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.469843557,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;4c3de07f-326f-4455-a9f8-27dea21b0b70&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.407519782,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;60a6fd9b-65fe-471d-b569-f2ff4fef0a93&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.748496684,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;8267b67a-c491-4bce-9626-53cddfa4c87b&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.68710947900001,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;86c6af46-9d05-4831-90f1-d03dd894c41d&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.50205572800002,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;8d6f7f5c-bb9f-4324-9380-9c81e9e50e03&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 153.333512367,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;9caf6224-7403-4397-82bd-f70f32d6991a&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.717635089,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;e28e55c1-969b-4c8f-a23d-175931c396dd&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.44006597700002,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;f0e34c6b-264b-4ab6-966b-d18787fe5262&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.62461009700002,
+              &quot;duration&quot;: 30,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;fa127a5b-43a6-46a1-bbd5-81d2bab060aa&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 1,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;PENDING&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;DEGRADED&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: true
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;old_data_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;epoch_before&quot;: 1,
+        &quot;epoch_after&quot;: 2,
+        &quot;old_after_restart_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;stale_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STALE_EPOCH&quot;
+        },
+        &quot;fresh_roundtrip&quot;: {
+          &quot;roundtrips&quot;: 20,
+          &quot;payload_bytes_per_roundtrip&quot;: 8192,
+          &quot;seconds&quot;: 0.0023346169999882704,
+          &quot;verified_bytes_each_direction&quot;: 163840
+        },
+        &quot;status_after_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 16
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 14
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 16
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: false,
+          &quot;epoch&quot;: 2,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 327680,
+            &quot;refused&quot;: 3
+          },
+          &quot;failure&quot;: null,
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.592549126,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;037bbe8f-79a4-455f-9d7c-3c9392d30f47&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;ALLOWED&quot;,
+              &quot;deadline&quot;: 156.136940311,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 2,
+              &quot;id&quot;: &quot;0ae35d4b-4bf1-4165-9938-aaca4000891b&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.561837521,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;34229d50-71bc-4e92-97df-ea9e78738610&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.532035116,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;34c51c85-d193-496a-b602-f4c747df4f2b&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.656253683,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;4a8ae1b2-0a70-4a72-8136-211696d2e7c8&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.469843557,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;4c3de07f-326f-4455-a9f8-27dea21b0b70&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.407519782,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;60a6fd9b-65fe-471d-b569-f2ff4fef0a93&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.748496684,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;8267b67a-c491-4bce-9626-53cddfa4c87b&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.68710947900001,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;86c6af46-9d05-4831-90f1-d03dd894c41d&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.50205572800002,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;8d6f7f5c-bb9f-4324-9380-9c81e9e50e03&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 153.333512367,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;9caf6224-7403-4397-82bd-f70f32d6991a&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 3,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.717635089,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;e28e55c1-969b-4c8f-a23d-175931c396dd&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.44006597700002,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;f0e34c6b-264b-4ab6-966b-d18787fe5262&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 183.62461009700002,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;fa127a5b-43a6-46a1-bbd5-81d2bab060aa&quot;,
+              &quot;owner&quot;: &quot;b&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;READY&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: false
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;resources&quot;: {
+          &quot;rss_kib&quot;: 25320,
+          &quot;fds&quot;: 10,
+          &quot;disk_allocated_bytes&quot;: 53248
+        }
+      },
+      {
+        &quot;mode&quot;: &quot;disk_full&quot;,
+        &quot;passed&quot;: true,
+        &quot;free_bytes_after_fill&quot;: 0,
+        &quot;refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STORAGE_FAILED&quot;
+        },
+        &quot;closure&quot;: {
+          &quot;connection_ended&quot;: true,
+          &quot;close_reason&quot;: &quot;EOFError&quot;,
+          &quot;observed_seconds&quot;: 0.042845316000011735
+        },
+        &quot;fault_to_closure_seconds&quot;: 0.03542871900000932,
+        &quot;status_before_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 2
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 1
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 2
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: true,
+          &quot;epoch&quot;: 1,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 26,
+            &quot;refused&quot;: 2
+          },
+          &quot;failure&quot;: {
+            &quot;action&quot;: &quot;revoke&quot;,
+            &quot;code&quot;: &quot;STORAGE_FAILED&quot;,
+            &quot;observed_boottime&quot;: 128.407287335,
+            &quot;sqlite_code&quot;: &quot;SQLITE_FULL&quot;
+          },
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 158.33387857,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;3fafd91b-32a8-488d-a9c3-e5a50f44c5a4&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;FAILED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;DEGRADED&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: true
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;old_data_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;epoch_before&quot;: 1,
+        &quot;epoch_after&quot;: 2,
+        &quot;old_after_restart_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;stale_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STALE_EPOCH&quot;
+        },
+        &quot;fresh_roundtrip&quot;: {
+          &quot;roundtrips&quot;: 20,
+          &quot;payload_bytes_per_roundtrip&quot;: 8192,
+          &quot;seconds&quot;: 0.0019849389999819778,
+          &quot;verified_bytes_each_direction&quot;: 163840
+        },
+        &quot;status_after_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 4
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 2
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: true,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 4
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: false,
+          &quot;epoch&quot;: 2,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 327680,
+            &quot;refused&quot;: 3
+          },
+          &quot;failure&quot;: null,
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 158.33387857,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;3fafd91b-32a8-488d-a9c3-e5a50f44c5a4&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 3,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;INVALIDATED&quot;
+            },
+            {
+              &quot;access&quot;: &quot;ALLOWED&quot;,
+              &quot;deadline&quot;: 160.739942732,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 2,
+              &quot;id&quot;: &quot;b62ea94a-1b77-4a36-bf02-3e6fe4cad3b1&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;COMMITTED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;READY&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: false
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;resources&quot;: {
+          &quot;rss_kib&quot;: 25296,
+          &quot;fds&quot;: 10,
+          &quot;disk_allocated_bytes&quot;: 32768
+        }
+      },
+      {
+        &quot;mode&quot;: &quot;read_only&quot;,
+        &quot;passed&quot;: false,
+        &quot;live_fault&quot;: &quot;directory-write-permission-removed&quot;,
+        &quot;refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;STORAGE_FAILED&quot;
+        },
+        &quot;closure&quot;: {
+          &quot;connection_ended&quot;: true,
+          &quot;close_reason&quot;: &quot;EOFError&quot;,
+          &quot;observed_seconds&quot;: 0.0425630539999986
+        },
+        &quot;fault_to_closure_seconds&quot;: 0.033374906999995346,
+        &quot;status_before_repair&quot;: {
+          &quot;capacity&quot;: {
+            &quot;events&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 2
+            },
+            &quot;grants&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 64,
+              &quot;used&quot;: 1
+            },
+            &quot;ops&quot;: {
+              &quot;exact&quot;: false,
+              &quot;full&quot;: false,
+              &quot;limit&quot;: 256,
+              &quot;used&quot;: 2
+            }
+          },
+          &quot;db_queued&quot;: 0,
+          &quot;degraded&quot;: true,
+          &quot;epoch&quot;: 1,
+          &quot;facts&quot;: {
+            &quot;admitted&quot;: 1,
+            &quot;backpressure_events&quot;: 0,
+            &quot;closed&quot;: 1,
+            &quot;forwarded_bytes&quot;: 26,
+            &quot;refused&quot;: 2
+          },
+          &quot;failure&quot;: {
+            &quot;action&quot;: &quot;revoke&quot;,
+            &quot;code&quot;: &quot;STORAGE_FAILED&quot;,
+            &quot;observed_boottime&quot;: 133.035201086,
+            &quot;sqlite_code&quot;: &quot;SQLITE_READONLY_DIRECTORY&quot;
+          },
+          &quot;grants&quot;: [
+            {
+              &quot;access&quot;: &quot;DENIED&quot;,
+              &quot;deadline&quot;: 162.960166945,
+              &quot;duration&quot;: 30.0,
+              &quot;epoch&quot;: 1,
+              &quot;id&quot;: &quot;7ae26a27-3456-42d8-81b3-64d8f107942b&quot;,
+              &quot;owner&quot;: &quot;a&quot;,
+              &quot;persistence&quot;: &quot;FAILED&quot;,
+              &quot;revision&quot;: 2,
+              &quot;service&quot;: &quot;demo&quot;,
+              &quot;sessions&quot;: 0,
+              &quot;state&quot;: &quot;ACTIVE&quot;
+            }
+          ],
+          &quot;health&quot;: &quot;DEGRADED&quot;,
+          &quot;next_cursor&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;recovery&quot;: {
+            &quot;method&quot;: &quot;REPAIR_THEN_RESTART&quot;,
+            &quot;old_grants_survive&quot;: false,
+            &quot;online_reset_supported&quot;: false,
+            &quot;required&quot;: true
+          },
+          &quot;remaining_after_cursor&quot;: 0,
+          &quot;sessions&quot;: 0
+        },
+        &quot;old_data_refusal&quot;: {
+          &quot;exit_code&quot;: 1,
+          &quot;code&quot;: &quot;NO_ACCESS&quot;
+        },
+        &quot;startup_fault&quot;: &quot;actual-readonly-filesystem&quot;
+      }
+    ],
+    &quot;topology&quot;: {
+      &quot;namespaces&quot;: [
+        &quot;gw-client&quot;,
+        &quot;gw-router&quot;,
+        &quot;gw-backend&quot;
+      ],
+      &quot;client&quot;: &quot;10.70.0.2&quot;,
+      &quot;gateway_front&quot;: &quot;10.70.0.1&quot;,
+      &quot;gateway_back&quot;: &quot;10.71.0.1&quot;,
+      &quot;backend&quot;: &quot;10.71.0.2:9000&quot;,
+      &quot;forwarding&quot;: false,
+      &quot;observed_ip_forward&quot;: 0
+    },
+    &quot;direct_backend&quot;: {
+      &quot;direct_backend_refused&quot;: true,
+      &quot;failure_reason&quot;: &quot;TimeoutError&quot;
+    },
+    &quot;error&quot;: &quot;RuntimeError&quot;,
+    &quot;cleanup&quot;: {
+      &quot;owned_processes_reaped&quot;: true,
+      &quot;namespaces_removed&quot;: true,
+      &quot;exit_codes&quot;: [
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        0
+      ],
+      &quot;errors&quot;: []
+    }
+  },
+  &quot;vm_deleted&quot;: true,
+  &quot;disk_removed&quot;: true,
+  &quot;preexisting_profiles_unchanged&quot;: true
+}</pre></html>

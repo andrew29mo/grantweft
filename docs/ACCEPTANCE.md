@@ -1,10 +1,12 @@
 # Architecture decision and MVP acceptance
 
 Four explorations must qualify the same minimal production modules. Model/reviewer
-agreement is not evidence. The four groups now have passing source-bound evidence (34 tests/platform: 28 formal service + six observer/cleanup controls,
+agreement is not evidence. The four groups qualified review-v2 (34 tests/platform: 28 formal service + six observer/cleanup controls,
 installed Linux namespace trials and one normal VM reboot). Receipts, failed
 attempts and exact limits live in evidence/README.md. The review repairs are documented in [REVIEW.md](REVIEW.md).
-No implementation is a production deployment guarantee.
+Milestone 1 extends this to 41 tests/platform: 35 formal service + six controls,
+and seven installed-service recovery scenarios. No implementation is a production
+deployment guarantee.
 
 | Exploration | Required formal evidence |
 | --- | --- |
@@ -13,24 +15,29 @@ No implementation is a production deployment guarantee.
 | Time / storage / capacity | Real elapsed expiry and SIGSTOP/resume, delayed DB does not block expiry, bounded queue/session/catalog/handshake refusal, error/timeout retires access; no success from a late result |
 | Recovery / isolation | Second process cannot recover/listen, old epochs/revisions refuse, client cannot directly reach backend, installed unprivileged gateway, boot-ID change and unchanged journal before new gateway, old grants invalidated and fresh approval works |
 
-## Operational MVP gates that remain separate
+## Milestone 1 acceptance
 
-- Give operator responses a complete persistence/cleanup contract for every error,
-  including targeted reconciliation of concurrent approval/revoke. Current conflict
-  causes global DEGRADED and requires restart; it is safe but disruptive.
-- Qualify an explicit operator recovery workflow and bounded catalog lifecycle;
-  current finite history refuses on exhaustion and has no rollover/GC.
-- Qualify installation/service packaging, startup failures, certificate expiry/
-  replacement and stronger control-pressure handling as required by intended use.
-- The exploration includes a deterministic pause after backend connect and before
-  admission, then revoke and a fresh session. Additional kernel/TLS callback
-  interleavings remain outside this one controlled schedule.
-- Test disk ENOSPC/EROFS on a real managed filesystem if claiming them. Current
-  storage-error hooks and real catalog/queue/session capacity refusals are distinct;
-  a SQLite FULL error has not been physically induced.
-- Evaluate and test cleanup evidence beyond current abort/task removal if claiming
-  exact remote termination latency. Kernel in-flight bytes/backend effects remain
-  outside a TCP proxy's recall ability.
+- DEGRADED exposes first failure/action/SQLite code, effective denied state and
+  an explicit repair-plus-restart contract; no online reset.
+- Bounded grant/operation/event refusal retains all historical rows; full catalog
+  revoke and expiry stop actual established sessions with positive EOF/reset.
+- Real SQLite page-limit FULL, full tmpfs and live directory write denial retire
+  authority; startup on an actual readonly mount fails; repair and restart preserve history and
+  require fresh request/approval. Delayed commit after timeout remains unusable.
+- Same formal product tests run natively and against installed Linux wheel,
+  with module/source hashes and per-scenario JSON/HTML receipts.
+
+## Remaining operational MVP gates
+
+- Formal service packaging, startup failures, systemd stop/automatic restart and
+  a fresh-VM installation/operator walkthrough.
+- Bounded sustained operation/resource trends and eventual archive/rollover
+  decisions. Raising finite limits is not indefinite catalog lifecycle.
+- Additional control-pressure, credential expiry/rotation and callback schedules
+  as required by the intended deployment. Global DEGRADED for approval/revoke
+  revision conflict remains the chosen conservative behavior.
+- No exact remote-stop latency claim: kernel in-flight bytes/backend effects
+  cannot be recalled by a proxy.
 
 Not qualified: sudden power loss, actual host suspend, boot-zero-gap, systemd
 autostart, long-term stability, transparent session survival, WAN/NAT traversal,

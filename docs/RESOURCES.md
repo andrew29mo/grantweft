@@ -12,6 +12,7 @@
 | New grant rows, including terminal rows | 64 | GRANT_FULL, no eviction |
 | Operation result rows | 256 | CATALOG_FULL |
 | Audit event rows | 256 | CATALOG_FULL |
+| SQLite database pages | 1024 (8–4096 configurable) | SQLITE_FULL; DEGRADED |
 | PENDING waiting window | 60 s | Expire/fence |
 | Approved duration | 0.2–900 s | Reject outside range; short values enable real timer tests |
 | Frame/read chunk | 16 KiB | Reject oversized frame |
@@ -39,3 +40,9 @@ The review adds an actual transport-queue high-watermark observation before the
 blocked-consumer revoke test. This counter is an observed pressure event, not a
 maximum memory guarantee. Denial requires a formal refusal response; termination
 requires EOF/reset, with timeout reported as failed observation.
+
+Milestone 1 recovery preserves the same catalog/lock and increases explicit finite
+limits only after stopping the gateway. Counts are marked inexact while DEGRADED.
+SQLite page limits exclude rollback journals and other deployment files. See
+[recovery procedure](RECOVERY.md). A boot budget smaller than the existing page
+count fails before listening.

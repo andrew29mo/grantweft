@@ -42,11 +42,12 @@ def start_backend(procs):
     if not marker.exists():raise RuntimeError('Backend failed startup')
     return p,log
 
-def start_gateway(procs):
-    ready=LAB/'store/ready.json'
+def start_gateway(procs, root=None, config=None, barriers=None):
+    root=Path(root) if root else LAB/'store'
+    ready=root/'ready.json'
     if ready.exists():ready.unlink()
     log=open(LAB/'gateway.log','ab')
-    p=subprocess.Popen(['ip','netns','exec','gw-router','runuser','-u','nobody','--',PY,'-m','grantweft.gateway','--config',str(LAB/'config.json'),'--root',str(LAB/'store')],stdout=log,stderr=log)
+    p=subprocess.Popen(['ip','netns','exec','gw-router','runuser','-u','nobody','--',PY,'-m','grantweft.gateway','--config',str(config or LAB/'config.json'),'--root',str(root),*(['--barriers',str(barriers)] if barriers else [])],stdout=log,stderr=log)
     procs.append((p,log));wait(lambda:ready.exists() or p.poll() is not None)
     if not ready.exists():raise RuntimeError('Installed gateway failed startup')
     info=json.loads(ready.read_text());uid=[x for x in Path('/proc',str(info['pid']),'status').read_text().splitlines() if x.startswith('Uid:')][0]

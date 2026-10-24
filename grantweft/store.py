@@ -57,6 +57,8 @@ class Store:
                     if db is None:
                         db = sqlite3.connect(self.path, timeout=.2)
                         db.row_factory = sqlite3.Row
+                        actual=db.execute('pragma max_page_count='+str(self.cfg['max_store_pages'])).fetchone()[0]
+                        if actual>self.cfg['max_store_pages']:raise Refused('STORE_PAGE_LIMIT')
                         db.execute('pragma journal_mode=DELETE')
                         db.execute('pragma synchronous=FULL')
                         db.execute('pragma foreign_keys=ON')
@@ -73,7 +75,9 @@ class Store:
                     f.set_result(result)
                 except BaseException as exc:
                     if db is not None:
-                        db.rollback()
+                        # A failed rollback must not kill the sole worker and strand futures.
+                        try:db.rollback()
+                        except sqlite3.Error:pass
                     f.set_exception(exc)
         finally:
             if db is not None:
@@ -97,7 +101,7 @@ class Store:
                 db.execute('delete from meta')
                 db.execute('insert into meta values (?)', (epoch,))
                 db.execute("update grants set state='INVALIDATED',revision=revision+1 where state in ('PENDING','ACTIVE')")
-            return {'epoch': epoch, 'grants': [dict(r) for r in db.execute('select * from grants')], 'ops': [dict(r) for r in db.execute('select * from ops')]}
+            return {'counts':{t:db.execute('select count(*) from '+t).fetchone()[0] for t in ('ops','events','grants')}, 'epoch': epoch, 'grants': [dict(r) for r in db.execute('select * from grants')], 'ops': [dict(r) for r in db.execute('select * from ops')]}
         if op.get('action') == '_mark':
             self.hold('mark')
             with db:

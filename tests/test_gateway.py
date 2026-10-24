@@ -264,3 +264,91 @@ class GatewayTests(unittest.TestCase):
         self.assertEqual(h.call('approver',p)['original_result'],original)
         h.stop(kill=True);h.start()
         self.assertEqual(h.call('approver',p)['original_result'],original)
+    def test_full_ops_and_events_still_stop_access_and_recover_with_limits(self):
+        for limit in ('max_ops','max_events'):
+            with self.subTest(limit=limit):
+                h=self.h(**{limit:2});g=h.approve(h.request());s=h.access(g)
+                snapshot=(h.store/'catalog.sqlite').read_bytes()
+                with self.assertRaisesRegex(Refused,'CATALOG_FULL'):h.request('b')
+                self.assertEqual(snapshot,(h.store/'catalog.sqlite').read_bytes())
+                self.assertTrue(h.status()['capacity'][limit[4:]]['full'])
+                with self.assertRaisesRegex(Refused,'CATALOG_FULL'):h.mutate('approver','revoke',g)
+                self.ended(s);self.denied(h,g)
+                status=h.status();self.assertTrue(status['degraded'])
+                self.assertEqual(status['failure']['code'],'CATALOG_FULL')
+                self.assertEqual(status['recovery']['method'],'REPAIR_THEN_RESTART')
+                self.assertFalse(status['capacity']['ops']['exact'])
+                h.stop();h.cfg[limit]=8;h.config.write_text(json.dumps(h.cfg));h.start()
+                self.denied(h,g)
+                with self.assertRaisesRegex(Refused,'STALE_EPOCH'):h.mutate('approver','revoke',g,epoch=g['epoch'])
+                fresh=h.approve(h.request())
+                with h.access(fresh) as session:
+                    send(session,DATA,b'repaired');self.assertEqual(receive(session),(DATA,b'repaired'))
+                self.assertEqual(h.status()['capacity']['grants']['used'],2)
+    def test_grant_full_preserves_revoke_and_expiry_without_gc(self):
+        h=self.h(max_grants=1);g=h.approve(h.request(duration=.3));s=h.access(g)
+        with self.assertRaisesRegex(Refused,'GRANT_FULL'):h.request('b')
+        time.sleep(.4);self.ended(s);self.denied(h,g)
+        self.assertFalse(h.status()['degraded'])
+        self.assertEqual(h.status()['capacity']['grants']['used'],1)
+        with self.assertRaisesRegex(Refused,'GRANT_FULL'):h.request()
+        h2=self.h(max_grants=1);g2=h2.approve(h2.request());s2=h2.access(g2)
+        self.assertEqual(h2.mutate('approver','revoke',g2)['cleanup'],'COMPLETE');self.ended(s2)
+    def test_catalog_full_expiry_does_not_need_new_audit_slot(self):
+        h=self.h(max_ops=2,max_events=2);g=h.approve(h.request(duration=.25));s=h.access(g)
+        time.sleep(.4);self.ended(s);self.denied(h,g)
+        state=h.status();self.assertFalse(state['degraded'])
+        self.assertEqual(state['grants'][0]['state'],'EXPIRED')
+        self.assertEqual(state['capacity']['events']['used'],2)
+    def test_storage_repair_requires_restart_and_preserves_history(self):
+        h=self.h();g=h.request()
+        approval={'action':'approve','operation':str(uuid.uuid4()),'epoch':h.ready['epoch'],'grant':g['id'],'revision':g['revision']}
+        original=h.call('approver',approval)['original_result'];live=original['grant'];s=h.access(live)
+        fail=h.barriers/'fail-revoke';fail.touch()
+        with self.assertRaisesRegex(Refused,'STORAGE_FAILED'):h.mutate('approver','revoke',live)
+        self.ended(s);fail.unlink()
+        self.assertEqual(h.status()['failure']['action'],'revoke')
+        with self.assertRaisesRegex(Refused,'DEGRADED'):h.request()
+        self.denied(h,live);h.stop();h.start();self.denied(h,live)
+        replay=h.call('approver',approval)
+        self.assertTrue(replay['historical']);self.assertEqual(replay['original_result'],original)
+        self.assertEqual(replay['current']['grants'][0]['access'],'DENIED')
+        with self.assertRaisesRegex(Refused,'STALE_EPOCH'):h.call('approver',approval|{'operation':str(uuid.uuid4())})
+        self.assertFalse(h.status()['degraded'])
+    def test_slow_commit_after_retirement_stays_denied_through_repair(self):
+        h=self.h(db_seconds=.3);live=h.approve(h.request());s=h.access(live);pending=h.request('b')
+        hold=h.barriers/'hold-approve';hold.touch()
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            f=pool.submit(h.mutate,'approver','approve',pending)
+            h.wait(lambda:(h.barriers/'entered-approve').exists())
+            with self.assertRaisesRegex(Refused,'STORAGE_FAILED'):f.result(timeout=2)
+            self.ended(s);self.denied(h,pending,'b');hold.unlink()
+            def committed():
+                with sqlite3.connect(h.store/'catalog.sqlite') as db:
+                    return db.execute('select state from grants where id=?',(pending['id'],)).fetchone()[0]=='ACTIVE'
+            h.wait(committed)
+        self.denied(h,pending,'b');self.denied(h,live)
+        with self.assertRaisesRegex(Refused,'DEGRADED'):h.request()
+        h.stop();h.start();self.denied(h,pending,'b');self.denied(h,live)
+        self.assertTrue(all(g['state']=='INVALIDATED' for g in h.status()['grants']))
+    def test_expiry_write_failure_degrades_and_repair_does_not_revive(self):
+        h=self.h();g=h.approve(h.request(duration=.25));s=h.access(g)
+        fail=h.barriers/'fail-mark';fail.touch()
+        h.wait(lambda:h.status()['degraded']);self.ended(s);self.denied(h,g)
+        self.assertEqual(h.status()['failure']['code'],'EXPIRY_PERSIST_FAILED')
+        fail.unlink();h.stop();h.start();self.denied(h,g)
+        self.assertEqual(h.status()['grants'][0]['state'],'INVALIDATED')
+    def test_sqlite_full_closes_live_access_and_recovers_with_page_budget(self):
+        h=self.h(max_store_pages=8);g=h.approve(h.request(duration=20));s=h.access(g)
+        for _ in range(64):
+            try:h.request('b')
+            except Refused as exc:
+                self.assertEqual(str(exc),'STORAGE_FAILED');break
+        else:self.fail('SQLite page budget was not exercised')
+        self.ended(s);self.denied(h,g)
+        state=h.status();self.assertTrue(state['degraded'])
+        self.assertEqual(state['failure']['sqlite_code'],'SQLITE_FULL')
+        h.stop();h.cfg['max_store_pages']=64;h.config.write_text(json.dumps(h.cfg));h.start()
+        self.denied(h,g);fresh=h.approve(h.request())
+        with h.access(fresh) as session:
+            send(session,DATA,b'new-page-budget');self.assertEqual(receive(session),(DATA,b'new-page-budget'))

@@ -18,8 +18,8 @@ uses 2 vCPU / 2 GiB / requested 15-GiB data disk, no host mounts and no default
 context activation, installs Python/OpenSSL/iproute2/util-linux from the guest
 package manager, installs the no-dependency wheel, removes product source from
 import reach and verifies installed module SHA-256. Tools/tests remain a checkout.
-Both platforms run the same source-bound test IDs (28 formal-service tests plus six evidence/cleanup
-controls in the reviewed run). OS/SQLite/OpenSSL versions
+Both platforms run the same source-bound test IDs (35 formal-service tests plus six evidence/cleanup
+controls in milestone 1). OS/SQLite/OpenSSL versions
 are captured; no firmware, hardware network or physical-storage claim follows.
 
 Root creates only test network namespaces inside this VM:
@@ -64,7 +64,42 @@ Existing Colima profiles/statuses must remain unchanged. Raw commands, paths,
 certificates, keys, databases, wheels and logs stay under ignored results or inside
 the deleted VM. Only sanitized receipts are eligible for Git.
 
-The review-v2 offline verifier requires complete ordered stages, actual platform
+The recovery-v3 offline verifier requires complete ordered stages, actual platform
 labels, postboot fresh-workload results, observed closure reason, recovered grant
 states, raw stale-refusal outcomes and successful boot observations. Old receipts
 without this contract are historical and are not accepted as current qualification.
+
+## Milestone 1 recovery scenarios
+
+The recovery-v3 runner adds `tools.vm_recovery` after the ordinary namespace
+trial, before the normal-reboot witness. Every scenario uses the installed wheel,
+actual mTLS/data-plane clients and the same unprivileged gateway, with a fresh
+state root. Repair/restart within a scenario always reuses that state root.
+
+Seven scenarios cover operation/event/grant catalog limits, SQLite max_page_count,
+zero-free-space tmpfs, removal of directory write permission plus a separate
+readonly-filesystem startup, and an approval deliberately committed after its
+application timeout. The SQLite error code is captured from the real exception.
+The disk-full and directory-write-denied trials attempt actual revocation, not
+only an unrelated insertion. Fault hooks are used only for deterministic delayed
+approval, not for manufacturing FULL/READONLY errors.
+
+Every scenario observes a live tunnel's positive EOF/reset, old admission refusal,
+new epoch and stale-operation refusal after repair/restart, then fresh approval
+and twenty verified roundtrips. RSS/FD/store samples are VM point observations;
+fault-phase intervals include fixture induction and verification work (including
+late-commit readback/refusal after closure). They are not closure or recovery bounds.
+No reboot/systemd qualification follows merely from a process restart. The
+separate normal VM reboot witness remains manual gateway startup after boot.
+
+The first milestone attempt failed when Linux refused a live readonly remount
+because writable files were open. Its partial receipt is retained. The revised
+scenario distinguishes live write-permission denial from actual readonly-mount
+startup, rather than claiming the unsupported remount succeeded.
+
+A second attempt reached real SQLITE_READONLY_DIRECTORY during live revoke,
+but its startup observer required the unhyphenated word "readonly" and rejected
+a different startup refusal. That attempt also remains failed. The corrected
+observer preserves the actual final exception line and accepts only explicit
+read-only-filesystem or readonly-database startup failures, never a timeout or
+generic nonzero exit.

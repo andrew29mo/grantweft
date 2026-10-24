@@ -1,6 +1,6 @@
 # Architecture and frozen transaction order
 
-Status: four bounded explorations; operational MVP acceptance is separate.
+Status: four bounded explorations plus milestone 1 repair/restart; formal deployment acceptance remains separate.
 Single Linux gateway process, one asyncio socket-authority loop, one bounded
 SQLite worker thread, fixed client-certificate fingerprints/roles and one fixed
 numeric TCP backend. Python >=3.12, stdlib ssl/asyncio/sqlite3/fcntl. No privileged
@@ -101,3 +101,8 @@ external tamper-resistant audit or write-once guarantee is supplied.
 - [SQLite atomic commit and assumptions](https://sqlite.org/atomiccommit.html)
 - [Linux CLOCK_BOOTTIME](https://man7.org/linux/man-pages/man2/clock_gettime.2.html)
 - [Linux flock inode/open-file-description semantics](https://man7.org/linux/man-pages/man2/flock.2.html)
+
+The milestone 1 status, finite SQLite page budget and operator recovery contract
+are specified in [RECOVERY.md](RECOVERY.md). Runtime authority never resumes in
+place after DEGRADED; a repaired startup invalidates previous grants. Catalog
+headroom is recovered by an explicit finite budget increase, preserving history.

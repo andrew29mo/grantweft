@@ -48,3 +48,12 @@ grantweft --host GATEWAY_IP --port 7443 --ca CA_FILE --cert CLIENT_CERT \
 The stdio connector uses --port 7444 --grant GRANT_ID --service demo without
 --request. TLS credentials remain owned by its user. It is not a shared local
 TCP listener and does not authenticate other applications on the user's behalf.
+
+Milestone 1 adds read-only status fields: health (READY/DEGRADED), first failure
+code/action/SQLite error name/boottime observation, repair-plus-restart guidance,
+and capacity used/limit/full/exact for grants, ops and events. `exact:false` means
+counts may not describe current committed state; it is used while mutations are
+in flight and throughout DEGRADED. `ok:true` on status means the query succeeded,
+not that access is available. Historical mutation replies never reactivate access.
+No network recovery/reset command exists. Error replies do not imply persistence
+or cleanup succeeded; query current effective state when possible.
