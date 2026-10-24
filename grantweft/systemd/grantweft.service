@@ -1,0 +1,31 @@
+[Unit]
+Description=Grantweft temporary service access gateway
+After=network.target
+StartLimitIntervalSec=30
+StartLimitBurst=3
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=grantweft
+Group=grantweft
+ExecStart=/opt/grantweft/venv/bin/python -m grantweft.gateway --config /etc/grantweft/config.json --root /var/lib/grantweft --notify
+Restart=on-failure
+RestartSec=1s
+TimeoutStartSec=10s
+TimeoutStopSec=5s
+KillMode=control-group
+SendSIGKILL=yes
+UMask=0077
+StateDirectory=grantweft
+StateDirectoryMode=0700
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

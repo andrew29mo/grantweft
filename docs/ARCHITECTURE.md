@@ -106,3 +106,8 @@ The milestone 1 status, finite SQLite page budget and operator recovery contract
 are specified in [RECOVERY.md](RECOVERY.md). Runtime authority never resumes in
 place after DEGRADED; a repaired startup invalidates previous grants. Catalog
 headroom is recovered by an explicit finite budget increase, preserving history.
+
+The shipped Type=notify systemd unit and root-only installation command are
+specified in [DEPLOYMENT.md](DEPLOYMENT.md). Runtime keeps no root/capabilities;
+DEGRADED stays alive until explicit repair/restart. The service does not use a
+privileged worker or automatic online recovery.

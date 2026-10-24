@@ -1,0 +1,5620 @@
+{
+  "contract": "grantweft-systemd-v5",
+  "passed": false,
+  "recorded_at_utc": "2026-10-24T14:39:35.862299+00:00",
+  "source": {
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+    "grantweft/gateway.py": "aabd2aaa5fdc3979e011d71f45c17dd1d9a09dae4e13964b8d9b9b837158ec3c",
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+    "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+    "pyproject.toml": "89f1fd278a14db433a5525898ba493d03a94506524b6b3697828291d7a700f65",
+    "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+    "tests/test_gateway.py": "7015d22945105c453078ed81e1aac9d680b5d37c0336b23500adb78e9a57f6c9",
+    "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+    "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+    "tools/probe.py": "9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170",
+    "tools/report.py": "039cbd7757b32d9b538c97454aaf72de4639e6c609a6c4f8f9fab5dfe36a68a8",
+    "tools/unit.py": "0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d",
+    "tools/validate.py": "acbdffe2cce92f1bf49f7b68f6ecd61c1cd8fdb39048c2d452347f9d61472fc3",
+    "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+    "tools/vm_recovery.py": "4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20",
+    "tools/vm_service.py": "2ae0e930905b90353f69beee5f47157c57971022130902f0a4775ff64e52a8f4"
+  },
+  "source_sha256": "cd605ded52b73a906d764d29aede67155162b761f4b36032c22cb06bd89a1840",
+  "source_changed": false,
+  "host_mounts": "none",
+  "wheel_modules_match": true,
+  "wheel_sha256": "6596c911d2c5908fcbf7d237b6be3655b2fadb0cd2371a34fbf6200a2a3fdcc1",
+  "stages": [
+    {
+      "name": "initial",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.2940898339729756
+    },
+    {
+      "name": "create",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 20.932573708007112
+    },
+    {
+      "name": "dependencies",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 13.998272041993914
+    },
+    {
+      "name": "upload",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.2753199170110747
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.6127508750068955
+    },
+    {
+      "name": "provenance",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.26754145900486037
+    },
+    {
+      "name": "native",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 30.600540874991566
+    },
+    {
+      "name": "linux",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 36.74455141698127
+    },
+    {
+      "name": "linux-read",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.26693225000053644
+    },
+    {
+      "name": "cases",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 4.52430129199638
+    },
+    {
+      "name": "cases-read",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.23879429200314917
+    },
+    {
+      "name": "recovery",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 34.992391458014026
+    },
+    {
+      "name": "recovery-read",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.31676295801298693
+    },
+    {
+      "name": "service",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 24.580035292019602
+    },
+    {
+      "name": "failed-cases",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.26390141699812375
+    },
+    {
+      "name": "failed-recovery",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.301302832987858
+    },
+    {
+      "name": "failed-service",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.22633674999815412
+    },
+    {
+      "name": "failed-prepared",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.3125647919951007
+    },
+    {
+      "name": "failed-finished",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.24740608400315978
+    },
+    {
+      "name": "delete",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.6086245419865008
+    },
+    {
+      "name": "final",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.20092754199868068
+    }
+  ],
+  "installed_modules": {
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+    "grantweft/gateway.py": "aabd2aaa5fdc3979e011d71f45c17dd1d9a09dae4e13964b8d9b9b837158ec3c",
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+    "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438"
+  },
+  "installed_source_absent": true,
+  "sqlite": "3.45.1",
+  "openssl": "OpenSSL 3.0.13 30 Jan 2024",
+  "python": "3.12.3",
+  "native": {
+    "passed": true,
+    "count": 43,
+    "tests": [
+      "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
+      "test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence",
+      "test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants",
+      "test_gateway.GatewayTests.test_catalog_full_expiry_does_not_need_new_audit_slot",
+      "test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations",
+      "test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate",
+      "test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke",
+      "test_gateway.GatewayTests.test_deny_cancel_and_request_expiry",
+      "test_gateway.GatewayTests.test_duplicate_identity_exits_before_creating_store_or_worker",
+      "test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect",
+      "test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive",
+      "test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits",
+      "test_gateway.GatewayTests.test_grant_full_preserves_revoke_and_expiry_without_gc",
+      "test_gateway.GatewayTests.test_history_result_is_stable_after_expiry_and_restart",
+      "test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart",
+      "test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected",
+      "test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof",
+      "test_gateway.GatewayTests.test_observed_backpressure_then_revoke_stops_transfer",
+      "test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state",
+      "test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume",
+      "test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control",
+      "test_gateway.GatewayTests.test_readiness_notification_requires_socket_and_sends_ready",
+      "test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity",
+      "test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions",
+      "test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen",
+      "test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover",
+      "test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke",
+      "test_gateway.GatewayTests.test_slow_approval_history_retains_original_commit",
+      "test_gateway.GatewayTests.test_slow_commit_after_retirement_stays_denied_through_repair",
+      "test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl",
+      "test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data",
+      "test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry",
+      "test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget",
+      "test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves",
+      "test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history",
+      "test_gateway.GatewayTests.test_truncated_frame_is_not_payload",
+      "test_gateway.GatewayTests.test_unknown_and_missing_client_certificate",
+      "test_review.EvidenceObserverTests.test_cleanup_continues_after_forced_kill",
+      "test_review.EvidenceObserverTests.test_cleanup_exception_still_saves_failed_receipt",
+      "test_review.EvidenceObserverTests.test_close_observer_rejects_live_idle_socket_timeout",
+      "test_review.EvidenceObserverTests.test_close_observer_requires_positive_eof",
+      "test_review.EvidenceObserverTests.test_echo_observer_accepts_fragmentation_and_checks_order",
+      "test_review.EvidenceObserverTests.test_startup_process_registered_before_readiness_failure"
+    ],
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 30.488676458975533,
+    "platform": "Darwin",
+    "source": {
+      "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+      "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+      "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+      "grantweft/gateway.py": "aabd2aaa5fdc3979e011d71f45c17dd1d9a09dae4e13964b8d9b9b837158ec3c",
+      "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+      "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+      "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+      "pyproject.toml": "89f1fd278a14db433a5525898ba493d03a94506524b6b3697828291d7a700f65",
+      "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+      "tests/test_gateway.py": "7015d22945105c453078ed81e1aac9d680b5d37c0336b23500adb78e9a57f6c9",
+      "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+      "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+      "tools/probe.py": "9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170",
+      "tools/report.py": "039cbd7757b32d9b538c97454aaf72de4639e6c609a6c4f8f9fab5dfe36a68a8",
+      "tools/unit.py": "0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d",
+      "tools/validate.py": "acbdffe2cce92f1bf49f7b68f6ecd61c1cd8fdb39048c2d452347f9d61472fc3",
+      "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+      "tools/vm_recovery.py": "4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20",
+      "tools/vm_service.py": "2ae0e930905b90353f69beee5f47157c57971022130902f0a4775ff64e52a8f4"
+    },
+    "source_sha256": "cd605ded52b73a906d764d29aede67155162b761f4b36032c22cb06bd89a1840"
+  },
+  "linux": {
+    "passed": true,
+    "count": 43,
+    "tests": [
+      "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
+      "test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence",
+      "test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants",
+      "test_gateway.GatewayTests.test_catalog_full_expiry_does_not_need_new_audit_slot",
+      "test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations",
+      "test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate",
+      "test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke",
+      "test_gateway.GatewayTests.test_deny_cancel_and_request_expiry",
+      "test_gateway.GatewayTests.test_duplicate_identity_exits_before_creating_store_or_worker",
+      "test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect",
+      "test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive",
+      "test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits",
+      "test_gateway.GatewayTests.test_grant_full_preserves_revoke_and_expiry_without_gc",
+      "test_gateway.GatewayTests.test_history_result_is_stable_after_expiry_and_restart",
+      "test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart",
+      "test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected",
+      "test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof",
+      "test_gateway.GatewayTests.test_observed_backpressure_then_revoke_stops_transfer",
+      "test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state",
+      "test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume",
+      "test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control",
+      "test_gateway.GatewayTests.test_readiness_notification_requires_socket_and_sends_ready",
+      "test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity",
+      "test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions",
+      "test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen",
+      "test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover",
+      "test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke",
+      "test_gateway.GatewayTests.test_slow_approval_history_retains_original_commit",
+      "test_gateway.GatewayTests.test_slow_commit_after_retirement_stays_denied_through_repair",
+      "test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl",
+      "test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data",
+      "test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry",
+      "test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget",
+      "test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves",
+      "test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history",
+      "test_gateway.GatewayTests.test_truncated_frame_is_not_payload",
+      "test_gateway.GatewayTests.test_unknown_and_missing_client_certificate",
+      "test_review.EvidenceObserverTests.test_cleanup_continues_after_forced_kill",
+      "test_review.EvidenceObserverTests.test_cleanup_exception_still_saves_failed_receipt",
+      "test_review.EvidenceObserverTests.test_close_observer_rejects_live_idle_socket_timeout",
+      "test_review.EvidenceObserverTests.test_close_observer_requires_positive_eof",
+      "test_review.EvidenceObserverTests.test_echo_observer_accepts_fragmentation_and_checks_order",
+      "test_review.EvidenceObserverTests.test_startup_process_registered_before_readiness_failure"
+    ],
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 36.36976660199999,
+    "platform": "Linux",
+    "source": {
+      "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+      "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+      "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+      "grantweft/gateway.py": "aabd2aaa5fdc3979e011d71f45c17dd1d9a09dae4e13964b8d9b9b837158ec3c",
+      "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+      "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+      "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+      "pyproject.toml": "89f1fd278a14db433a5525898ba493d03a94506524b6b3697828291d7a700f65",
+      "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+      "tests/test_gateway.py": "7015d22945105c453078ed81e1aac9d680b5d37c0336b23500adb78e9a57f6c9",
+      "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+      "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+      "tools/probe.py": "9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170",
+      "tools/report.py": "039cbd7757b32d9b538c97454aaf72de4639e6c609a6c4f8f9fab5dfe36a68a8",
+      "tools/unit.py": "0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d",
+      "tools/validate.py": "acbdffe2cce92f1bf49f7b68f6ecd61c1cd8fdb39048c2d452347f9d61472fc3",
+      "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+      "tools/vm_recovery.py": "4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20",
+      "tools/vm_service.py": "2ae0e930905b90353f69beee5f47157c57971022130902f0a4775ff64e52a8f4"
+    },
+    "source_sha256": "cd605ded52b73a906d764d29aede67155162b761f4b36032c22cb06bd89a1840"
+  },
+  "cases": {
+    "passed": true,
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "gateway_uid": 65534,
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "roundtrip_trial": {
+      "roundtrips": 20,
+      "payload_bytes_per_roundtrip": 8192,
+      "seconds": 0.0021147079999934704,
+      "verified_bytes_each_direction": 163840
+    },
+    "resources": {
+      "rss_kib": 25064,
+      "fds": 10,
+      "disk_allocated_bytes": 32768,
+      "scope": "single Linux VM process observation after 20 roundtrips; not peak or long-term"
+    },
+    "revocation_trial": {
+      "rpc_seconds": 0.03927256500000453,
+      "client_observation": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 0.04771998100000019
+      },
+      "cleanup": "COMPLETE",
+      "sessions_after": 0
+    },
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        0,
+        -15,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "recovery": {
+    "passed": true,
+    "gateway_uid": 65534,
+    "scenarios": [
+      {
+        "mode": "ops_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07333841199999824
+        },
+        "fault_phase_seconds": 0.06259846199999686,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": true,
+              "limit": 2,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "CATALOG_FULL",
+            "observed_boottime": 105.300035423,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 135.195158609,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "5c965a0d8e270675bf838da6cf5761952e1660d0cb6d0153d1e504234ee6181d",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264549
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264548
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "5c965a0d8e270675bf838da6cf5761952e1660d0cb6d0153d1e504234ee6181d",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264549
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264548
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0023075990000052116,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 137.63039609700002,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "7ae12c9d-8dd0-4851-a6eb-e5cde23704f6",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 135.195158609,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25308,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "events_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07223918799999751
+        },
+        "fault_phase_seconds": 0.06700089099999218,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": true,
+              "limit": 2,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "CATALOG_FULL",
+            "observed_boottime": 109.977174684,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 139.867498547,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "874f8bec1ebbc21e302485721cb13dda53b40f4239bcf6927b1bc2fb1a2aa1e3",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264556
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264555
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "874f8bec1ebbc21e302485721cb13dda53b40f4239bcf6927b1bc2fb1a2aa1e3",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264556
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264555
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0026528409999997393,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 142.29030691600002,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "899e9155-fe65-4458-832b-d5462ee0ef84",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 139.867498547,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25304,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "grant_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "GRANT_FULL"
+        },
+        "revoke": {
+          "cleanup": "COMPLETE",
+          "current": {
+            "capacity": {
+              "events": {
+                "exact": false,
+                "full": false,
+                "limit": 256,
+                "used": 3
+              },
+              "grants": {
+                "exact": false,
+                "full": true,
+                "limit": 1,
+                "used": 1
+              },
+              "ops": {
+                "exact": false,
+                "full": false,
+                "limit": 256,
+                "used": 3
+              }
+            },
+            "db_queued": 0,
+            "degraded": false,
+            "epoch": 1,
+            "facts": {
+              "admitted": 1,
+              "backpressure_events": 0,
+              "closed": 1,
+              "forwarded_bytes": 26,
+              "refused": 2
+            },
+            "failure": null,
+            "grants": [
+              {
+                "access": "DENIED",
+                "deadline": 144.514528422,
+                "duration": 30.0,
+                "epoch": 1,
+                "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+                "owner": "a",
+                "persistence": "COMMITTED",
+                "revision": 3,
+                "service": "demo",
+                "sessions": 0,
+                "state": "REVOKED"
+              }
+            ],
+            "health": "READY",
+            "next_cursor": null,
+            "ok": true,
+            "recovery": {
+              "method": "REPAIR_THEN_RESTART",
+              "old_grants_survive": false,
+              "online_reset_supported": false,
+              "required": false
+            },
+            "remaining_after_cursor": 0,
+            "sessions": 0
+          },
+          "historical": false,
+          "ok": true,
+          "original_result": {
+            "epoch": 1,
+            "grant": {
+              "deadline": 144.514528422,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "owner": "a",
+              "revision": 3,
+              "service": "demo",
+              "state": "REVOKED"
+            }
+          }
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07579644199999791
+        },
+        "fault_phase_seconds": 0.07080843399999992,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            },
+            "grants": {
+              "exact": true,
+              "full": true,
+              "limit": 1,
+              "used": 1
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 144.514528422,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "REVOKED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 3,
+            "events": 3,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "state": "REVOKED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "d393f21a7593d323ed7f70a17d68ffef529535d83aa1c7088552de222b5001fd",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264563
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264562
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 3,
+            "events": 3,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "state": "REVOKED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "d393f21a7593d323ed7f70a17d68ffef529535d83aa1c7088552de222b5001fd",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264563
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264562
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0018091510000033395,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 5
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 5
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 146.937907069,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "5a9397f0-381f-4a03-bfd5-90f24bfd4fc2",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 144.514528422,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "REVOKED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25292,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "sqlite_full",
+        "passed": true,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.4149821570000114
+        },
+        "fault_phase_seconds": 0.40258094799999355,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 14
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 13
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 14
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "request",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 119.58493071,
+            "sqlite_code": "SQLITE_FULL"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 179.344332992,
+              "duration": 30,
+              "epoch": 1,
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.554912999,
+              "duration": 30,
+              "epoch": 1,
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.374585335,
+              "duration": 30,
+              "epoch": 1,
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.31136895999998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.404719476,
+              "duration": 30,
+              "epoch": 1,
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 149.140630578,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.5247469,
+              "duration": 30,
+              "epoch": 1,
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.43496890199998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.25042484,
+              "duration": 30,
+              "epoch": 1,
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.464602986,
+              "duration": 30,
+              "epoch": 1,
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.280432321,
+              "duration": 30,
+              "epoch": 1,
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.21772125299998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.49449164,
+              "duration": 30,
+              "epoch": 1,
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 14,
+            "events": 14,
+            "grants": 13
+          },
+          "grants": [
+            {
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "90162fbf20714cb6829a4837fc98dd5096a2ffcd9f3b505e4396d28ca4ce9989",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264570
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264569
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 14,
+            "events": 14,
+            "grants": 13
+          },
+          "grants": [
+            {
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            },
+            {
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "90162fbf20714cb6829a4837fc98dd5096a2ffcd9f3b505e4396d28ca4ce9989",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264570
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264569
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.002598116999990907,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 16
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 14
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 16
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 179.344332992,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.554912999,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.374585335,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.31136895999998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.404719476,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 149.140630578,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.5247469,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.43496890199998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.25042484,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.464602986,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.280432321,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.21772125299998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.49449164,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "ALLOWED",
+              "deadline": 151.918039109,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "e09f3e80-032f-4a94-bd84-837d26933711",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25332,
+          "fds": 10,
+          "disk_allocated_bytes": 53248
+        }
+      },
+      {
+        "mode": "disk_full",
+        "passed": true,
+        "free_bytes_after_fill": 0,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.0457749109999952
+        },
+        "fault_phase_seconds": 0.041504958999993846,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 124.248672838,
+            "sqlite_code": "SQLITE_FULL"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 154.170066657,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "9bd502f6b628832df76cda321faf953f90e9826e045e692bb5420fb43ae3da9a",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "9bd502f6b628832df76cda321faf953f90e9826e045e692bb5420fb43ae3da9a",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0019169890000085843,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 156.59061108,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "85148e07-9127-4416-9b45-3b24e301c4a2",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 154.170066657,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25292,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "read_only",
+        "passed": true,
+        "live_fault": "directory-write-permission-removed",
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.04343083800000613
+        },
+        "fault_phase_seconds": 0.033358403999983466,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 128.909978885,
+            "sqlite_code": "SQLITE_READONLY_DIRECTORY"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 158.836342534,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "73b124b875aefea52ffb98dab83b1b591c14243087d6f560636ee47f87bc7538",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "startup_fault": "actual-readonly-filesystem",
+        "readonly_restart_refusal": {
+          "exit_code": 1,
+          "exception": "OSError: [Errno 30] Read-only file system: '<state>/writer.lock'"
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "73b124b875aefea52ffb98dab83b1b591c14243087d6f560636ee47f87bc7538",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0018127030000130162,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 161.271808484,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "6524269e-cc98-4706-9f2a-abe2b1232179",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 158.836342534,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25308,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "late_commit",
+        "passed": true,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.4802427459999876
+        },
+        "degraded_before_release": true,
+        "late_commit_observed_on_disk": true,
+        "late_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "fault_phase_seconds": 0.5765976419999959,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "approve",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 134.020410439,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 163.508837539,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 193.586100849,
+              "duration": 30,
+              "epoch": 1,
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "owner": "b",
+              "persistence": "FAILED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 4,
+            "events": 4,
+            "grants": 2
+          },
+          "grants": [
+            {
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "f6ca1090d92cf80aab24633bc142ef3bb8acb00ef82b8b093b60c1127cf2e0f1",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264585
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264584
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 4,
+            "events": 4,
+            "grants": 2
+          },
+          "grants": [
+            {
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            },
+            {
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "f6ca1090d92cf80aab24633bc142ef3bb8acb00ef82b8b093b60c1127cf2e0f1",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264585
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264584
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "late_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "late_history_replay": {
+          "current": {
+            "capacity": {
+              "events": {
+                "exact": true,
+                "full": false,
+                "limit": 256,
+                "used": 4
+              },
+              "grants": {
+                "exact": true,
+                "full": false,
+                "limit": 64,
+                "used": 2
+              },
+              "ops": {
+                "exact": true,
+                "full": false,
+                "limit": 256,
+                "used": 4
+              }
+            },
+            "db_queued": 0,
+            "degraded": false,
+            "epoch": 2,
+            "facts": {
+              "admitted": 0,
+              "backpressure_events": 0,
+              "closed": 0,
+              "forwarded_bytes": 0,
+              "refused": 3
+            },
+            "failure": null,
+            "grants": [
+              {
+                "access": "DENIED",
+                "deadline": 163.508837539,
+                "duration": 30.0,
+                "epoch": 1,
+                "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+                "owner": "a",
+                "persistence": "COMMITTED",
+                "revision": 3,
+                "service": "demo",
+                "sessions": 0,
+                "state": "INVALIDATED"
+              },
+              {
+                "access": "DENIED",
+                "deadline": 163.6171345,
+                "duration": 30.0,
+                "epoch": 1,
+                "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+                "owner": "b",
+                "persistence": "COMMITTED",
+                "revision": 3,
+                "service": "demo",
+                "sessions": 0,
+                "state": "INVALIDATED"
+              }
+            ],
+            "health": "READY",
+            "next_cursor": null,
+            "ok": true,
+            "recovery": {
+              "method": "REPAIR_THEN_RESTART",
+              "old_grants_survive": false,
+              "online_reset_supported": false,
+              "required": false
+            },
+            "remaining_after_cursor": 0,
+            "sessions": 0
+          },
+          "historical": true,
+          "ok": true,
+          "original_result": {
+            "epoch": 1,
+            "grant": {
+              "deadline": 163.6171345,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "owner": "b",
+              "revision": 2,
+              "service": "demo",
+              "state": "ACTIVE"
+            }
+          }
+        },
+        "late_after_replay_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0019832940000128474,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 6
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 3
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 6
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 5
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 166.529508186,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "0a791856-6aa4-4093-ad0c-c66edf90e276",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 163.508837539,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 163.6171345,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25304,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      }
+    ],
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "error": "RuntimeError: service failed/timeout; see ignored private log",
+  "failed_cases": {
+    "passed": true,
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "gateway_uid": 65534,
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "roundtrip_trial": {
+      "roundtrips": 20,
+      "payload_bytes_per_roundtrip": 8192,
+      "seconds": 0.0021147079999934704,
+      "verified_bytes_each_direction": 163840
+    },
+    "resources": {
+      "rss_kib": 25064,
+      "fds": 10,
+      "disk_allocated_bytes": 32768,
+      "scope": "single Linux VM process observation after 20 roundtrips; not peak or long-term"
+    },
+    "revocation_trial": {
+      "rpc_seconds": 0.03927256500000453,
+      "client_observation": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 0.04771998100000019
+      },
+      "cleanup": "COMPLETE",
+      "sessions_after": 0
+    },
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        0,
+        -15,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "failed_recovery": {
+    "passed": true,
+    "gateway_uid": 65534,
+    "scenarios": [
+      {
+        "mode": "ops_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07333841199999824
+        },
+        "fault_phase_seconds": 0.06259846199999686,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": true,
+              "limit": 2,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "CATALOG_FULL",
+            "observed_boottime": 105.300035423,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 135.195158609,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "5c965a0d8e270675bf838da6cf5761952e1660d0cb6d0153d1e504234ee6181d",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264549
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264548
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "5c965a0d8e270675bf838da6cf5761952e1660d0cb6d0153d1e504234ee6181d",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264549
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264548
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0023075990000052116,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 137.63039609700002,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "7ae12c9d-8dd0-4851-a6eb-e5cde23704f6",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 135.195158609,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d914cff8-d090-4da3-a8a4-7d6ac443edd1",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25308,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "events_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "refusal": {
+          "exit_code": 1,
+          "code": "CATALOG_FULL"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07223918799999751
+        },
+        "fault_phase_seconds": 0.06700089099999218,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": true,
+              "limit": 2,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "CATALOG_FULL",
+            "observed_boottime": 109.977174684,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 139.867498547,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "874f8bec1ebbc21e302485721cb13dda53b40f4239bcf6927b1bc2fb1a2aa1e3",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264556
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264555
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "874f8bec1ebbc21e302485721cb13dda53b40f4239bcf6927b1bc2fb1a2aa1e3",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264556
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264555
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0026528409999997393,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 142.29030691600002,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "899e9155-fe65-4458-832b-d5462ee0ef84",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 139.867498547,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "9cd9fb0f-3bc5-4398-9b64-ded3334c866e",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25304,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "grant_full",
+        "passed": true,
+        "admission_refusal": {
+          "exit_code": 1,
+          "code": "GRANT_FULL"
+        },
+        "revoke": {
+          "cleanup": "COMPLETE",
+          "current": {
+            "capacity": {
+              "events": {
+                "exact": false,
+                "full": false,
+                "limit": 256,
+                "used": 3
+              },
+              "grants": {
+                "exact": false,
+                "full": true,
+                "limit": 1,
+                "used": 1
+              },
+              "ops": {
+                "exact": false,
+                "full": false,
+                "limit": 256,
+                "used": 3
+              }
+            },
+            "db_queued": 0,
+            "degraded": false,
+            "epoch": 1,
+            "facts": {
+              "admitted": 1,
+              "backpressure_events": 0,
+              "closed": 1,
+              "forwarded_bytes": 26,
+              "refused": 2
+            },
+            "failure": null,
+            "grants": [
+              {
+                "access": "DENIED",
+                "deadline": 144.514528422,
+                "duration": 30.0,
+                "epoch": 1,
+                "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+                "owner": "a",
+                "persistence": "COMMITTED",
+                "revision": 3,
+                "service": "demo",
+                "sessions": 0,
+                "state": "REVOKED"
+              }
+            ],
+            "health": "READY",
+            "next_cursor": null,
+            "ok": true,
+            "recovery": {
+              "method": "REPAIR_THEN_RESTART",
+              "old_grants_survive": false,
+              "online_reset_supported": false,
+              "required": false
+            },
+            "remaining_after_cursor": 0,
+            "sessions": 0
+          },
+          "historical": false,
+          "ok": true,
+          "original_result": {
+            "epoch": 1,
+            "grant": {
+              "deadline": 144.514528422,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "owner": "a",
+              "revision": 3,
+              "service": "demo",
+              "state": "REVOKED"
+            }
+          }
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.07579644199999791
+        },
+        "fault_phase_seconds": 0.07080843399999992,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            },
+            "grants": {
+              "exact": true,
+              "full": true,
+              "limit": 1,
+              "used": 1
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 144.514528422,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "REVOKED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 3,
+            "events": 3,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "state": "REVOKED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "d393f21a7593d323ed7f70a17d68ffef529535d83aa1c7088552de222b5001fd",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264563
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264562
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 3,
+            "events": 3,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "state": "REVOKED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "d393f21a7593d323ed7f70a17d68ffef529535d83aa1c7088552de222b5001fd",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264563
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264562
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0018091510000033395,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 5
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 5
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 146.937907069,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "5a9397f0-381f-4a03-bfd5-90f24bfd4fc2",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 144.514528422,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b44f1f18-1388-4c7c-bf75-04a10b0ea577",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "REVOKED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25292,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "sqlite_full",
+        "passed": true,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.4149821570000114
+        },
+        "fault_phase_seconds": 0.40258094799999355,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 14
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 13
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 14
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "request",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 119.58493071,
+            "sqlite_code": "SQLITE_FULL"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 179.344332992,
+              "duration": 30,
+              "epoch": 1,
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.554912999,
+              "duration": 30,
+              "epoch": 1,
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.374585335,
+              "duration": 30,
+              "epoch": 1,
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.31136895999998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.404719476,
+              "duration": 30,
+              "epoch": 1,
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 149.140630578,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.5247469,
+              "duration": 30,
+              "epoch": 1,
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.43496890199998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.25042484,
+              "duration": 30,
+              "epoch": 1,
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.464602986,
+              "duration": 30,
+              "epoch": 1,
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.280432321,
+              "duration": 30,
+              "epoch": 1,
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.21772125299998,
+              "duration": 30,
+              "epoch": 1,
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.49449164,
+              "duration": 30,
+              "epoch": 1,
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 14,
+            "events": 14,
+            "grants": 13
+          },
+          "grants": [
+            {
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            },
+            {
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "state": "PENDING",
+              "revision": 1,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "90162fbf20714cb6829a4837fc98dd5096a2ffcd9f3b505e4396d28ca4ce9989",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264570
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264569
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 14,
+            "events": 14,
+            "grants": 13
+          },
+          "grants": [
+            {
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            },
+            {
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "state": "INVALIDATED",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "90162fbf20714cb6829a4837fc98dd5096a2ffcd9f3b505e4396d28ca4ce9989",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264570
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264569
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.002598116999990907,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 16
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 14
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 16
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 179.344332992,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "0963c6b6-cd73-4220-9758-4321cd692005",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.554912999,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "49c38c23-d860-44e4-82a4-d4a8dca4b0e3",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.374585335,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "4acfb19c-c047-4122-beb8-ea79469cf34d",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.31136895999998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "501fd205-4557-4c77-8e8f-f953392bc7ad",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.404719476,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "6f36acb0-e20c-4a64-a91f-1e175ddcc9f1",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 149.140630578,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "7fa0c4fc-d059-4382-86f5-a597440c2c75",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.5247469,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "82175aa8-cd08-4be3-97bf-7cae836188b8",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.43496890199998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "a80fe9df-0f20-4677-9ec6-9ba58b788589",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.25042484,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "bc12b0eb-e0c5-4d7a-9f1a-2a1f4b6fb007",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.464602986,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "bd6370e2-fc4a-43ed-9f86-35453c24cdd0",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.280432321,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "c358d6c6-8989-4855-b3f9-2dbaf14d3b17",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.21772125299998,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d06b7d49-a357-499f-bc54-9a50c36e7861",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 179.49449164,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "d9c446b5-0368-45c7-921a-f587eda43b13",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "ALLOWED",
+              "deadline": 151.918039109,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "e09f3e80-032f-4a94-bd84-837d26933711",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25332,
+          "fds": 10,
+          "disk_allocated_bytes": 53248
+        }
+      },
+      {
+        "mode": "disk_full",
+        "passed": true,
+        "free_bytes_after_fill": 0,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.0457749109999952
+        },
+        "fault_phase_seconds": 0.041504958999993846,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 124.248672838,
+            "sqlite_code": "SQLITE_FULL"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 154.170066657,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "9bd502f6b628832df76cda321faf953f90e9826e045e692bb5420fb43ae3da9a",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "9bd502f6b628832df76cda321faf953f90e9826e045e692bb5420fb43ae3da9a",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0019169890000085843,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 156.59061108,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "85148e07-9127-4416-9b45-3b24e301c4a2",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 154.170066657,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "b7960d7b-3856-4a4b-83f1-1887b4f64876",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25292,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "read_only",
+        "passed": true,
+        "live_fault": "directory-write-permission-removed",
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.04343083800000613
+        },
+        "fault_phase_seconds": 0.033358403999983466,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 1
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 2
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 2
+          },
+          "failure": {
+            "action": "revoke",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 128.909978885,
+            "sqlite_code": "SQLITE_READONLY_DIRECTORY"
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 158.836342534,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "owner": "a",
+              "persistence": "FAILED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "73b124b875aefea52ffb98dab83b1b591c14243087d6f560636ee47f87bc7538",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "startup_fault": "actual-readonly-filesystem",
+        "readonly_restart_refusal": {
+          "exit_code": 1,
+          "exception": "OSError: [Errno 30] Read-only file system: '<state>/writer.lock'"
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 2,
+            "events": 2,
+            "grants": 1
+          },
+          "grants": [
+            {
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "73b124b875aefea52ffb98dab83b1b591c14243087d6f560636ee47f87bc7538",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 44,
+              "inode": 3
+            },
+            "writer.lock": {
+              "device": 44,
+              "inode": 2
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0018127030000130162,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 4
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 3
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 161.271808484,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "6524269e-cc98-4706-9f2a-abe2b1232179",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 158.836342534,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "ac7c99eb-a929-4cea-a1d2-3188118b188f",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25308,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      },
+      {
+        "mode": "late_commit",
+        "passed": true,
+        "refusal": {
+          "exit_code": 1,
+          "code": "STORAGE_FAILED"
+        },
+        "closure": {
+          "connection_ended": true,
+          "close_reason": "EOFError",
+          "observed_seconds": 0.4802427459999876
+        },
+        "degraded_before_release": true,
+        "late_commit_observed_on_disk": true,
+        "late_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "fault_phase_seconds": 0.5765976419999959,
+        "status_before_repair": {
+          "capacity": {
+            "events": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            },
+            "grants": {
+              "exact": false,
+              "full": false,
+              "limit": 64,
+              "used": 2
+            },
+            "ops": {
+              "exact": false,
+              "full": false,
+              "limit": 256,
+              "used": 3
+            }
+          },
+          "db_queued": 0,
+          "degraded": true,
+          "epoch": 1,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 26,
+            "refused": 3
+          },
+          "failure": {
+            "action": "approve",
+            "code": "STORAGE_FAILED",
+            "observed_boottime": 134.020410439,
+            "sqlite_code": null
+          },
+          "grants": [
+            {
+              "access": "DENIED",
+              "deadline": 163.508837539,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 193.586100849,
+              "duration": 30,
+              "epoch": 1,
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "owner": "b",
+              "persistence": "FAILED",
+              "revision": 1,
+              "service": "demo",
+              "sessions": 0,
+              "state": "PENDING"
+            }
+          ],
+          "health": "DEGRADED",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": true
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "old_data_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "catalog_before_restart": {
+          "counts": {
+            "ops": 4,
+            "events": 4,
+            "grants": 2
+          },
+          "grants": [
+            {
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            },
+            {
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "state": "ACTIVE",
+              "revision": 2,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "f6ca1090d92cf80aab24633bc142ef3bb8acb00ef82b8b093b60c1127cf2e0f1",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264585
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264584
+            }
+          }
+        },
+        "epoch_before": 1,
+        "epoch_after": 2,
+        "catalog_after_boot": {
+          "counts": {
+            "ops": 4,
+            "events": 4,
+            "grants": 2
+          },
+          "grants": [
+            {
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            },
+            {
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "state": "INVALIDATED",
+              "revision": 3,
+              "epoch": 1
+            }
+          ],
+          "history_sha256": "f6ca1090d92cf80aab24633bc142ef3bb8acb00ef82b8b093b60c1127cf2e0f1",
+          "file_ids": {
+            "catalog.sqlite": {
+              "device": 64769,
+              "inode": 264585
+            },
+            "writer.lock": {
+              "device": 64769,
+              "inode": 264584
+            }
+          }
+        },
+        "old_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "stale_refusal": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "late_after_restart_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "late_history_replay": {
+          "current": {
+            "capacity": {
+              "events": {
+                "exact": true,
+                "full": false,
+                "limit": 256,
+                "used": 4
+              },
+              "grants": {
+                "exact": true,
+                "full": false,
+                "limit": 64,
+                "used": 2
+              },
+              "ops": {
+                "exact": true,
+                "full": false,
+                "limit": 256,
+                "used": 4
+              }
+            },
+            "db_queued": 0,
+            "degraded": false,
+            "epoch": 2,
+            "facts": {
+              "admitted": 0,
+              "backpressure_events": 0,
+              "closed": 0,
+              "forwarded_bytes": 0,
+              "refused": 3
+            },
+            "failure": null,
+            "grants": [
+              {
+                "access": "DENIED",
+                "deadline": 163.508837539,
+                "duration": 30.0,
+                "epoch": 1,
+                "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+                "owner": "a",
+                "persistence": "COMMITTED",
+                "revision": 3,
+                "service": "demo",
+                "sessions": 0,
+                "state": "INVALIDATED"
+              },
+              {
+                "access": "DENIED",
+                "deadline": 163.6171345,
+                "duration": 30.0,
+                "epoch": 1,
+                "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+                "owner": "b",
+                "persistence": "COMMITTED",
+                "revision": 3,
+                "service": "demo",
+                "sessions": 0,
+                "state": "INVALIDATED"
+              }
+            ],
+            "health": "READY",
+            "next_cursor": null,
+            "ok": true,
+            "recovery": {
+              "method": "REPAIR_THEN_RESTART",
+              "old_grants_survive": false,
+              "online_reset_supported": false,
+              "required": false
+            },
+            "remaining_after_cursor": 0,
+            "sessions": 0
+          },
+          "historical": true,
+          "ok": true,
+          "original_result": {
+            "epoch": 1,
+            "grant": {
+              "deadline": 163.6171345,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "owner": "b",
+              "revision": 2,
+              "service": "demo",
+              "state": "ACTIVE"
+            }
+          }
+        },
+        "late_after_replay_refusal": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0019832940000128474,
+          "verified_bytes_each_direction": 163840
+        },
+        "status_after_repair": {
+          "capacity": {
+            "events": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 6
+            },
+            "grants": {
+              "exact": true,
+              "full": false,
+              "limit": 64,
+              "used": 3
+            },
+            "ops": {
+              "exact": true,
+              "full": false,
+              "limit": 256,
+              "used": 6
+            }
+          },
+          "db_queued": 0,
+          "degraded": false,
+          "epoch": 2,
+          "facts": {
+            "admitted": 1,
+            "backpressure_events": 0,
+            "closed": 1,
+            "forwarded_bytes": 327680,
+            "refused": 5
+          },
+          "failure": null,
+          "grants": [
+            {
+              "access": "ALLOWED",
+              "deadline": 166.529508186,
+              "duration": 30.0,
+              "epoch": 2,
+              "id": "0a791856-6aa4-4093-ad0c-c66edf90e276",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 2,
+              "service": "demo",
+              "sessions": 0,
+              "state": "ACTIVE"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 163.508837539,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "e5307cfc-f564-490b-ae05-135a45a49e05",
+              "owner": "a",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            },
+            {
+              "access": "DENIED",
+              "deadline": 163.6171345,
+              "duration": 30.0,
+              "epoch": 1,
+              "id": "fc67fbb6-9428-4107-a810-d1636d97b443",
+              "owner": "b",
+              "persistence": "COMMITTED",
+              "revision": 3,
+              "service": "demo",
+              "sessions": 0,
+              "state": "INVALIDATED"
+            }
+          ],
+          "health": "READY",
+          "next_cursor": null,
+          "ok": true,
+          "recovery": {
+            "method": "REPAIR_THEN_RESTART",
+            "old_grants_survive": false,
+            "online_reset_supported": false,
+            "required": false
+          },
+          "remaining_after_cursor": 0,
+          "sessions": 0
+        },
+        "resources": {
+          "rss_kib": 25304,
+          "fds": 10,
+          "disk_allocated_bytes": 32768
+        }
+      }
+    ],
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        -15,
+        0,
+        -15,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "failed_service": {
+    "passed": false,
+    "topology": {
+      "namespaces": [
+        "gw-client",
+        "gw-router",
+        "gw-backend"
+      ],
+      "client": "10.70.0.2",
+      "gateway_front": "10.70.0.1",
+      "gateway_back": "10.71.0.1",
+      "backend": "10.71.0.2:9000",
+      "forwarding": false,
+      "observed_ip_forward": 0
+    },
+    "direct_backend": {
+      "direct_backend_refused": true,
+      "failure_reason": "TimeoutError"
+    },
+    "installed_unit_sha256": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+    "test_override": {
+      "network_namespace_only": true,
+      "exec_start_unchanged": true
+    },
+    "initial": {
+      "unit": {
+        "Type": "notify",
+        "Restart": "on-failure",
+        "RestartUSec": "1s",
+        "TimeoutStopUSec": "5s",
+        "MainPID": "3245",
+        "Result": "success",
+        "NRestarts": "0",
+        "CapabilityBoundingSet": "",
+        "User": "grantweft",
+        "Group": "grantweft",
+        "ProtectSystem": "strict",
+        "NoNewPrivileges": "yes",
+        "KillMode": "control-group",
+        "ActiveState": "active",
+        "SubState": "running",
+        "StartLimitIntervalUSec": "30s",
+        "StartLimitBurst": "3",
+        "InvocationID": "e690262128294d449ccf710f78d9c93b"
+      },
+      "epoch": 1,
+      "privileges": {
+        "argv": [
+          "/opt/grantweft/venv/bin/python",
+          "-m",
+          "grantweft.gateway",
+          "--config",
+          "/etc/grantweft/config.json",
+          "--root",
+          "/var/lib/grantweft",
+          "--notify"
+        ],
+        "uid": 996,
+        "uids": [
+          996,
+          996,
+          996,
+          996
+        ],
+        "effective_capabilities": "0000000000000000",
+        "no_new_privileges": 1
+      }
+    },
+    "workload": {
+      "roundtrip": {
+        "roundtrips": 20,
+        "payload_bytes_per_roundtrip": 8192,
+        "seconds": 0.0020193050000045787,
+        "verified_bytes_each_direction": 163840
+      },
+      "rss_kib": 25316,
+      "fds": 12,
+      "disk_allocated_bytes": 32768,
+      "scope": "Linux VM single systemd main process point sample after fresh roundtrips; not peak/endurance"
+    },
+    "normal_stop": {
+      "seconds": 0.011679697999994687,
+      "closure": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 0.02181730899999934
+      },
+      "unit": {
+        "Type": "notify",
+        "Restart": "on-failure",
+        "RestartUSec": "1s",
+        "TimeoutStopUSec": "5s",
+        "MainPID": "0",
+        "Result": "success",
+        "NRestarts": "0",
+        "CapabilityBoundingSet": "",
+        "User": "grantweft",
+        "Group": "grantweft",
+        "ProtectSystem": "strict",
+        "NoNewPrivileges": "yes",
+        "KillMode": "control-group",
+        "ActiveState": "inactive",
+        "SubState": "dead",
+        "StartLimitIntervalUSec": "30s",
+        "StartLimitBurst": "3",
+        "InvocationID": ""
+      },
+      "service_uid_pids": [],
+      "old_pid_absent": true,
+      "remained_stopped_after_seconds": 1.3
+    },
+    "normal_restart": {
+      "epoch": 2,
+      "old_data": {
+        "exit_code": 1,
+        "code": "NO_ACCESS"
+      },
+      "old_operation": {
+        "exit_code": 1,
+        "code": "STALE_EPOCH"
+      }
+    },
+    "crash_takeover": {
+      "observed_seconds": 1.1483722690000207,
+      "before": {
+        "Type": "notify",
+        "Restart": "on-failure",
+        "RestartUSec": "1s",
+        "TimeoutStopUSec": "5s",
+        "MainPID": "3264",
+        "Result": "success",
+        "NRestarts": "0",
+        "CapabilityBoundingSet": "",
+        "User": "grantweft",
+        "Group": "grantweft",
+        "ProtectSystem": "strict",
+        "NoNewPrivileges": "yes",
+        "KillMode": "control-group",
+        "ActiveState": "active",
+        "SubState": "running",
+        "StartLimitIntervalUSec": "30s",
+        "StartLimitBurst": "3",
+        "InvocationID": "a448e113f0164409ace22063c5e14519"
+      },
+      "after": {
+        "Type": "notify",
+        "Restart": "on-failure",
+        "RestartUSec": "1s",
+        "TimeoutStopUSec": "5s",
+        "MainPID": "3319",
+        "Result": "success",
+        "NRestarts": "1",
+        "CapabilityBoundingSet": "",
+        "User": "grantweft",
+        "Group": "grantweft",
+        "ProtectSystem": "strict",
+        "NoNewPrivileges": "yes",
+        "KillMode": "control-group",
+        "ActiveState": "active",
+        "SubState": "running",
+        "StartLimitIntervalUSec": "30s",
+        "StartLimitBurst": "3",
+        "InvocationID": "4eff83889958411eac2b9e86cebec69f"
+      },
+      "epoch_before": 2,
+      "epoch_after": 3,
+      "closure": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 0.022670263999998497
+      },
+      "privileges": {
+        "argv": [
+          "/opt/grantweft/venv/bin/python",
+          "-m",
+          "grantweft.gateway",
+          "--config",
+          "/etc/grantweft/config.json",
+          "--root",
+          "/var/lib/grantweft",
+          "--notify"
+        ],
+        "uid": 996,
+        "uids": [
+          996,
+          996,
+          996,
+          996
+        ],
+        "effective_capabilities": "0000000000000000",
+        "no_new_privileges": 1
+      },
+      "old_data": {
+        "exit_code": 1,
+        "code": "NO_ACCESS"
+      },
+      "old_operation": {
+        "exit_code": 1,
+        "code": "STALE_EPOCH"
+      },
+      "fresh_roundtrip": {
+        "roundtrips": 20,
+        "payload_bytes_per_roundtrip": 8192,
+        "seconds": 0.0019451490000221838,
+        "verified_bytes_each_direction": 163840
+      }
+    },
+    "degraded": {
+      "refusal": {
+        "exit_code": 1,
+        "code": "CATALOG_FULL"
+      },
+      "closure": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 0.044659248000016305
+      },
+      "status": {
+        "capacity": {
+          "events": {
+            "exact": false,
+            "full": false,
+            "limit": 256,
+            "used": 8
+          },
+          "grants": {
+            "exact": false,
+            "full": false,
+            "limit": 64,
+            "used": 4
+          },
+          "ops": {
+            "exact": false,
+            "full": true,
+            "limit": 8,
+            "used": 8
+          }
+        },
+        "db_queued": 0,
+        "degraded": true,
+        "epoch": 4,
+        "facts": {
+          "admitted": 2,
+          "backpressure_events": 0,
+          "closed": 2,
+          "forwarded_bytes": 327706,
+          "refused": 3
+        },
+        "failure": {
+          "action": "revoke",
+          "code": "CATALOG_FULL",
+          "observed_boottime": 144.238685749,
+          "sqlite_code": null
+        },
+        "grants": [
+          {
+            "access": "DENIED",
+            "deadline": 173.928290064,
+            "duration": 30.0,
+            "epoch": 3,
+            "id": "6dab6af0-18da-493f-b5b8-233f08990b4f",
+            "owner": "a",
+            "persistence": "COMMITTED",
+            "revision": 3,
+            "service": "demo",
+            "sessions": 0,
+            "state": "INVALIDATED"
+          },
+          {
+            "access": "DENIED",
+            "deadline": 170.946521771,
+            "duration": 30.0,
+            "epoch": 1,
+            "id": "8c64c037-b392-4b9c-8fef-77ffad2fc5a0",
+            "owner": "a",
+            "persistence": "COMMITTED",
+            "revision": 3,
+            "service": "demo",
+            "sessions": 0,
+            "state": "INVALIDATED"
+          },
+          {
+            "access": "DENIED",
+            "deadline": 174.132521271,
+            "duration": 30.0,
+            "epoch": 4,
+            "id": "990f24b7-e5ae-437c-9e45-1c67cd6d7ff2",
+            "owner": "a",
+            "persistence": "FAILED",
+            "revision": 2,
+            "service": "demo",
+            "sessions": 0,
+            "state": "ACTIVE"
+          },
+          {
+            "access": "DENIED",
+            "deadline": 172.579264948,
+            "duration": 30.0,
+            "epoch": 2,
+            "id": "d93f2b98-0ee3-4b6a-85b1-83746318291d",
+            "owner": "a",
+            "persistence": "COMMITTED",
+            "revision": 3,
+            "service": "demo",
+            "sessions": 0,
+            "state": "INVALIDATED"
+          }
+        ],
+        "health": "DEGRADED",
+        "next_cursor": null,
+        "ok": true,
+        "recovery": {
+          "method": "REPAIR_THEN_RESTART",
+          "old_grants_survive": false,
+          "online_reset_supported": false,
+          "required": true
+        },
+        "remaining_after_cursor": 0,
+        "sessions": 0
+      },
+      "unit_before": {
+        "Type": "notify",
+        "Restart": "on-failure",
+        "RestartUSec": "1s",
+        "TimeoutStopUSec": "5s",
+        "MainPID": "3341",
+        "Result": "success",
+        "NRestarts": "0",
+        "CapabilityBoundingSet": "",
+        "User": "grantweft",
+        "Group": "grantweft",
+        "ProtectSystem": "strict",
+        "NoNewPrivileges": "yes",
+        "KillMode": "control-group",
+        "ActiveState": "active",
+        "SubState": "running",
+        "StartLimitIntervalUSec": "30s",
+        "StartLimitBurst": "3",
+        "InvocationID": "e229f18cae39439ba3659d9b4b8cd86f"
+      },
+      "unit_after_wait": {
+        "Type": "notify",
+        "Restart": "on-failure",
+        "RestartUSec": "1s",
+        "TimeoutStopUSec": "5s",
+        "MainPID": "3341",
+        "Result": "success",
+        "NRestarts": "0",
+        "CapabilityBoundingSet": "",
+        "User": "grantweft",
+        "Group": "grantweft",
+        "ProtectSystem": "strict",
+        "NoNewPrivileges": "yes",
+        "KillMode": "control-group",
+        "ActiveState": "active",
+        "SubState": "running",
+        "StartLimitIntervalUSec": "30s",
+        "StartLimitBurst": "3",
+        "InvocationID": "e229f18cae39439ba3659d9b4b8cd86f"
+      },
+      "wait_seconds": 1.3
+    },
+    "repair": {
+      "catalog_before": {
+        "counts": {
+          "ops": 8,
+          "events": 8,
+          "grants": 4
+        },
+        "grants": [
+          {
+            "id": "6dab6af0-18da-493f-b5b8-233f08990b4f",
+            "state": "INVALIDATED",
+            "revision": 3,
+            "epoch": 3
+          },
+          {
+            "id": "8c64c037-b392-4b9c-8fef-77ffad2fc5a0",
+            "state": "INVALIDATED",
+            "revision": 3,
+            "epoch": 1
+          },
+          {
+            "id": "990f24b7-e5ae-437c-9e45-1c67cd6d7ff2",
+            "state": "ACTIVE",
+            "revision": 2,
+            "epoch": 4
+          },
+          {
+            "id": "d93f2b98-0ee3-4b6a-85b1-83746318291d",
+            "state": "INVALIDATED",
+            "revision": 3,
+            "epoch": 2
+          }
+        ],
+        "history_sha256": "9c51b7a8d3dee095b4f504417aef6ecfdf1d3524419c301d77c33cf820f7459c",
+        "file_ids": {
+          "catalog.sqlite": {
+            "device": 64769,
+            "inode": 264605
+          },
+          "writer.lock": {
+            "device": 64769,
+            "inode": 264604
+          }
+        }
+      },
+      "catalog_after": {
+        "counts": {
+          "ops": 8,
+          "events": 8,
+          "grants": 4
+        },
+        "grants": [
+          {
+            "id": "6dab6af0-18da-493f-b5b8-233f08990b4f",
+            "state": "INVALIDATED",
+            "revision": 3,
+            "epoch": 3
+          },
+          {
+            "id": "8c64c037-b392-4b9c-8fef-77ffad2fc5a0",
+            "state": "INVALIDATED",
+            "revision": 3,
+            "epoch": 1
+          },
+          {
+            "id": "990f24b7-e5ae-437c-9e45-1c67cd6d7ff2",
+            "state": "INVALIDATED",
+            "revision": 3,
+            "epoch": 4
+          },
+          {
+            "id": "d93f2b98-0ee3-4b6a-85b1-83746318291d",
+            "state": "INVALIDATED",
+            "revision": 3,
+            "epoch": 2
+          }
+        ],
+        "history_sha256": "9c51b7a8d3dee095b4f504417aef6ecfdf1d3524419c301d77c33cf820f7459c",
+        "file_ids": {
+          "catalog.sqlite": {
+            "device": 64769,
+            "inode": 264605
+          },
+          "writer.lock": {
+            "device": 64769,
+            "inode": 264604
+          }
+        }
+      },
+      "epoch_before": 4,
+      "epoch_after": 5,
+      "old_data": {
+        "exit_code": 1,
+        "code": "NO_ACCESS"
+      },
+      "old_operation": {
+        "exit_code": 1,
+        "code": "STALE_EPOCH"
+      },
+      "fresh_roundtrip": {
+        "roundtrips": 20,
+        "payload_bytes_per_roundtrip": 8192,
+        "seconds": 0.0019318420000047354,
+        "verified_bytes_each_direction": 163840
+      }
+    },
+    "forced_stop": {
+      "seconds": 5.154191046999983,
+      "injection": "root-ptrace-stop",
+      "trace_stop_observed": true,
+      "termination_signal": 9,
+      "stop_exit_code": 0,
+      "closure": {
+        "connection_ended": true,
+        "close_reason": "EOFError",
+        "observed_seconds": 5.153214426999995
+      },
+      "unit": {
+        "Type": "notify",
+        "Restart": "on-failure",
+        "RestartUSec": "1s",
+        "TimeoutStopUSec": "5s",
+        "MainPID": "0",
+        "Result": "timeout",
+        "NRestarts": "0",
+        "CapabilityBoundingSet": "",
+        "User": "grantweft",
+        "Group": "grantweft",
+        "ProtectSystem": "strict",
+        "NoNewPrivileges": "yes",
+        "KillMode": "control-group",
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "StartLimitIntervalUSec": "30s",
+        "StartLimitBurst": "3",
+        "InvocationID": "59f67f35a4314b6c919b4dd985211133"
+      },
+      "service_uid_pids": [],
+      "old_pid_absent": true,
+      "recovery": {
+        "epoch_before": 5,
+        "epoch_after": 6,
+        "old_data": {
+          "exit_code": 1,
+          "code": "NO_ACCESS"
+        },
+        "old_operation": {
+          "exit_code": 1,
+          "code": "STALE_EPOCH"
+        },
+        "fresh_roundtrip": {
+          "roundtrips": 20,
+          "payload_bytes_per_roundtrip": 8192,
+          "seconds": 0.0018599720000054276,
+          "verified_bytes_each_direction": 163840
+        }
+      }
+    },
+    "error": "TimeoutError",
+    "test_override_removed": true,
+    "cleanup": {
+      "owned_processes_reaped": true,
+      "namespaces_removed": true,
+      "exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors": []
+    }
+  },
+  "vm_deleted": true,
+  "disk_removed": true,
+  "preexisting_profiles_unchanged": true
+}

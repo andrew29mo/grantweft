@@ -91,7 +91,10 @@ class Gateway:
         self.ready = True
         self.track(self.expirer())
         ports = {k:s.sockets[0].getsockname()[1] for k,s in zip(('control','data'),self.servers)}
-        (self.root/'ready.json').write_text(json.dumps({'epoch':self.epoch,'ports':ports,'pid':os.getpid()}))
+        # Publish a complete receipt atomically; existence must not expose partial JSON.
+        temporary=self.root/'.ready.json.tmp'
+        temporary.write_text(json.dumps({'epoch':self.epoch,'ports':ports,'pid':os.getpid()}))
+        os.replace(temporary,self.root/'ready.json')
 
     def accept(self, reader, writer, kind, ctx):
         if len(self.connections[kind]) >= self.cfg[kind+'_connections'] or not self.ready:
@@ -350,16 +353,29 @@ class Gateway:
         await asyncio.to_thread(self.store.close)
         os.close(self.lock)
 
+def notify_ready():
+    """Signal only completed startup to systemd, using no external dependency."""
+    address=os.environ.get('NOTIFY_SOCKET')
+    if not address:raise Refused('NOTIFY_SOCKET_MISSING')
+    if address.startswith('@'):address='\0'+address[1:]
+    with socket.socket(socket.AF_UNIX,socket.SOCK_DGRAM) as channel:
+        channel.settimeout(1)
+        channel.connect(address)
+        channel.sendall(b'READY=1\nSTATUS=Initialized; use authenticated status for current health')
+
 async def run(args):
     cfg=json.loads(Path(args.config).read_text());gw=Gateway(cfg,args.root,args.barriers)
     end=asyncio.Event();loop=asyncio.get_running_loop()
     for sig in (signal.SIGTERM,signal.SIGINT):loop.add_signal_handler(sig,end.set)
     try:
-        await gw.start();await end.wait()
+        await gw.start()
+        if args.notify:notify_ready()
+        await end.wait()
     finally:await gw.stop()
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argument('--root',required=True)
+    p.add_argument('--notify',action='store_true',help='Require systemd readiness notification')
     p.add_argument('--barriers',help='Explicit test-only storage barriers; never set for deployment')
     args=p.parse_args();asyncio.run(run(args))
 if __name__=='__main__':main()

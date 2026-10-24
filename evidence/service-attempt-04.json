@@ -1,0 +1,222 @@
+{
+  "contract": "grantweft-systemd-v5",
+  "passed": false,
+  "recorded_at_utc": "2026-10-24T14:45:06.154914+00:00",
+  "source": {
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+    "grantweft/gateway.py": "aabd2aaa5fdc3979e011d71f45c17dd1d9a09dae4e13964b8d9b9b837158ec3c",
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+    "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+    "pyproject.toml": "89f1fd278a14db433a5525898ba493d03a94506524b6b3697828291d7a700f65",
+    "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+    "tests/test_gateway.py": "7015d22945105c453078ed81e1aac9d680b5d37c0336b23500adb78e9a57f6c9",
+    "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+    "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+    "tools/probe.py": "9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170",
+    "tools/report.py": "039cbd7757b32d9b538c97454aaf72de4639e6c609a6c4f8f9fab5dfe36a68a8",
+    "tools/unit.py": "0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d",
+    "tools/validate.py": "16bac0a39b3a04a4b6ca3a367b9b4265b15f84fc8b83cb10bfba1b27ef47120d",
+    "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+    "tools/vm_recovery.py": "4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20",
+    "tools/vm_service.py": "ae122bd270c7f99cbb416da5a6f4d589c971c780a1d36bb6d5bbd8fd37d1d86a"
+  },
+  "source_sha256": "a61507e7a390a7715b249b918a4be30a11d9cd3ff33fb82e7c29e042189241c1",
+  "source_changed": false,
+  "host_mounts": "none",
+  "wheel_modules_match": true,
+  "wheel_sha256": "6596c911d2c5908fcbf7d237b6be3655b2fadb0cd2371a34fbf6200a2a3fdcc1",
+  "stages": [
+    {
+      "name": "initial",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.3416612499859184
+    },
+    {
+      "name": "create",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 21.719455041980837
+    },
+    {
+      "name": "dependencies",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 15.778970666986424
+    },
+    {
+      "name": "upload",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.2712929169938434
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.536383124999702
+    },
+    {
+      "name": "provenance",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.26123537501553074
+    },
+    {
+      "name": "native",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 30.50002437501098
+    },
+    {
+      "name": "linux",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 36.21420858299825
+    },
+    {
+      "name": "failed-cases",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.28461812500609085
+    },
+    {
+      "name": "failed-recovery",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.23939691702253185
+    },
+    {
+      "name": "failed-service",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.23032170798978768
+    },
+    {
+      "name": "failed-prepared",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.22527525000623427
+    },
+    {
+      "name": "failed-finished",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.225962458003778
+    },
+    {
+      "name": "failed-service-diagnostics",
+      "exit_code": 1,
+      "timed_out": false,
+      "seconds": 0.22916062499280088
+    },
+    {
+      "name": "delete",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.4920152089907788
+    },
+    {
+      "name": "final",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.18917120900005102
+    }
+  ],
+  "installed_modules": {
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+    "grantweft/gateway.py": "aabd2aaa5fdc3979e011d71f45c17dd1d9a09dae4e13964b8d9b9b837158ec3c",
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+    "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438"
+  },
+  "installed_source_absent": true,
+  "sqlite": "3.45.1",
+  "openssl": "OpenSSL 3.0.13 30 Jan 2024",
+  "python": "3.12.3",
+  "native": {
+    "passed": true,
+    "count": 43,
+    "tests": [
+      "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
+      "test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence",
+      "test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants",
+      "test_gateway.GatewayTests.test_catalog_full_expiry_does_not_need_new_audit_slot",
+      "test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations",
+      "test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate",
+      "test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke",
+      "test_gateway.GatewayTests.test_deny_cancel_and_request_expiry",
+      "test_gateway.GatewayTests.test_duplicate_identity_exits_before_creating_store_or_worker",
+      "test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect",
+      "test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive",
+      "test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits",
+      "test_gateway.GatewayTests.test_grant_full_preserves_revoke_and_expiry_without_gc",
+      "test_gateway.GatewayTests.test_history_result_is_stable_after_expiry_and_restart",
+      "test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart",
+      "test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected",
+      "test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof",
+      "test_gateway.GatewayTests.test_observed_backpressure_then_revoke_stops_transfer",
+      "test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state",
+      "test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume",
+      "test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control",
+      "test_gateway.GatewayTests.test_readiness_notification_requires_socket_and_sends_ready",
+      "test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity",
+      "test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions",
+      "test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen",
+      "test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover",
+      "test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke",
+      "test_gateway.GatewayTests.test_slow_approval_history_retains_original_commit",
+      "test_gateway.GatewayTests.test_slow_commit_after_retirement_stays_denied_through_repair",
+      "test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl",
+      "test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data",
+      "test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry",
+      "test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget",
+      "test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves",
+      "test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history",
+      "test_gateway.GatewayTests.test_truncated_frame_is_not_payload",
+      "test_gateway.GatewayTests.test_unknown_and_missing_client_certificate",
+      "test_review.EvidenceObserverTests.test_cleanup_continues_after_forced_kill",
+      "test_review.EvidenceObserverTests.test_cleanup_exception_still_saves_failed_receipt",
+      "test_review.EvidenceObserverTests.test_close_observer_rejects_live_idle_socket_timeout",
+      "test_review.EvidenceObserverTests.test_close_observer_requires_positive_eof",
+      "test_review.EvidenceObserverTests.test_echo_observer_accepts_fragmentation_and_checks_order",
+      "test_review.EvidenceObserverTests.test_startup_process_registered_before_readiness_failure"
+    ],
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 30.38132424998912,
+    "platform": "Darwin",
+    "source": {
+      "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+      "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+      "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+      "grantweft/gateway.py": "aabd2aaa5fdc3979e011d71f45c17dd1d9a09dae4e13964b8d9b9b837158ec3c",
+      "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+      "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+      "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+      "pyproject.toml": "89f1fd278a14db433a5525898ba493d03a94506524b6b3697828291d7a700f65",
+      "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+      "tests/test_gateway.py": "7015d22945105c453078ed81e1aac9d680b5d37c0336b23500adb78e9a57f6c9",
+      "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
+      "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+      "tools/probe.py": "9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170",
+      "tools/report.py": "039cbd7757b32d9b538c97454aaf72de4639e6c609a6c4f8f9fab5dfe36a68a8",
+      "tools/unit.py": "0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d",
+      "tools/validate.py": "16bac0a39b3a04a4b6ca3a367b9b4265b15f84fc8b83cb10bfba1b27ef47120d",
+      "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+      "tools/vm_recovery.py": "4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20",
+      "tools/vm_service.py": "ae122bd270c7f99cbb416da5a6f4d589c971c780a1d36bb6d5bbd8fd37d1d86a"
+    },
+    "source_sha256": "a61507e7a390a7715b249b918a4be30a11d9cd3ff33fb82e7c29e042189241c1"
+  },
+  "error": "RuntimeError: linux failed/timeout; see ignored private log",
+  "vm_deleted": true,
+  "disk_removed": true,
+  "preexisting_profiles_unchanged": true
+}

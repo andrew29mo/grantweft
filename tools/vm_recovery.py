@@ -31,9 +31,9 @@ def denied(g,who='a'):
     if p.returncode==0 or 'NO_ACCESS' not in p.stderr:raise RuntimeError('Old data not refused')
     return {'exit_code':p.returncode,'code':'NO_ACCESS'}
 
-def holder(procs,g,name):
+def holder(procs,g,name,close_timeout=4):
     marker=LAB/(name+'-ready')
-    p=subprocess.Popen(['ip','netns','exec','gw-client',vm.PY,'-m','tools.probe','--pki',str(LAB/'pki'),'--mode','hold','--grant',g['id'],'--marker',str(marker)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+    p=subprocess.Popen(['ip','netns','exec','gw-client',vm.PY,'-m','tools.probe','--pki',str(LAB/'pki'),'--mode','hold','--grant',g['id'],'--marker',str(marker),'--close-timeout',str(close_timeout)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
     procs.append((p,p.stdout));vm.wait(lambda:marker.exists() or p.poll() is not None)
     if not marker.exists():raise RuntimeError('Holder failed')
     return p

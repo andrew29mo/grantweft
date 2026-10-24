@@ -18,7 +18,7 @@ uses 2 vCPU / 2 GiB / requested 15-GiB data disk, no host mounts and no default
 context activation, installs Python/OpenSSL/iproute2/util-linux from the guest
 package manager, installs the no-dependency wheel, removes product source from
 import reach and verifies installed module SHA-256. Tools/tests remain a checkout.
-Both platforms run the same source-bound test IDs (36 formal-service tests plus six evidence/cleanup
+Both platforms run the same source-bound test IDs (37 formal-service tests plus six evidence/cleanup
 controls in milestone 1). OS/SQLite/OpenSSL versions
 are captured; no firmware, hardware network or physical-storage claim follows.
 
@@ -64,7 +64,7 @@ Existing Colima profiles/statuses must remain unchanged. Raw commands, paths,
 certificates, keys, databases, wheels and logs stay under ignored results or inside
 the deleted VM. Only sanitized receipts are eligible for Git.
 
-The recovery-review-v4 offline verifier requires complete ordered stages, actual platform
+The systemd-v5 offline verifier requires complete ordered stages, actual platform
 labels, postboot fresh-workload results, observed closure reason, recovered grant
 states, raw stale-refusal outcomes and successful boot observations. Old receipts
 without this contract are historical and are not accepted as current qualification.
@@ -113,3 +113,49 @@ and catalog/lock file IDs. The late-commit case replays the exact operation UUID
 then proves data access remains refused. Expected refusal exit codes, committed
 grant-full revoke, cleanup errors and capacity increments are mandatory checks.
 The old receipts remain historical, not rewritten to satisfy new acceptance.
+
+## Installed systemd stage
+
+The wheel includes grantweft.deploy and the shipped service unit. Provenance now
+hashes every runtime .py and .service file in both the frozen source and installed
+package. `tools.vm_service` installs the unit, provisions root-owned test config/PKI,
+and applies only a VM NetworkNamespacePath drop-in; actual process argv must be
+the shipped command. The unit uses a dedicated service UID (not fixture nobody).
+
+Observed UID/capabilities/no-new-privileges, READY notification, normal stop, SIGKILL
+takeover, DEGRADED catalog repair, root-ptrace stop timeout, invalid-config restart
+limiting and repaired startup have per-case receipts. A ptrace stop is root fixture
+injection; no product barrier flag or alternative startup wrapper is used.
+
+Service attempt 01 failed because SIGSTOP did not exercise stop timeout; systemd
+resumed the process to handle termination. Attempt 02 exercised timeout/KILL and
+recovery, then failed when the fixture tried to reset a normally stopped unit
+already unloaded by systemd. The corrected script resets failed units only. Those
+failed receipts remain failed and are not current qualification.
+
+The unit is stopped and test drop-in removed before fixture namespace cleanup.
+It is not enabled; the separate boot witness remains manual gateway startup.
+The normal reboot stage does not qualify systemd boot-autostart, power loss or
+boot-zero-gap. See [deployment](DEPLOYMENT.md) for commands and limits.
+
+Service attempt 03 observed limiting but failed a too-specific Result expectation.
+A dedicated non-qualification diagnostic then captured journal rate limiting with
+Result=exit-code and NRestarts=3. Acceptance now requires three actual error traces,
+the explicit rate-limit journal message and a stable stopped restart count; it
+does not accept a generic exit-code by itself. Attempt 04 instead exposed a torn
+ready.json read in the formal Linux suite. Atomic receipt publication fixes that
+race; a mid-write publication regression challenges the real startup path.
+
+Service attempt 05 failed the first version of the new publication regression:
+the test wrapper referenced argv after rewriting it, so it waited for the wrong
+marker. The wrapper now captures its marker/release paths before invoking the
+real CLI; its isolated regression passes. That failed full run remains failed.
+The diagnostic-only run skipped suites and is never promoted to qualification;
+its sanitized observations are retained separately.
+
+Service attempt 06 passed both platforms, all recovery and service cases, but
+failed the extra normal-VM-reboot witness: repeated successful polls still returned
+the old boot UUID for 120 seconds. It is not a passing run. The timer now specifies
+AccuracySec=1s, retaining the same boot-observation deadline and additional timer/
+journal/job diagnostics on failure. VM creation/DNS delays remain infrastructure
+stage timings, separate from service-performance measurements.

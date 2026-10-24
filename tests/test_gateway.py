@@ -365,3 +365,45 @@ class GatewayTests(unittest.TestCase):
             p=subprocess.run([sys.executable,'-m','grantweft.gateway','--config',str(config),'--root',str(root)],capture_output=True,text=True,timeout=2)
             self.assertNotEqual(p.returncode,0);self.assertIn('DUPLICATE_IDENTITY',p.stderr)
             self.assertFalse(root.exists(),'Invalid config must not create state/worker')
+    def test_readiness_notification_requires_socket_and_sends_ready(self):
+        from unittest.mock import patch
+        from grantweft.gateway import notify_ready
+        with patch.dict(os.environ,{},clear=True):
+            with self.assertRaisesRegex(Refused,'NOTIFY_SOCKET_MISSING'):notify_ready()
+        with tempfile.TemporaryDirectory(prefix='gw-notify-') as base:
+            path=str(Path(base)/'notify')
+            with socket.socket(socket.AF_UNIX,socket.SOCK_DGRAM) as server:
+                server.bind(path);server.settimeout(1)
+                with patch.dict(os.environ,{'NOTIFY_SOCKET':path}):notify_ready()
+                message=server.recv(512)
+                self.assertIn(b'READY=1',message)
+                self.assertIn(b'authenticated status',message)
+    def test_startup_receipt_is_not_visible_until_complete(self):
+        h=self.h();h.stop();ready=h.store/'ready.json';ready.unlink()
+        held=h.base/'publication-held';release=h.base/'publication-release'
+        # Pause the real startup write mid-publication; both the old final path
+        # and the new temporary path are intercepted, so this fails pre-fix.
+        code='''import runpy,time,sys
+from pathlib import Path
+original=Path.write_text
+marker=Path(sys.argv[1]);release=Path(sys.argv[2]);arguments=sys.argv[3:]
+def paused(path,text,*args,**kw):
+    if path.name in ('ready.json','.ready.json.tmp'):
+        original(path,'{')
+        original(marker,'held')
+        until=time.monotonic()+4
+        while not release.exists():
+            if time.monotonic()>until:raise RuntimeError('Publication barrier timeout')
+            time.sleep(.01)
+    return original(path,text,*args,**kw)
+Path.write_text=paused
+sys.argv=['grantweft.gateway',*arguments]
+runpy.run_module('grantweft.gateway',run_name='__main__')
+'''
+        h.log=open(h.base/'gateway.log','ab')
+        h.proc=subprocess.Popen([sys.executable,'-c',code,str(held),str(release),'--config',str(h.config),'--root',str(h.store)],stdout=h.log,stderr=h.log)
+        try:
+            h.wait(held.exists);self.assertFalse(ready.exists(),'Partial startup receipt was visible')
+        finally:release.touch()
+        h.wait(ready.exists);h.ready=json.loads(ready.read_text())
+        self.assertEqual(h.ready['pid'],h.proc.pid);self.assertTrue(h.status()['ok'])

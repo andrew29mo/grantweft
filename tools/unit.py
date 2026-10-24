@@ -16,7 +16,7 @@ def manifest():
         paths += [p for p in (root/folder).rglob('*.py') if '__pycache__' not in p.parts]
     out={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(paths)}
     product=Path(grantweft.__file__).resolve().parent
-    out.update({'grantweft/'+p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in product.glob('*.py')})
+    out.update({'grantweft/'+str(p.relative_to(product)):hashlib.sha256(p.read_bytes()).hexdigest() for p in product.rglob('*') if p.is_file() and p.suffix in ('.py','.service') and '__pycache__' not in p.parts})
     return dict(sorted(out.items()))
 def fingerprint(m):return hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def main():

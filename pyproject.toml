@@ -15,3 +15,6 @@ grantweft-gateway = "grantweft.gateway:main"
 
 [tool.setuptools.packages.find]
 include = ["grantweft*"]
+
+[tool.setuptools.package-data]
+grantweft = ["systemd/*.service"]

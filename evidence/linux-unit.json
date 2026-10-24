@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "count": 42,
+  "count": 44,
   "tests": [
     "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
     "test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence",
@@ -23,6 +23,7 @@
     "test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state",
     "test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume",
     "test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control",
+    "test_gateway.GatewayTests.test_readiness_notification_requires_socket_and_sends_ready",
     "test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity",
     "test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions",
     "test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen",
@@ -34,6 +35,7 @@
     "test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data",
     "test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry",
     "test_gateway.GatewayTests.test_sqlite_full_closes_live_access_and_recovers_with_page_budget",
+    "test_gateway.GatewayTests.test_startup_receipt_is_not_visible_until_complete",
     "test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves",
     "test_gateway.GatewayTests.test_storage_repair_requires_restart_and_preserves_history",
     "test_gateway.GatewayTests.test_truncated_frame_is_not_payload",
@@ -48,25 +50,28 @@
   "failures": 0,
   "errors": 0,
   "skipped": 0,
-  "seconds": 36.296652327000004,
+  "seconds": 38.157937692000004,
   "platform": "Linux",
   "source": {
     "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
     "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
-    "grantweft/gateway.py": "f0dbf75da7ab86f78d41775068c400c034a61f9675738bf55143bab0d075dc4d",
+    "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+    "grantweft/gateway.py": "50badb8f35cd3e5e8f564d9657ae078aa57d14a20cb02b33b5d582ae73514cbb",
     "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
     "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
-    "pyproject.toml": "d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090",
+    "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+    "pyproject.toml": "89f1fd278a14db433a5525898ba493d03a94506524b6b3697828291d7a700f65",
     "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
-    "tests/test_gateway.py": "a1be4deabb05b964f2d12fbb708efed76af184d76e4ada5e728db3ea67067ca5",
+    "tests/test_gateway.py": "6c079a2fd441a027244e9773e30d518039b87a86f55585e980cea22e3065c5cf",
     "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
     "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
-    "tools/probe.py": "8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411",
-    "tools/report.py": "923ec26d7546918156b26e651af06e12a9572601fe028537e2158664b55d87c5",
-    "tools/unit.py": "58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7",
-    "tools/validate.py": "6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36",
+    "tools/probe.py": "9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170",
+    "tools/report.py": "6cfd04b0ea0c2ad6f5388c9d37da8514fec69fc4ccb20cdeb01a268d9ca39ef1",
+    "tools/unit.py": "0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d",
+    "tools/validate.py": "a30bda7a0b1ed504d701e2d08e8c11e191915f949c518bbae078bc408547ff7a",
     "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
-    "tools/vm_recovery.py": "966692cebbdca95716f6c3ebdaf3d77d860b5d16d6c7f698cf054cc902f6b51f"
+    "tools/vm_recovery.py": "4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20",
+    "tools/vm_service.py": "e4e6ac644e8d7a992e8f40184d5e7a30f817b946ec1a2ed9456bd1c8544f82d1"
   },
-  "source_sha256": "32e57f3573efd1d9b40ffd55fde677eb0c7766b8d41314dc61b70914c7d10fc4"
+  "source_sha256": "bdca477cf50634c7fb2bf923dcce2340a584d91977160bec0a730fe5b87eb4b7"
 }

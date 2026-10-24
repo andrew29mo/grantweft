@@ -14,7 +14,7 @@ def main():
     out=Path(a.output).resolve();out.mkdir(parents=True,exist_ok=True)
     if any(out.iterdir()):p.error('Fresh output directory required')
     logs=out/'private-logs';logs.mkdir();wheel=Path(a.wheel).resolve();source=manifest()
-    with zipfile.ZipFile(wheel) as z:modules={n:hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist() if n.startswith('grantweft/') and n.endswith('.py')}
+    with zipfile.ZipFile(wheel) as z:modules={n:hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist() if n.startswith('grantweft/') and n.endswith(('.py','.service'))}
     if modules!={k:h for k,h in source.items() if k.startswith('grantweft/')}:p.error('Wheel differs from source')
     env=dict(os.environ,COLIMA_HOME=str(task_home),PATH=str(binpath)+os.pathsep+os.environ['PATH'])
     v={'contract':CONTRACT,'passed':False,'recorded_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source':source,'source_sha256':fingerprint(source),'source_changed':False,'host_mounts':'none','wheel_modules_match':True,'wheel_sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'stages':[]}
@@ -47,7 +47,7 @@ def main():
         code='import sys,io,tarfile,base64,pathlib;p=pathlib.Path("/opt/grantweft");p.mkdir();tarfile.open(fileobj=io.BytesIO(base64.b64decode(sys.stdin.read()))).extractall(p,filter="data")'
         ssh('upload',['sudo','python3','-c',code],stdin=base64.b64encode(buf.getvalue()).decode())
         guest('install','python3 -m venv /opt/grantweft/venv && /opt/grantweft/venv/bin/pip install --no-index --no-deps /opt/grantweft/'+wheel.name+' && mv grantweft /opt/grantweft/retired-source')
-        provenance='import grantweft,pathlib,hashlib,json,sqlite3,ssl,platform;root=pathlib.Path(grantweft.__file__).parent;print(json.dumps(dict(installed_modules={"grantweft/"+p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.glob("*.py")},installed_source_absent=not pathlib.Path("grantweft").exists(),sqlite=sqlite3.sqlite_version,openssl=ssl.OPENSSL_VERSION,python=platform.python_version())))'
+        provenance='import grantweft,pathlib,hashlib,json,sqlite3,ssl,platform;root=pathlib.Path(grantweft.__file__).parent;print(json.dumps(dict(installed_modules={"grantweft/"+str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("*") if p.is_file() and p.suffix in (".py",".service") and "__pycache__" not in p.parts},installed_source_absent=not pathlib.Path("grantweft").exists(),sqlite=sqlite3.sqlite_version,openssl=ssl.OPENSSL_VERSION,python=platform.python_version())))'
         v.update(json.loads(guest('provenance',"/opt/grantweft/venv/bin/python -c '"+provenance+"'")))
         run('native',[sys.executable,'-m','tools.unit','--output',out/'native.json']);v['native']=json.loads((out/'native.json').read_text())
         guest('linux','/opt/grantweft/venv/bin/python -m tools.unit --output /opt/grantweft/linux.json',timeout=120)
@@ -56,11 +56,13 @@ def main():
         v['cases']=json.loads(ssh('cases-read',['sudo','cat','/opt/grantweft/lab/cases.json']))
         guest('recovery','/opt/grantweft/venv/bin/python -m tools.vm_recovery',timeout=120)
         v['recovery']=json.loads(ssh('recovery-read',['sudo','cat','/opt/grantweft/lab/recovery.json']))
+        guest('service','/opt/grantweft/venv/bin/python -m tools.vm_service',timeout=120)
+        v['service']=json.loads(ssh('service-read',['sudo','cat','/opt/grantweft/lab/service.json']))
         for action in ('prepare',):
             guest(action,'/opt/grantweft/venv/bin/python -m tools.vm_cases '+action,timeout=120)
             name='prepared' if action=='prepare' else action
             v[name]=json.loads(ssh(name+'-read',['sudo','cat','/opt/grantweft/lab/'+name+'.json']))
-        ssh('schedule-reboot',['sudo','systemd-run','--unit=grantweft-test-reboot','--on-active=2s','/usr/bin/systemctl','reboot'])
+        ssh('schedule-reboot',['sudo','systemd-run','--unit=grantweft-test-reboot','--on-active=2s','--timer-property=AccuracySec=1s','/usr/bin/systemctl','reboot'])
         until=time.monotonic()+120;new=None;v['reboot_polls']=[]
         while time.monotonic()<until:
             try:
@@ -69,7 +71,11 @@ def main():
                 if r.returncode==0 and len(r.stdout.strip())==36 and r.stdout.strip()!=v['prepared']['boot_before']:new=r.stdout.strip();break
             except subprocess.TimeoutExpired:v['reboot_polls'].append({'exit_code':None,'timed_out':True,'boot_id':None})
             time.sleep(1)
-        if new is None:raise TimeoutError('Boot identity did not change')
+        if new is None:
+            for tag,args in [('reboot-state',['systemctl','show','grantweft-test-reboot.timer','grantweft-test-reboot.service']),('reboot-journal',['journalctl','-u','grantweft-test-reboot.service','-u','grantweft-test-reboot.timer','--no-pager','-n','80']),('reboot-jobs',['systemctl','list-jobs','--no-pager'])]:
+                try:ssh(tag,['sudo',*args],timeout=8)
+                except Exception:pass
+            raise TimeoutError('Boot identity did not change')
         guest('finish','/opt/grantweft/venv/bin/python -m tools.vm_cases finish',timeout=120)
         v['finished']=json.loads(ssh('finished-read',['sudo','cat','/opt/grantweft/lab/finished.json']))
         v['limits']=dict(power_loss_tested=False,suspend_tested=False,systemd_autostart_tested=False,long_term_tested=False)
@@ -77,9 +83,11 @@ def main():
     except BaseException as exc:
         v['error']=type(exc).__name__+': '+str(exc).replace(str(ROOT),'<checkout>')
         if created:
-            for name in ('cases','recovery','prepared','finished'):
+            for name in ('cases','recovery','service','prepared','finished'):
                 try:v['failed_'+name]=json.loads(ssh('failed-'+name,['sudo','cat','/opt/grantweft/lab/'+name+'.json'],timeout=5))
                 except Exception:pass
+            try:ssh('failed-service-diagnostics',['sudo','cat','/opt/grantweft/lab/systemd-journal.log'],timeout=5)
+            except Exception:pass
     finally:
         if created:
             try:

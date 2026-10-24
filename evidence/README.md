@@ -1,9 +1,26 @@
 # Evidence and provenance
 
-- [Current JSON](latest.json) / [HTML](latest.html): recovery-review-v4, matching frozen
-  sources/installed runtime, 42 identical tests/platform (36 formal + six controls),
-  seven storage/capacity/late-commit recovery scenarios, one normal VM reboot,
-  60 corruption controls and complete cleanup.
+- [Current JSON](latest.json) / [HTML](latest.html): systemd-v5, matching frozen
+  sources/installed runtime, 44 identical tests/platform (38 formal + six controls),
+  seven storage/capacity/late-commit recovery scenarios, installed systemd lifecycle,
+  one manual-start normal VM reboot,
+  72 corruption controls and complete cleanup.
+- [Previous reviewed recovery](recovery-reviewed-01.json) / [HTML](recovery-reviewed-01.html):
+  v4, 42 tests/platform and 60 controls; historical source-specific qualification.
+- [Service attempt 01](service-attempt-01.json) / [HTML](service-attempt-01.html):
+  failed SIGSTOP timeout injection; no stop timeout exercised.
+- [Service attempt 02](service-attempt-02.json) / [HTML](service-attempt-02.html):
+  real timeout/KILL passed, then unnecessary reset of an unloaded healthy unit failed.
+- [Service attempt 03](service-attempt-03.json) / [HTML](service-attempt-03.html):
+  failed too-specific restart Result expectation; diagnostic observations follow.
+- [Service attempt 04](service-attempt-04.json) / [HTML](service-attempt-04.html):
+  failed Linux suite due to torn startup-receipt JSON; repaired atomically.
+- [Service attempt 05](service-attempt-05.json) / [HTML](service-attempt-05.html):
+  failed publication-test wrapper arguments; corrected before qualification.
+- [Service attempt 06](service-attempt-06.json) / [HTML](service-attempt-06.html):
+  service cases passed; normal VM reboot witness failed, so the run failed.
+- [Diagnostic observations](service-diagnostic-observations.json): derived from a
+  non-qualification diagnostic; not an accepted run or an independent reproduction.
 - [Original milestone](milestone-01.json) / [HTML](milestone-01.html): recovery-v3,
   41 tests/platform and 42 controls; superseded by the reviewed contract.
 - [Manual milestone review counterexamples](milestone-review-observations.json) and

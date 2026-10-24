@@ -1,0 +1,30 @@
+{
+  "kind": "derived_nonqualification_diagnostic_observations",
+  "qualification_passed": false,
+  "reason": "temporary diagnostic driver skipped formal suites; not acceptance evidence",
+  "unit_state": {
+    "Type": "notify",
+    "Restart": "on-failure",
+    "RestartUSec": "1s",
+    "TimeoutStopUSec": "5s",
+    "RestartPreventExitStatus": "",
+    "MainPID": "0",
+    "Result": "exit-code",
+    "NRestarts": "3",
+    "CapabilityBoundingSet": "",
+    "User": "grantweft",
+    "Group": "grantweft",
+    "ProtectSystem": "strict",
+    "NoNewPrivileges": "yes",
+    "KillMode": "control-group",
+    "LoadState": "loaded",
+    "ActiveState": "failed",
+    "SubState": "failed",
+    "StartLimitIntervalUSec": "30s",
+    "StartLimitBurst": "3",
+    "InvocationID": "c9513134000a486fa1466d66be1cb35c"
+  },
+  "journal_duplicate_identity_exceptions": 3,
+  "journal_rate_limit_messages": 1,
+  "interpretation": "Rate limit occurred; service Result retained exit-code. Raw logs remain ignored. Final qualification independently remeasures this behavior."
+}

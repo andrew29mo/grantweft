@@ -4,7 +4,7 @@ A bounded temporary-access gateway: authenticated request, separate approval,
 framed TLS-to-TCP access, and expiry/revocation of existing sessions.
 
 This repository contains a **formal minimal implementation and four technical
-explorations plus milestone 1 repair/restart**, not a qualified operational release. GitHub stays Private. No
+explorations, bounded repair/restart and installed-service qualification**, not a qualified operational release. GitHub stays Private. No
 project license has been selected or granted. Python/OpenSSL/SQLite and external
 VM/build tools retain their respective terms; no upstream binaries, test keys,
 VM images or source databases are committed.
@@ -31,41 +31,36 @@ service. This is a verified safety-first limitation, not transparent race recove
 Storage hooks are explicit `--barriers` test fixtures; never set them in deployment.
 A stop cannot retract bytes already passed to kernel buffers or undo backend work.
 
-## Reviewed milestone 1: explicit safe recovery
+## Installed service and bounded recovery
 
-DEGRADED retires current process authority. Authenticated status reports first
-failure/action/SQLite code, effective access and finite capacity. Storage repair
-alone cannot resume access. Operators repair storage or raise finite limits and
-restart with the same catalog/lock; startup invalidates old grants and advances
-epoch before listening. Historical operations never re-execute approvals.
-See [recovery procedure](docs/RECOVERY.md) and [review repairs](docs/MILESTONE_1_REVIEW.md).
+The runtime wheel now ships a root installer and a systemd unit. The gateway runs
+as a dedicated non-root account with no capabilities and a restricted writable
+state directory. Type=notify separates completed initialization from process
+startup; authenticated status reports current READY/DEGRADED health. See
+[deployment and repair commands](docs/DEPLOYMENT.md).
 
-The reviewed source-bound run passes **42 tests on macOS and installed Linux**:
-36 formal service/CLI tests plus six observer/cleanup controls. Seven Linux VM
-scenarios cover operation/event/grant fullness, real SQLite FULL, full tmpfs,
-live directory write denial plus readonly startup refusal, and approval committed
-late after timeout. Full capacity still stops access. Repair/restart preserves
-catalog/lock identities, operation/audit history and counts, invalidates old grants,
-refuses stale operations and requires fresh approval. Even replaying the original
-timed-out approval UUID reads history without reopening access.
+The source-bound run passes **44 tests on macOS and installed Linux** (38 formal
+service/CLI/readiness tests plus six observer controls), seven storage/recovery
+scenarios, and the actual installed systemd lifecycle. It verifies normal stop,
+SIGKILL restart/new epoch, DEGRADED repair without silent resumption, stop-timeout
+SIGKILL cleanup, and three invalid-config startup failures reaching the configured
+restart limit. Old grants/operations remain unusable; fresh approval works.
 
-One normal VM reboot retains ACTIVE/PENDING journal state before new startup,
-excluding shutdown cleanup as its explanation. The installed unprivileged gateway
-matches frozen sources, with product source removed from import reach. Direct
-backend bypass is checked in isolated namespaces. **60 report corruption controls**
-are rejected; raw failed and superseded attempts are retained.
+Catalog/history/lock identities are retained during repair. Exact historical
+approval replay cannot reactivate access. **72 report corruption controls** are
+rejected. Failed and superseded attempts are retained. The main agent ran this
+qualification; the earlier agents review covers the preceding recovery milestone.
 
-A single VM trial verifies twenty ordered 8-KiB roundtrips in **2.45 ms after admission**;
-a separate revoke RPC takes **40.57 ms** including fixture client startup and
-TLS/control exchange. Positive EOF and zero remaining sessions are observed.
-Sampled RSS **25,052 KiB**, FDs **10**, managed store **32,768 bytes**.
-These are virtualized point observations, not peaks, speedups or SLOs.
-See [results and limits](docs/EXPLORATION_RESULTS.md) and [JSON/HTML evidence](evidence/README.md).
+One systemd-service VM trial verifies twenty ordered 8-KiB roundtrips in
+**1.98 ms after admission**, with **25,316 KiB** sampled RSS,
+**12 FDs** and **32,768** managed allocated bytes (with an additional held tunnel). SIGKILL takeover was
+observed in **1.11 s** in one controlled trial. These are point samples,
+not speedups, peaks, outage bounds or production guarantees. See
+[results and boundaries](docs/EXPLORATION_RESULTS.md) / [JSON and HTML](evidence/README.md).
 
-Catalogs remain finite without automatic GC/rollover; increasing limits provides
-bounded headroom. Global DEGRADED can disrupt unrelated grants. Formal systemd
-deployment, sustained operation, power loss and boot-zero-gap remain unqualified.
-Filesystem fault tests do not establish physical-media durability.
+DEGRADED can disrupt unrelated grants. Capacity recovery raises finite limits;
+automatic GC/rollover and long-term operation are unqualified. The unit was not
+enabled: formal boot-autostart, power loss and boot-zero-gap remain untested.
 
 ## Run portable formal-service tests
 
@@ -81,7 +76,7 @@ mkdir -p results
 Tests launch the actual gateway subprocess and use real mTLS/TCP clients and
 SQLite. Temporary CA/private keys, logs and databases remain local. A source
 checkout is required for qualification tools; runtime wheels contain only
-`grantweft` modules and distribution metadata.
+`grantweft` modules, the shipped service unit and distribution metadata.
 
 ## Documents and evidence
 
@@ -97,5 +92,5 @@ checkout is required for qualification tools; runtime wheels contain only
 Linux timings/RSS are virtualized observations and are labelled separately from
 native macOS test duration. A short trial is not a long-term resource bound,
 comparative speedup, outage SLO or production-readiness claim. Actual suspend,
-sudden power loss, automatic systemd startup and hostile local root/same-UID
+sudden power loss, systemd boot-autostart and hostile local root/same-UID
 processes are unqualified. The client must not have another path to the backend.

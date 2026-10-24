@@ -32,7 +32,9 @@ def main():
     if not __debug__:raise RuntimeError("Qualification requires normal Python")
     p=argparse.ArgumentParser();p.add_argument('--pki',required=True);p.add_argument('--who',default='a')
     p.add_argument('--host',default='10.70.0.1');p.add_argument('--mode',choices=['control','echo','hold','direct'],required=True)
+    p.add_argument('--close-timeout',type=float,default=4)
     p.add_argument('--request');p.add_argument('--grant');p.add_argument('--marker');a=p.parse_args()
+    if not 0<a.close_timeout<=12:p.error('close-timeout must be within 0..12 seconds')
     r=Path(a.pki);cred=(r/'ca.pem',r/(a.who+'.pem'),r/(a.who+'.key'))
     if a.mode=='control':
         print(json.dumps(command(a.host,7443,*cred,json.loads(a.request))));return
@@ -45,7 +47,7 @@ def main():
         if a.mode=='hold':
             echo_roundtrip(s,b'before-revoke')
             Path(a.marker).write_text('open');start=time.monotonic()
-            result=wait_closed(s)
+            result=wait_closed(s,a.close_timeout)
             print(json.dumps(result|{'observed_seconds':time.monotonic()-start}));return
         payload=b'vm-ordered-payload'+b'x'*(8192-18);start=time.monotonic()
         for _ in range(20):

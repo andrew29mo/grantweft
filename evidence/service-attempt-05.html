@@ -1,0 +1,140 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Grantweft recovery milestone</title><style>body{font:16px system-ui;max-width:1050px;margin:32px auto;padding:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><h1>Grantweft: bounded recovery milestone</h1><p>Formal mTLS service, installed package, client/gateway/backend namespaces. Positive EOF/reset is required; timeout is not termination. Controlled Linux VM observations, not native/physical performance or an SLO. Qualification scope includes the installed systemd unit: start/stop, crash restart, restart limiting and manual DEGRADED repair; consult the pass flag and per-case outcomes. Normal VM reboot remains manual gateway startup; no power loss, actual suspend or systemd boot-autostart qualification. Approval/revocation revision conflicts conservatively degrade the service. Actual tmpfs exhaustion, live directory write denial, readonly-filesystem startup and SQLite page-budget failures are exercised. Recovery preserves the catalog and requires repair plus restart; no online reset or automatic GC. Production readiness is not claimed.</p><p>Passed: False</p><pre>{
+  &quot;contract&quot;: &quot;grantweft-systemd-v5&quot;,
+  &quot;passed&quot;: false,
+  &quot;recorded_at_utc&quot;: &quot;2026-10-24T14:53:10.425837+00:00&quot;,
+  &quot;source&quot;: {
+    &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+    &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+    &quot;grantweft/deploy.py&quot;: &quot;1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc&quot;,
+    &quot;grantweft/gateway.py&quot;: &quot;50badb8f35cd3e5e8f564d9657ae078aa57d14a20cb02b33b5d582ae73514cbb&quot;,
+    &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+    &quot;grantweft/store.py&quot;: &quot;f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4&quot;,
+    &quot;grantweft/systemd/grantweft.service&quot;: &quot;c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438&quot;,
+    &quot;pyproject.toml&quot;: &quot;89f1fd278a14db433a5525898ba493d03a94506524b6b3697828291d7a700f65&quot;,
+    &quot;tests/support.py&quot;: &quot;2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596&quot;,
+    &quot;tests/test_gateway.py&quot;: &quot;d5befccdc7242cf031ad1d6a995b8c33572d7c9eed0d594576b771e9dde19d2d&quot;,
+    &quot;tests/test_review.py&quot;: &quot;a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc&quot;,
+    &quot;tools/endpoint.py&quot;: &quot;f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a&quot;,
+    &quot;tools/probe.py&quot;: &quot;9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170&quot;,
+    &quot;tools/report.py&quot;: &quot;6cfd04b0ea0c2ad6f5388c9d37da8514fec69fc4ccb20cdeb01a268d9ca39ef1&quot;,
+    &quot;tools/unit.py&quot;: &quot;0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d&quot;,
+    &quot;tools/validate.py&quot;: &quot;16bac0a39b3a04a4b6ca3a367b9b4265b15f84fc8b83cb10bfba1b27ef47120d&quot;,
+    &quot;tools/vm_cases.py&quot;: &quot;1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f&quot;,
+    &quot;tools/vm_recovery.py&quot;: &quot;4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20&quot;,
+    &quot;tools/vm_service.py&quot;: &quot;e4e6ac644e8d7a992e8f40184d5e7a30f817b946ec1a2ed9456bd1c8544f82d1&quot;
+  },
+  &quot;source_sha256&quot;: &quot;af4a2967de20d32235e6b27712f0684bc39bd82eb7a5598c1abfc6662aa3b351&quot;,
+  &quot;source_changed&quot;: false,
+  &quot;host_mounts&quot;: &quot;none&quot;,
+  &quot;wheel_modules_match&quot;: true,
+  &quot;wheel_sha256&quot;: &quot;1e1c36888d421c029356d893a7d6e9510b2a98fc09767debe986d0770f402a25&quot;,
+  &quot;stages&quot;: [
+    {
+      &quot;name&quot;: &quot;initial&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.20433712500380352
+    },
+    {
+      &quot;name&quot;: &quot;create&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 21.65461037500063
+    },
+    {
+      &quot;name&quot;: &quot;dependencies&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 13.57107445798465
+    },
+    {
+      &quot;name&quot;: &quot;upload&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.36149825001484714
+    },
+    {
+      &quot;name&quot;: &quot;install&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 1.5448794590192847
+    },
+    {
+      &quot;name&quot;: &quot;provenance&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.2594602500030305
+    },
+    {
+      &quot;name&quot;: &quot;native&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 34.2347143329971
+    },
+    {
+      &quot;name&quot;: &quot;failed-cases&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.3138491249992512
+    },
+    {
+      &quot;name&quot;: &quot;failed-recovery&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.24276525000459515
+    },
+    {
+      &quot;name&quot;: &quot;failed-service&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.2158017499896232
+    },
+    {
+      &quot;name&quot;: &quot;failed-prepared&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.20076395900105126
+    },
+    {
+      &quot;name&quot;: &quot;failed-finished&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.20792658400023356
+    },
+    {
+      &quot;name&quot;: &quot;failed-service-diagnostics&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.2892383339931257
+    },
+    {
+      &quot;name&quot;: &quot;delete&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 1.4650115410040598
+    },
+    {
+      &quot;name&quot;: &quot;final&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.20035429199924693
+    }
+  ],
+  &quot;installed_modules&quot;: {
+    &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+    &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+    &quot;grantweft/deploy.py&quot;: &quot;1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc&quot;,
+    &quot;grantweft/gateway.py&quot;: &quot;50badb8f35cd3e5e8f564d9657ae078aa57d14a20cb02b33b5d582ae73514cbb&quot;,
+    &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+    &quot;grantweft/store.py&quot;: &quot;f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4&quot;,
+    &quot;grantweft/systemd/grantweft.service&quot;: &quot;c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438&quot;
+  },
+  &quot;installed_source_absent&quot;: true,
+  &quot;sqlite&quot;: &quot;3.45.1&quot;,
+  &quot;openssl&quot;: &quot;OpenSSL 3.0.13 30 Jan 2024&quot;,
+  &quot;python&quot;: &quot;3.12.3&quot;,
+  &quot;error&quot;: &quot;RuntimeError: native failed/timeout; see ignored private log&quot;,
+  &quot;vm_deleted&quot;: true,
+  &quot;disk_removed&quot;: true,
+  &quot;preexisting_profiles_unchanged&quot;: true
+}</pre></html>

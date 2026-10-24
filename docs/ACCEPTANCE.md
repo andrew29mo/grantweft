@@ -4,7 +4,7 @@ Four explorations must qualify the same minimal production modules. Model/review
 agreement is not evidence. The four groups qualified review-v2 (34 tests/platform: 28 formal service + six observer/cleanup controls,
 installed Linux namespace trials and one normal VM reboot). Receipts, failed
 attempts and exact limits live in evidence/README.md. The review repairs are documented in [REVIEW.md](REVIEW.md).
-Milestone 1 extends this to 42 tests/platform: 36 formal service + six controls,
+The deployment run extends this to 44 tests/platform: 38 formal service + six controls,
 and seven installed-service recovery scenarios. No implementation is a production
 deployment guarantee.
 
@@ -34,8 +34,9 @@ deployment guarantee.
 
 ## Remaining operational MVP gates
 
-- Formal service packaging, startup failures, systemd stop/automatic restart and
-  a fresh-VM installation/operator walkthrough.
+- Installed systemd start/stop, crash restart, rate limiting and repaired startup
+  now have the separate service-stage evidence. Formal boot-autostart and a final
+  clean-VM operator walkthrough remain separate.
 - Bounded sustained operation/resource trends and eventual archive/rollover
   decisions. Raising finite limits is not indefinite catalog lifecycle.
 - Additional control-pressure, credential expiry/rotation and callback schedules
@@ -49,3 +50,10 @@ autostart, long-term stability, transparent session survival, WAN/NAT traversal,
 SSO, arbitrary routing, malicious local root, tamper-proof audit or hard real-time
 expiry while the process/kernel cannot run. Do not expand scope before reviewing
 what the four experiments actually establish.
+
+The deployment milestone additionally requires a matching shipped unit and actual
+argv, non-root/no-capabilities process, positive stop closure, PID cleanup, new
+invocation/epoch after crash, alive DEGRADED without automatic restart, retained
+catalog on repair, real stop-timeout SIGKILL and three invalid-config failures
+followed by explicit journal rate-limit evidence, stable stopped restart count
+and explicit repaired recovery.
