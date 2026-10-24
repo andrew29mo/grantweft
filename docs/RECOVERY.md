@@ -63,8 +63,9 @@ This milestone uses increased finite limits for catalog recovery, not deletion,
 archival, rollover or a new blank database. Once those finite limits are exhausted,
 continued service requires a separately designed lifecycle. No indefinite uptime
 or automatic GC is claimed. Installed service start/stop, crash restart, restart limiting and catalog-full
-repair are now qualified as described in [DEPLOYMENT.md](DEPLOYMENT.md). Formal
-boot-autostart and the final operator walkthrough remain separate. Normal VM reboot evidence exists; abrupt power loss,
+repair are now qualified as described in [DEPLOYMENT.md](DEPLOYMENT.md). Enabled boot recovery and persistent readonly-fault repair are covered by the
+separate [closeout contract](CLOSEOUT.md). Earlier manual-start reboot evidence
+is retained. Abrupt power loss,
 actual suspend, boot zero-gap and long-term endurance are unqualified.
 
 The live read-only scenario removes directory write permission while the real

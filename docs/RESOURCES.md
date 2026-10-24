@@ -46,3 +46,22 @@ limits only after stopping the gateway. Counts are marked inexact while DEGRADED
 SQLite page limits exclude rollback journals and other deployment files. See
 [recovery procedure](RECOVERY.md). A boot budget smaller than the existing page
 count fails before listening.
+
+## Bounded closeout observation
+
+The closing workload explicitly configures max_grants=96 and max_ops=max_events=512
+without raising session/queue/frame limits. Forty mixed cycles are scheduled over
+600 seconds on the same formal systemd process. Each cycle must return to zero
+sessions, retire its grant, and account for all catalog rows through pagination.
+No restart, pruning or capacity reset is allowed during observation.
+
+After five warmup cycles, fixed acceptance requires identical idle FD counts,
+RSS <=64 MiB, RSS range <=8 MiB and last-ten minus first-ten mean <=4 MiB. Those
+are test failure gates for one VM workload, not runtime quotas or a no-leak proof.
+Catalog rows/file blocks are expected to increase because history is retained.
+Full per-cycle samples and fixed thresholds appear in JSON/HTML; measured values
+and interpretation are in [current results](EXPLORATION_RESULTS.md).
+
+The RSS trend gate uses the post-warmup cycle checkpoints followed by the final
+post-schedule sample. Its end-ten mean therefore includes the final sample and
+the last nine cycle checkpoints; the first ten are cycles 6–15.

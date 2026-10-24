@@ -1,10 +1,16 @@
 # Evidence and provenance
 
-- [Current JSON](latest.json) / [HTML](latest.html): systemd-review-v6, matching frozen
-  sources/installed runtime, 46 identical tests/platform (38 formal + eight controls),
-  seven storage/capacity/late-commit recovery scenarios, installed systemd lifecycle,
-  one manual-start normal VM reboot,
-  95 corruption controls and complete cleanup.
+- [Current JSON](latest.json) / [HTML](latest.html): closeout-v7, matching frozen
+  sources/installed runtime, 49 identical tests/platform (38 formal + eleven controls),
+  seven storage scenarios, installed systemd lifecycle, retained manual-start reboot,
+  two enabled-systemd boot cases with old-journal witnesses, readonly repair,
+  forty same-process cycles / 600 seconds, 122 corruption controls and cleanup.
+- [Previous reviewed deployment](systemd-reviewed-01.json) / [HTML](systemd-reviewed-01.html):
+  exact archived v6 bytes, 46 tests/platform / 95 controls; historical manual-start boot scope.
+- [Closeout attempt 01](closeout-attempt-01.json) / [HTML](closeout-attempt-01.html):
+  failed readonly repair due to an unintentionally readonly loop backing device.
+- [Closeout attempt 02](closeout-attempt-02.json) / [HTML](closeout-attempt-02.html):
+  boot/repair passed, sustained setup failed on a preceding fresh grant left valid.
 - [Original deployment](systemd-initial-01.json) / [HTML](systemd-initial-01.html):
   v5, 44 tests/platform and 72 controls; historical source-specific qualification.
 - [Deployment review observations](systemd-review-observations.json) and

@@ -18,8 +18,8 @@ uses 2 vCPU / 2 GiB / requested 15-GiB data disk, no host mounts and no default
 context activation, installs Python/OpenSSL/iproute2/util-linux from the guest
 package manager, installs the no-dependency wheel, removes product source from
 import reach and verifies installed module SHA-256. Tools/tests remain a checkout.
-Both platforms run the same source-bound test IDs (38 formal-service tests plus eight evidence/cleanup
-controls in milestone 1). OS/SQLite/OpenSSL versions
+Both platforms run the same source-bound test IDs (38 formal-service tests plus eleven evidence/cleanup
+controls in the closeout contract). OS/SQLite/OpenSSL versions
 are captured; no firmware, hardware network or physical-storage claim follows.
 
 Root creates only test network namespaces inside this VM:
@@ -49,8 +49,8 @@ save full catalog rows/hash before scheduling reboot. After boot-ID change, comp
 the old journal before starting any new gateway; reconstruct only fixture topology,
 then start the installed gateway. Old grants/data and stale epoch operations must
 be refused; fresh request/approval must work. Fixture namespaces/processes are
-explicitly cleaned, not part of service persistence. The service is manually
-started, not systemd-autostart qualified. No abrupt-power-loss test.
+explicitly cleaned, not part of service persistence. This retained legacy stage starts the service manually. The later closeout stage
+separately qualifies the enabled formal systemd service. No abrupt-power-loss test.
 
 Children are registered before readiness waits; cleanup attempts every owned
 process/namespace and always attempts failure-receipt preservation. Cleanup errors
@@ -64,7 +64,7 @@ Existing Colima profiles/statuses must remain unchanged. Raw commands, paths,
 certificates, keys, databases, wheels and logs stay under ignored results or inside
 the deleted VM. Only sanitized receipts are eligible for Git.
 
-The systemd-review-v6 offline verifier requires complete ordered stages, actual platform
+The closeout-v7 offline verifier requires complete ordered stages, actual platform
 labels, postboot fresh-workload results, observed closure reason, recovered grant
 states, raw stale-refusal outcomes and successful boot observations. Old receipts
 without this contract are historical and are not accepted as current qualification.
@@ -133,10 +133,10 @@ recovery, then failed when the fixture tried to reset a normally stopped unit
 already unloaded by systemd. The corrected script resets failed units only. Those
 failed receipts remain failed and are not current qualification.
 
-The unit is stopped and test drop-in removed before fixture namespace cleanup.
-It is not enabled; the separate boot witness remains manual gateway startup.
-The normal reboot stage does not qualify systemd boot-autostart, power loss or
-boot-zero-gap. See [deployment](DEPLOYMENT.md) for commands and limits.
+This lifecycle stage stops the unit and removes its namespace drop-in before
+cleanup. It does not enable the unit. The additional closeout stage below enables
+the shipped unit and has its own automatic-recovery witness. Neither stage
+qualifies power loss or boot-zero-gap. See [deployment](DEPLOYMENT.md) for commands and limits.
 
 Service attempt 03 observed limiting but failed a too-specific Result expectation.
 A dedicated non-qualification diagnostic then captured journal rate limiting with
@@ -166,3 +166,47 @@ zero-session DENIED status, owner-authenticated refusal for every old grant,
 explicit DEGRADED admission refusal and full repaired catalog transitions. Two
 new observer tests are evidence controls, not additional product features. The
 prior systemd-v5 evidence is retained as historical; it does not qualify v6 sources.
+
+## Final boot and bounded-operation stages
+
+`tools.vm_closeout` follows the retained manual-start reboot. It migrates the
+stopped service catalog without deleting it, provisions a dedicated persistent
+ext4 state image, and enables the shipped unit. Only VM fixture dependencies
+and NetworkNamespacePath are added. The runtime ExecStart is unchanged.
+
+On each of two normal VM reboots, a root fixture opens the catalog read-only
+before the gateway service starts and records unchanged old ACTIVE/PENDING
+authority, digest/history/inodes and changed boot identity. One boot is writable;
+the other deliberately mounts the state filesystem readonly after a live
+SQLITE_READONLY retirement. Failed startups must leave the journal unchanged,
+exhaust the configured three-start budget and refuse control connections.
+Explicit remount/permission repair plus reset/start must invalidate old authority
+and allow only fresh approvals. Unit enablement, PID/argv/UID/capabilities and
+old owner-authenticated data refusals are checked, not inferred from a ready file.
+
+The final forty-cycle workload lasts at least 600 seconds on one systemd
+instance. It alternates revoke/natural expiry with verified payloads and positive
+closure. It records every cycle, complete paginated catalog status, fixed
+capacity counts, process identity and idle RSS/FD/managed-file allocation.
+Thresholds and workload are fixed before execution; observer controls challenge
+restarts, growth and incomplete evidence. See [exact acceptance](CLOSEOUT.md).
+
+Every new stage has an outer timeout. Partial receipts/progress and boot journal
+diagnostics are fetched on failure; failed attempts remain failed. Successful
+cleanup stops/disables service and backend, removes namespaces/drop-in and
+unmounts fixture storage before VM/data deletion. VM resource samples remain
+separate from native macOS test duration. No power-loss/boot-zero-gap or long-term
+rollover claim follows.
+
+Closeout attempt 01 passed normal automatic startup and readonly failure/rate
+limiting but failed repair because an automatic readonly loop mapping prevented
+remount-rw. The corrected fixture explicitly creates a writable loop mapping and
+records its blockdev flag while keeping the filesystem readonly. The failed run
+is retained; no acceptance threshold or timeout is loosened.
+
+Closeout attempt 02 completed both boot cases and readonly repair but failed the
+first sustained cycle: a fresh verification grant from the preceding case remained
+active. The strict observer rejected it. Cases now explicitly revoke/probe their
+fresh grants, and sustained startup checks complete denied state. The failed
+receipt remains failed; no threshold is weakened and no restart clears the
+sustained workload.

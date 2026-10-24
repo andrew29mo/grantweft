@@ -1,7 +1,7 @@
 """Versioned evidence contract; explicit checks also run under python -O."""
 import copy,html,json,math,hashlib,uuid
-CONTRACT='grantweft-systemd-review-v6'
-STAGES=('initial','create','dependencies','upload','install','provenance','native','linux','linux-read','cases','cases-read','recovery','recovery-read','service','service-read','prepare','prepared-read','schedule-reboot','finish','finished-read','delete','final')
+CONTRACT='grantweft-closeout-v7'
+STAGES=('initial','create','dependencies','upload','install','provenance','native','linux','linux-read','cases','cases-read','recovery','recovery-read','service','service-read','prepare','prepared-read','schedule-reboot','finish','finished-read','boot-prepare-normal','boot-prepared-normal-read','boot-schedule-normal','boot-finish-normal','boot-finished-normal-read','boot-prepare-readonly','boot-prepared-readonly-read','boot-schedule-readonly','boot-finish-readonly','boot-finished-readonly-read','sustain','sustained-read','closeout-cleanup','closeout-cleanup-read','delete','final')
 CLOSE_REASONS=('EOFError','ConnectionResetError','SSLEOFError','SSLZeroReturnError')
 
 def require(condition,message):
@@ -59,12 +59,12 @@ def verify(v):
     require(v['source_changed'] is False,'Source changed during qualification')
     require(hashlib.sha256(json.dumps(v['source'],sort_keys=True,separators=(',',':')).encode()).hexdigest()==v['source_sha256'],'Invalid source fingerprint')
     for key,system in [('native','Darwin'),('linux','Linux')]:
-        r=v[key];require(r['platform']==system and r['passed'] is True and r['count']>=46 and r['count']==len(r['tests'])==len(set(r['tests'])) and not (r['failures'] or r['errors'] or r['skipped']),'Unit failure/platform/count')
+        r=v[key];require(r['platform']==system and r['passed'] is True and r['count']>=49 and r['count']==len(r['tests'])==len(set(r['tests'])) and not (r['failures'] or r['errors'] or r['skipped']),'Unit failure/platform/count')
         require(r['source']==v['source'] and r['source_sha256']==v['source_sha256'],'Unit source mismatch')
     require(v['native']['tests']==v['linux']['tests'],'Platform test sets differ')
     names=('test_slow_commit_does_not_start_new_ttl','test_revoke_during_delayed_approval_cannot_reopen','test_process_pause_crosses_ttl_no_fresh_transfer_after_resume','test_second_process_cannot_take_lock_or_recover','test_bounded_db_queue_does_not_block_revoke_fence','test_slow_db_does_not_block_live_expiry','test_db_timeout_late_completion_cannot_reactivate','test_slow_consumer_revoke_discards_unsent_data','test_delayed_connected_session_cannot_survive_revoke','test_history_result_is_stable_after_expiry_and_restart','test_slow_approval_history_retains_original_commit','test_observed_backpressure_then_revoke_stops_transfer','test_full_ops_and_events_still_stop_access_and_recover_with_limits','test_grant_full_preserves_revoke_and_expiry_without_gc','test_catalog_full_expiry_does_not_need_new_audit_slot','test_storage_repair_requires_restart_and_preserves_history','test_slow_commit_after_retirement_stays_denied_through_repair','test_expiry_write_failure_degrades_and_repair_does_not_revive','test_sqlite_full_closes_live_access_and_recovers_with_page_budget','test_duplicate_identity_exits_before_creating_store_or_worker','test_readiness_notification_requires_socket_and_sends_ready','test_startup_receipt_is_not_visible_until_complete')
     require(all('test_gateway.GatewayTests.'+n in v['linux']['tests'] for n in names),'Formal test missing')
-    for name in ('test_close_observer_rejects_live_idle_socket_timeout','test_close_observer_requires_positive_eof','test_cleanup_continues_after_forced_kill','test_cleanup_exception_still_saves_failed_receipt','test_startup_process_registered_before_readiness_failure','test_service_status_rejects_allowed_or_incomplete_old_authority','test_service_catalog_requires_old_grant_invalidation'):
+    for name in ('test_close_observer_rejects_live_idle_socket_timeout','test_close_observer_requires_positive_eof','test_cleanup_continues_after_forced_kill','test_cleanup_exception_still_saves_failed_receipt','test_startup_process_registered_before_readiness_failure','test_service_status_rejects_allowed_or_incomplete_old_authority','test_service_catalog_requires_old_grant_invalidation','test_boot_journal_witness_rejects_shutdown_cleanup_or_replacement','test_sustained_observer_rejects_process_identity_change','test_sustained_resource_limits_are_fixed_and_detect_growth'):
         require('test_review.EvidenceObserverTests.'+name in v['linux']['tests'],'Observer negative control missing')
     require(v['host_mounts']=='none' and v['wheel_modules_match'] is True and v['installed_source_absent'] is True,'Unqualified installation')
     require(v['installed_modules']=={k:h for k,h in v['source'].items() if k.startswith('grantweft/')},'Installed modules differ')
@@ -183,7 +183,9 @@ def verify(v):
     require(f['epoch_after']>p['epoch'] and f['old_grants_invalidated'] is f['stale_operation_refused'] is f['old_data_refused'] is True,'Reboot authority not fenced')
     require(f['old_data_refusal']['exit_code']!=0 and f['old_data_refusal']['code']=='NO_ACCESS' and f['stale_operation_refusal']['exit_code']!=0 and f['stale_operation_refusal']['code']=='STALE_EPOCH','No actual stale refusals')
     polls=v['reboot_polls'];require(polls and polls[-1]['exit_code']==0 and polls[-1]['timed_out'] is False and polls[-1]['boot_id']==f['boot_after'],'Reboot observation missing')
-    require(v['limits']==dict(power_loss_tested=False,suspend_tested=False,systemd_autostart_tested=False,long_term_tested=False),'Unsupported claim')
+    from .closeout_contract import check_closeout
+    check_closeout(v)
+    require(v['limits']==dict(power_loss_tested=False,suspend_tested=False,systemd_autostart_tested=True,long_term_tested=False,boot_zero_gap_tested=False),'Unsupported claim')
     trial(v['cases']['roundtrip_trial']);trial(f['fresh_roundtrip'])
     r=v['cases']['revocation_trial'];o=r['client_observation']
     require(r['cleanup']=='COMPLETE' and r['sessions_after']==0 and o['connection_ended'] is True and o['close_reason'] in CLOSE_REASONS and number(o['observed_seconds']) and 0<o['observed_seconds']<5 and number(r['rpc_seconds']) and 0<r['rpc_seconds']<10,'No positive revocation closure')
@@ -250,6 +252,33 @@ def controls(v):
                   lambda x:x['service']['repair']['old_data_refusals'].clear(),
                   lambda x:x['service']['forced_stop']['recovery']['privileges'].update(no_new_privileges=0),
                   lambda x:x['service']['restart_limit']['repair']['unit'].update(MainPID='0')]
+    mutations += [lambda x:x.pop('closeout'),
+                  lambda x:x['closeout']['normal'].pop('fresh_retirement'),
+                  lambda x:x['closeout']['readonly']['fresh_retirement']['data_refusal'].update(exit_code=0),
+                  lambda x:x['closeout']['normal'].update(enabled='disabled'),
+                  lambda x:x['closeout']['normal']['witness'].update(before_gateway=False),
+                  lambda x:x['closeout']['normal']['witness'].update(boot_id=x['closeout']['normal']['prepared']['boot_before']),
+                  lambda x:x['closeout']['normal']['witness'].update(service_uid_pids=[1]),
+                  lambda x:x['closeout']['normal']['witness'].update(sha256='0'*64),
+                  lambda x:x['closeout']['normal']['service']['privileges'].update(uid=0),
+                  lambda x:x['closeout']['normal']['old_data_refusals'].clear(),
+                  lambda x:x['closeout']['readonly']['witness'].update(mount_options='rw'),
+                  lambda x:x['closeout']['readonly']['failed_start'].update(readonly_error_traces=0),
+                  lambda x:x['closeout']['readonly']['failed_start']['stable_unit'].update(NRestarts='4'),
+                  lambda x:x['closeout']['readonly']['failed_start']['admission_refusal'].update(exit_code=0),
+                  lambda x:x['closeout']['readonly']['after_recovery']['catalog'].update(grants=[]),
+                  lambda x:x['closeout']['sustained'].update(seconds=100),
+                  lambda x:x['closeout']['sustained']['policy'].update(rss_range_kib=999999),
+                  lambda x:x['closeout']['sustained']['cycles'].pop(),
+                  lambda x:x['closeout']['sustained']['cycles'][10]['sample']['unit'].update(InvocationID='0'*32),
+                  lambda x:x['closeout']['sustained']['cycles'][10]['sample'].update(process_start_ticks=0),
+                  lambda x:x['closeout']['sustained']['cycles'][10]['sample'].update(fds=999),
+                  lambda x:x['closeout']['sustained']['cycles'][10]['sample'].update(rss_kib=999999),
+                  lambda x:x['closeout']['sustained']['cycles'][10]['status'].update(sessions=1),
+                  lambda x:x['closeout']['sustained']['cycles'][10]['closure'].update(close_reason='TimeoutError'),
+                  lambda x:x['closeout']['sustained']['cycles'][10]['terminal'].update(state='ACTIVE'),
+                  lambda x:x['closeout']['cleanup'].update(mount_removed=False),
+                  lambda x:x['limits'].update(boot_zero_gap_tested=True)]
     for mutate in mutations:
         b=copy.deepcopy(v);mutate(b)
         try:verify(b)
@@ -258,4 +287,4 @@ def controls(v):
     return {'passed':True,'rejected':len(mutations)}
 
 def render(v):
-    return '<!doctype html><html lang="en"><meta charset="utf-8"><title>Grantweft recovery milestone</title><style>body{font:16px system-ui;max-width:1050px;margin:32px auto;padding:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><h1>Grantweft: bounded recovery milestone</h1><p>Formal mTLS service, installed package, client/gateway/backend namespaces. Positive EOF/reset is required; timeout is not termination. Controlled Linux VM observations, not native/physical performance or an SLO. Qualification scope includes the installed systemd unit: start/stop, crash restart, restart limiting and manual DEGRADED repair; consult the pass flag and per-case outcomes. Normal VM reboot remains manual gateway startup; no power loss, actual suspend or systemd boot-autostart qualification. Approval/revocation revision conflicts conservatively degrade the service. Actual tmpfs exhaustion, live directory write denial, readonly-filesystem startup and SQLite page-budget failures are exercised. Recovery preserves the catalog and requires repair plus restart; no online reset or automatic GC. Production readiness is not claimed.</p><p>Passed: '+str(v.get('passed',False))+'</p><pre>'+html.escape(json.dumps(v,indent=2,allow_nan=False))+'</pre></html>'
+    return '<!doctype html><html lang="en"><meta charset="utf-8"><title>Grantweft recovery milestone</title><style>body{font:16px system-ui;max-width:1050px;margin:32px auto;padding:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><h1>Grantweft: bounded recovery milestone</h1><p>Formal mTLS service, installed package, client/gateway/backend namespaces. Positive EOF/reset is required; timeout is not termination. Controlled Linux VM observations, not native/physical performance or an SLO. Qualification scope includes the installed systemd unit: start/stop, crash restart, restart limiting and manual DEGRADED repair; consult the pass flag and per-case outcomes. Additional closeout checks cover enabled systemd boot startup with a read-only pre-service journal witness, a persistent readonly ext4 boot fault and explicit repair, plus a fixed 40-cycle/ten-minute same-process observation. No sudden power loss, actual suspend, boot-zero-gap or long-term qualification. Approval/revocation revision conflicts conservatively degrade the service. Actual tmpfs exhaustion, live directory write denial, readonly-filesystem startup and SQLite page-budget failures are exercised. Recovery preserves the catalog and requires repair plus restart; no online reset or automatic GC. Production readiness is not claimed.</p><p>Passed: '+str(v.get('passed',False))+'</p><pre>'+html.escape(json.dumps(v,indent=2,allow_nan=False))+'</pre></html>'

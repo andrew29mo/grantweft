@@ -78,14 +78,36 @@ def main():
             raise TimeoutError('Boot identity did not change')
         guest('finish','/opt/grantweft/venv/bin/python -m tools.vm_cases finish',timeout=120)
         v['finished']=json.loads(ssh('finished-read',['sudo','cat','/opt/grantweft/lab/finished.json']))
-        v['limits']=dict(power_loss_tested=False,suspend_tested=False,systemd_autostart_tested=False,long_term_tested=False)
+        v['closeout']={};v['closeout_reboot_polls']={}
+        for mode in ('normal','readonly'):
+            guest('boot-prepare-'+mode,'/opt/grantweft/venv/bin/python -m tools.vm_closeout prepare-'+mode,timeout=90)
+            prepared=json.loads(ssh('boot-prepared-'+mode+'-read',['sudo','cat','/opt/grantweft/lab/boot-prepared-'+mode+'.json']))
+            ssh('boot-schedule-'+mode,['sudo','systemd-run','--unit=grantweft-closeout-'+mode,'--on-active=2s','--timer-property=AccuracySec=1s','/usr/bin/systemctl','reboot'])
+            until=time.monotonic()+120;new=None;polls=[];v['closeout_reboot_polls'][mode]=polls
+            while time.monotonic()<until:
+                try:
+                    r=subprocess.run([str(colima),'--profile',a.profile,'ssh','--','cat','/proc/sys/kernel/random/boot_id'],env=env,capture_output=True,text=True,timeout=5)
+                    polls.append({'exit_code':r.returncode,'timed_out':False,'boot_id':r.stdout.strip() if r.returncode==0 else None})
+                    if r.returncode==0 and len(r.stdout.strip())==36 and r.stdout.strip()!=prepared['boot_before']:new=r.stdout.strip();break
+                except subprocess.TimeoutExpired:polls.append({'exit_code':None,'timed_out':True,'boot_id':None})
+                time.sleep(1)
+            if new is None:raise TimeoutError('Closeout boot identity did not change')
+            guest('boot-finish-'+mode,'/opt/grantweft/venv/bin/python -m tools.vm_closeout finish-'+mode,timeout=90)
+            v['closeout'][mode]=json.loads(ssh('boot-finished-'+mode+'-read',['sudo','cat','/opt/grantweft/lab/boot-finished-'+mode+'.json']))
+        guest('sustain','/opt/grantweft/venv/bin/python -m tools.vm_closeout sustain',timeout=780)
+        v['closeout']['sustained']=json.loads(ssh('sustained-read',['sudo','cat','/opt/grantweft/lab/sustained.json']))
+        guest('closeout-cleanup','/opt/grantweft/venv/bin/python -m tools.vm_closeout cleanup',timeout=45)
+        v['closeout']['cleanup']=json.loads(ssh('closeout-cleanup-read',['sudo','cat','/opt/grantweft/lab/closeout-cleanup.json']))
+        v['limits']=dict(power_loss_tested=False,suspend_tested=False,systemd_autostart_tested=True,long_term_tested=False,boot_zero_gap_tested=False)
         v['passed']=True
     except BaseException as exc:
         v['error']=type(exc).__name__+': '+str(exc).replace(str(ROOT),'<checkout>')
         if created:
-            for name in ('cases','recovery','service','prepared','finished'):
+            for name in ('cases','recovery','service','prepared','finished','boot-prepared-normal','boot-finished-normal','boot-prepared-readonly','boot-finished-readonly','sustained','sustained-progress','closeout-cleanup','boot-witness'):
                 try:v['failed_'+name]=json.loads(ssh('failed-'+name,['sudo','cat','/opt/grantweft/lab/'+name+'.json'],timeout=5))
                 except Exception:pass
+            try:ssh('failed-boot-diagnostics',['sudo','journalctl','-b','-u','grantweft.service','-u','grantweft-qualification-setup.service','--no-pager','-n','120'],timeout=5)
+            except Exception:pass
             try:ssh('failed-service-diagnostics',['sudo','cat','/opt/grantweft/lab/systemd-journal.log'],timeout=5)
             except Exception:pass
     finally:

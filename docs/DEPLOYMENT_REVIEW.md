@@ -1,4 +1,4 @@
-# Review of the installed deployment
+# Historical review of the installed deployment
 
 Reviewed parent: `fc92369bf459bb1620e0dc5b035a6f2b49a3a603`.
 Two read-only agents independently inspected service/runtime lifecycle and evidence.
@@ -46,8 +46,9 @@ contradictory service identities, stages and authority states.
 [Manual counterexamples](../evidence/systemd-review-observations.json) are derived
 observations, not VM failures. The prior [JSON](../evidence/systemd-initial-01.json)
 and [HTML](../evidence/systemd-initial-01.html) remain byte-for-byte historical.
-Current measured results and the actual corruption-control count are in
-[results](EXPLORATION_RESULTS.md).
+That reviewed run and its corruption-control count are preserved in
+[reviewed deployment results](SYSTEMD_REVIEWED_RESULTS.md). Later closeout
+evidence is separately described in [current results](EXPLORATION_RESULTS.md).
 
 ## Independent review limits
 

@@ -108,10 +108,11 @@ privileges are observed. Root fixture provisions topology and certificates;
 production network provisioning is outside the installer. The drop-in is removed
 and all unit processes/namespaces are cleaned before the dedicated VM is deleted.
 
-The unit is not enabled in this qualification. The separate normal VM reboot
-still starts the gateway manually after a pre-recovery journal witness. Formal
-boot-autostart recovery, power loss, boot-zero-gap, sustained resources and the
-clean-VM operator walkthrough beyond this scripted fixture remain future gates.
+Boot enablement, preserved-journal automatic recovery, readonly storage across
+boot and bounded same-process operation have a separate closeout contract and
+source-bound receipt. See [closeout procedure and limits](CLOSEOUT.md) and
+[current results](EXPLORATION_RESULTS.md). The earlier manual-start reboot stage
+remains in the evidence for continuity. Power loss and boot-zero-gap are untested.
 No physical-device, WAN, unlimited retention or production-readiness guarantee.
 
 ## Reviewed service evidence
@@ -122,3 +123,18 @@ and snapshots all old grants before fresh approval. DEGRADED and repaired states
 require complete zero-session DENIED status and owner-authenticated NO_ACCESS for
 every old grant. Catalog/state/revision preservation is directly asserted, not
 inferred only from one failed data probe. See [deployment review](DEPLOYMENT_REVIEW.md).
+
+## Enable after provisioning
+
+After the documented install/start/status/fresh-approval checks succeed:
+
+```sh
+sudo systemctl enable grantweft.service
+sudo systemctl is-enabled grantweft.service
+```
+
+The installer intentionally does not enable the service. Network and storage must
+be provisioned before listener binding. The isolated VM uses explicit test-only
+setup/backend dependencies; these do not qualify arbitrary host boot networking.
+After a reboot, use authenticated status and a fresh approved operation. Old
+grants do not survive. See [boot witness and failure repair](CLOSEOUT.md).

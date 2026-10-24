@@ -3,11 +3,11 @@
 A bounded temporary-access gateway: authenticated request, separate approval,
 framed TLS-to-TCP access, and expiry/revocation of existing sessions.
 
-This repository contains a **formal minimal implementation and four technical
-explorations, bounded repair/restart and installed-service qualification**, not a qualified operational release. GitHub stays Private. No
-project license has been selected or granted. Python/OpenSSL/SQLite and external
-VM/build tools retain their respective terms; no upstream binaries, test keys,
-VM images or source databases are committed.
+This repository contains a **bounded single-node MVP with installed-service and
+local VM qualification**. GitHub stays Private. No project license has been
+selected or granted. Python/OpenSSL/SQLite and external VM/build tools retain
+their respective terms; no upstream binaries, test keys, VM images or source
+databases are committed.
 
 ## Delivered exploration scope
 
@@ -39,34 +39,33 @@ state directory. Type=notify separates completed initialization from process
 startup; authenticated status reports current READY/DEGRADED health. See
 [deployment and repair commands](docs/DEPLOYMENT.md).
 
-The source-bound run passes **46 tests on macOS and installed Linux** (38 formal
-service/CLI/readiness tests plus eight observer controls), seven storage/recovery
-scenarios, and the actual installed systemd lifecycle. It verifies normal stop,
-SIGKILL restart/new epoch, DEGRADED repair without silent resumption, stop-timeout
-SIGKILL cleanup, and three invalid-config startup failures reaching the configured
-restart limit. Old grants/operations remain unusable; fresh approval works.
+The source-bound closeout run passes **49 identical tests on macOS and installed
+Linux** (38 formal implementation/CLI/readiness tests plus eleven observer controls),
+seven storage/recovery scenarios and the actual installed systemd lifecycle.
 
-Catalog/history/lock identities are retained during repair. Exact historical
-approval replay cannot reactivate access. **95 report corruption controls** are
-rejected. Failed and superseded attempts are retained. Two agents reviewed the deployment and validation; the main agent ran this
-qualification, followed by an offline review of its raw evidence. See
-[deployment review](docs/DEPLOYMENT_REVIEW.md).
+The enabled service now has two normal-VM-reboot cases: automatic boot recovery
+and readonly storage across boot with explicit repair. A read-only witness captures
+the unchanged old ACTIVE/PENDING journal **before** the formal service starts,
+excluding shutdown cleanup as the explanation. Old grants and epochs remain
+unusable; fresh approval/forwarding works. VM network setup is an explicit test
+fixture, not a claim about arbitrary production host networking.
 
-The reviewed checks bind every sampled process to an active MainPID, full UID
-columns and the shipped argv. DEGRADED and repaired states require complete
-DENIED/zero-session status plus owner-authenticated NO_ACCESS for every old grant.
-Catalog transitions retain old rows and invalidate their former authority.
+A **40-cycle, approximately ten-minute** mixed revoke/expiry run uses one service
+process throughout. Every cycle verifies ordered bytes, positive connection
+closure, denied retired access and zero idle sessions. Idle FDs remain **10**;
+after five warmup cycles, RSS samples range **26,552–28,468 KiB**.
+RSS rises during this bounded observation; passing fixed gates does not prove
+absence of leaks or long-term stability. History is retained: grants grow 14→54
+of a configured 96; operations/events each 28→128 of 512. No GC or rollover.
 
-One systemd-service VM trial verifies twenty ordered 8-KiB roundtrips in
-**1.87 ms after admission**, with **25,308 KiB** sampled RSS,
-**12 FDs** and **32,768** managed allocated bytes including one held idle
-tunnel. SIGKILL takeover is observed in **1.18 s** in this controlled trial.
-These are point samples, not speedups, peaks, outage bounds or production guarantees.
-See [results](docs/EXPLORATION_RESULTS.md) / [JSON and HTML](evidence/README.md).
+**122 report corruption controls** are rejected. Failed attempts and the
+previous deployment qualification are retained. All owned service/fixture
+resources and the dedicated VM/disk are cleaned. See [current results](docs/EXPLORATION_RESULTS.md),
+[boot and sustained acceptance](docs/CLOSEOUT.md) and [JSON/HTML](evidence/README.md).
 
-DEGRADED can disrupt unrelated grants. Capacity recovery raises finite limits;
-automatic GC/rollover and long-term operation are unqualified. The unit was not
-enabled: formal boot-autostart, power loss and boot-zero-gap remain untested.
+These are controlled Linux VM observations. Sudden power loss, boot-zero-gap,
+actual suspend and long-term operation remain untested; no production guarantee,
+peak-memory limit, speedup or outage SLO follows.
 
 ## Run portable formal-service tests
 
@@ -98,5 +97,5 @@ checkout is required for qualification tools; runtime wheels contain only
 Linux timings/RSS are virtualized observations and are labelled separately from
 native macOS test duration. A short trial is not a long-term resource bound,
 comparative speedup, outage SLO or production-readiness claim. Actual suspend,
-sudden power loss, systemd boot-autostart and hostile local root/same-UID
+sudden power loss, boot-zero-gap and hostile local root/same-UID
 processes are unqualified. The client must not have another path to the backend.

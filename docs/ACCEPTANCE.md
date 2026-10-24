@@ -4,7 +4,7 @@ Four explorations must qualify the same minimal production modules. Model/review
 agreement is not evidence. The four groups qualified review-v2 (34 tests/platform: 28 formal service + six observer/cleanup controls,
 installed Linux namespace trials and one normal VM reboot). Receipts, failed
 attempts and exact limits live in evidence/README.md. The review repairs are documented in [REVIEW.md](REVIEW.md).
-The deployment run extends this to 46 tests/platform: 38 formal service + eight controls,
+The deployment run extends this to 49 tests/platform: 38 formal service + eleven controls,
 and seven installed-service recovery scenarios. No implementation is a production
 deployment guarantee.
 
@@ -32,24 +32,24 @@ deployment guarantee.
   historical-only replay of the exact timed-out approval UUID. Invalid duplicate
   fingerprints must exit before state/lock/worker creation.
 
-## Remaining operational MVP gates
+## Closing operational gates
 
-- Installed systemd start/stop, crash restart, rate limiting and repaired startup
-  now have the separate service-stage evidence. Formal boot-autostart and a final
-  clean-VM operator walkthrough remain separate.
-- Bounded sustained operation/resource trends and eventual archive/rollover
-  decisions. Raising finite limits is not indefinite catalog lifecycle.
-- Additional control-pressure, credential expiry/rotation and callback schedules
-  as required by the intended deployment. Global DEGRADED for approval/revoke
-  revision conflict remains the chosen conservative behavior.
-- No exact remote-stop latency claim: kernel in-flight bytes/backend effects
-  cannot be recalled by a proxy.
+The closeout contract is specified in [CLOSEOUT.md](CLOSEOUT.md). A passing
+source-bound receipt must include enabled formal systemd boot startup, a readonly
+pre-service journal witness, unchanged old live authority across shutdown,
+correct boot invalidation, readonly storage across reboot with explicit repair,
+and forty same-process revoke/expiry cycles with fixed resource gates.
 
-Not qualified: sudden power loss, actual host suspend, boot-zero-gap, systemd
-autostart, long-term stability, transparent session survival, WAN/NAT traversal,
-SSO, arbitrary routing, malicious local root, tamper-proof audit or hard real-time
-expiry while the process/kernel cannot run. Do not expand scope before reviewing
-what the four experiments actually establish.
+Catalog growth within finite limits is intentional. Archive/rollover, credential
+rotation, extra callback/control-pressure schedules and deployment-specific
+network provisioning remain future work only when a real use case requires them.
+Global DEGRADED for approval/revoke conflict remains conservative behavior.
+
+Not qualified: sudden power loss, actual host suspend, boot-zero-gap, long-term
+stability/rollover, transparent session survival, WAN/NAT traversal, SSO, arbitrary
+routing, malicious local root, tamper-proof audit or hard real-time expiry while
+the process/kernel cannot run. A proxy cannot recall kernel in-flight bytes or
+undo backend effects.
 
 The deployment milestone additionally requires a matching shipped unit and actual
 argv, non-root/no-capabilities process, positive stop closure, PID cleanup, new

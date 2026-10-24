@@ -79,3 +79,42 @@ class EvidenceObserverTests(unittest.TestCase):
         for bad in (copy.deepcopy(a),b|{'grants':[]},b|{'grants':[b['grants'][0]|{'revision':2}]}):
             with self.assertRaises(ValueError):retained_catalog(a,bad)
         with self.assertRaises(KeyError):retained_catalog(a,{k:v for k,v in b.items() if k!='grants'})
+    def test_boot_journal_witness_rejects_shutdown_cleanup_or_replacement(self):
+        from tools.closeout_contract import same_journal
+        a={'sha256':'a'*64,'catalog':{'counts':{'grants':1},'history_sha256':'b'*64,
+           'grants':[{'id':'old','state':'ACTIVE'}],
+           'file_ids':{'catalog.sqlite':{'inode':1,'device':1},'writer.lock':{'inode':2,'device':1}}}}
+        b=copy.deepcopy(a);b['catalog']['file_ids']['writer.lock']['device']=2
+        same_journal(a,b)  # Device number can change across a VM boot; inode/content cannot.
+        for change in (lambda x:x.update(sha256='c'*64),
+                       lambda x:x['catalog']['grants'][0].update(state='INVALIDATED'),
+                       lambda x:x['catalog']['file_ids']['writer.lock'].update(inode=3)):
+            bad=copy.deepcopy(b);change(bad)
+            with self.assertRaises(ValueError):same_journal(a,bad)
+    def test_sustained_observer_rejects_process_identity_change(self):
+        from tools.closeout_contract import identity
+        from tools.report import SERVICE_ARGV
+        u=dict(ActiveState='active',SubState='running',LoadState='loaded',Result='success',
+               MainPID='99',InvocationID='a'*32,NRestarts='0',User='grantweft',Group='grantweft',
+               Type='notify',Restart='on-failure',KillMode='control-group',ProtectSystem='strict',
+               NoNewPrivileges='yes',CapabilityBoundingSet='',StartLimitBurst='3',
+               StartLimitIntervalUSec='30s',RestartUSec='1s',TimeoutStopUSec='5s')
+        s={'unit':u,'privileges':dict(uid=996,uids=[996]*4,pid=99,argv=SERVICE_ARGV,
+           effective_capabilities='0',no_new_privileges=1),'process_start_ticks':20,
+           'rss_kib':25000,'fds':10,'disk_allocated_bytes':32768}
+        identity(s,s)
+        for change in (lambda x:x['unit'].update(InvocationID='b'*32),
+                       lambda x:x['unit'].update(NRestarts='1'),
+                       lambda x:x.update(process_start_ticks=21),
+                       lambda x:x['privileges'].update(uids=[0]*4)):
+            bad=copy.deepcopy(s);change(bad)
+            with self.assertRaises(ValueError):identity(bad,s)
+    def test_sustained_resource_limits_are_fixed_and_detect_growth(self):
+        from tools.closeout_contract import check_resources
+        samples=[{'rss_kib':25000,'fds':10} for _ in range(35)]
+        check_resources(samples,samples[-1])
+        for changed in (samples[:-1],samples[:-1]+[{'rss_kib':25000,'fds':11}],
+                        samples[:-1]+[{'rss_kib':34000,'fds':10}],
+                        samples[:20]+[{'rss_kib':30000,'fds':10} for _ in range(15)]):
+            with self.assertRaises(ValueError):check_resources(changed,samples[-1])
+        with self.assertRaises(ValueError):check_resources(samples,{'rss_kib':25000,'fds':11})
