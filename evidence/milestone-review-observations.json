@@ -1,0 +1,17 @@
+{
+  "kind": "manual_pre_fix_counterexamples_not_VM_reproduction",
+  "parent": "1a91800666381a5b99f6a1e41e3f963e40253820",
+  "accepted_by_old_verifier": {
+    "late_exit_zero": true,
+    "late_exit_missing": true,
+    "catalog_admission_missing": true,
+    "grant_revoke_false": true,
+    "mount_cleanup_error": true,
+    "capacity_reset": true
+  },
+  "duplicate_identity": {
+    "real_subprocess_exited": false,
+    "timeout_seconds": 1,
+    "last_error": "Refused: DUPLICATE_IDENTITY"
+  }
+}

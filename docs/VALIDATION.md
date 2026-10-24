@@ -18,7 +18,7 @@ uses 2 vCPU / 2 GiB / requested 15-GiB data disk, no host mounts and no default
 context activation, installs Python/OpenSSL/iproute2/util-linux from the guest
 package manager, installs the no-dependency wheel, removes product source from
 import reach and verifies installed module SHA-256. Tools/tests remain a checkout.
-Both platforms run the same source-bound test IDs (35 formal-service tests plus six evidence/cleanup
+Both platforms run the same source-bound test IDs (36 formal-service tests plus six evidence/cleanup
 controls in milestone 1). OS/SQLite/OpenSSL versions
 are captured; no firmware, hardware network or physical-storage claim follows.
 
@@ -64,7 +64,7 @@ Existing Colima profiles/statuses must remain unchanged. Raw commands, paths,
 certificates, keys, databases, wheels and logs stay under ignored results or inside
 the deleted VM. Only sanitized receipts are eligible for Git.
 
-The recovery-v3 offline verifier requires complete ordered stages, actual platform
+The recovery-review-v4 offline verifier requires complete ordered stages, actual platform
 labels, postboot fresh-workload results, observed closure reason, recovered grant
 states, raw stale-refusal outcomes and successful boot observations. Old receipts
 without this contract are historical and are not accepted as current qualification.
@@ -103,3 +103,13 @@ a different startup refusal. That attempt also remains failed. The corrected
 observer preserves the actual final exception line and accepts only explicit
 read-only-filesystem or readonly-database startup failures, never a timeout or
 generic nonzero exit.
+
+## Milestone review contract
+
+The reviewed run adds a formal duplicate-identity CLI exit regression and retains
+the same seven recovery workloads. Each case snapshots the stopped catalog and
+the postboot catalog before new writes: counts, history digest, grant transitions
+and catalog/lock file IDs. The late-commit case replays the exact operation UUID
+then proves data access remains refused. Expected refusal exit codes, committed
+grant-full revoke, cleanup errors and capacity increments are mandatory checks.
+The old receipts remain historical, not rewritten to satisfy new acceptance.

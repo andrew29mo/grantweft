@@ -1,115 +1,108 @@
-# Milestone 1 outcomes: bounded repair and restart
+# Reviewed milestone 1 outcomes
 
-Current source fingerprint: `907560f00ba0d95eff7a1b5d7e29883542c76d31a48a5857253f89300b058f40`.
-[JSON](../evidence/latest.json) / [HTML](../evidence/latest.html) contain the same
-complete `grantweft-recovery-v3` record. This qualifies milestone 1 on the recorded
-sources, not a complete operational release or independent third-party audit.
-The earlier two-agent review is historical; this milestone was implemented and
-qualified by the main agent using the reproducible installed-package runner.
+Source fingerprint: `32e57f3573efd1d9b40ffd55fde677eb0c7766b8d41314dc61b70914c7d10fc4`.
+[JSON](../evidence/latest.json) / [HTML](../evidence/latest.html) encode the same
+`grantweft-recovery-review-v4` receipt. Two read-only agents reviewed implementation and evidence;
+the main agent performed the new installed-package qualification. This is not an
+independent VM reproduction, full operational release or production guarantee.
+See [review findings](MILESTONE_1_REVIEW.md) for counterexamples and fixes.
 
-## Formal implementation and VM evidence
+## Formal implementation and recovered authority
 
-Both native macOS and installed Linux passed **41 identical unique test IDs**:
-35 formal gateway/mTLS/backend tests plus six observer/cleanup controls, with
-zero failures, errors or skips. Native suite: 30.29 s;
-Linux suite: 36.12 s. These fixture-inclusive suite durations
-are not native-versus-VM performance comparisons. Linux runtime: Python
-3.12.3, SQLite 3.45.1, OpenSSL 3.0.13 30 Jan 2024.
+Native macOS and installed Linux each passed the same **42 unique test IDs**:
+36 formal service/CLI tests plus six observer/cleanup controls. Zero failures,
+errors or skips. Native suite 30.35 s; Linux suite
+36.30 s. These fixture-inclusive durations are not a platform
+performance comparison. Linux: Python 3.12.3, SQLite 3.45.1,
+OpenSSL 3.0.13 30 Jan 2024. Installed module hashes match frozen sources; runtime source was
+removed from import reach before Linux tests. No remote CI result is implied.
 
-The runtime wheel hashes match the frozen source; runtime product source was
-removed from Linux import reach before testing. The unprivileged UID-65534
-gateway used three network namespaces. Forwarding was read back as disabled;
-the direct backend connect timed out while real gateway forwarding succeeded.
-That bounded connect failure is not proof of WAN isolation or session termination.
+The duplicate-fingerprint CLI regression requires prompt failure before creating
+state, a writer lock or DB thread. This fixes a real error-plus-startup-hang defect.
+The full gateway tests cover mTLS/ownership, slow commit, immutable history,
+revocation/expiry, actual backpressure, capacity and repaired restart.
 
-Seven fresh-root scenarios passed. Repair within each scenario reused the same
-catalog and lock inode, advanced epoch, refused old data and new operations using
-the old epoch, then required fresh request/approval and twenty verified roundtrips.
-Each established holder observed actual EOF, never timeout-as-closure.
+Seven installed-service scenarios passed in isolated namespaces with UID 65534,
+forwarding read back as zero, real gateway forwarding and a failed direct backend
+connect. A direct-connect timeout is bounded isolation evidence, not session closure.
+Actual EOF is observed for every established holder; timeout is never closure.
 
-| Scenario | Actual error/behavior | After-repair RSS KiB | FDs | Managed allocated bytes |
-| --- | --- | ---: | ---: | ---: |
-| ops_full | CATALOG_FULL | 25,296 | 10 | 32,768 |
-| events_full | CATALOG_FULL | 25,288 | 10 | 32,768 |
-| grant_full | GRANT_FULL; revoke committed | 25,292 | 10 | 32,768 |
-| sqlite_full | SQLITE_FULL | 25,324 | 10 | 53,248 |
-| disk_full | SQLITE_FULL | 25,280 | 10 | 32,768 |
-| read_only | SQLITE_READONLY_DIRECTORY | 25,300 | 10 | 32,768 |
-| late_commit | STORAGE_FAILED | 25,300 | 10 | 32,768 |
+| Scenario | Committed ops before / after boot | After-repair RSS KiB | FDs | Managed allocated bytes |
+| --- | ---: | ---: | ---: | ---: |
+| ops_full | 2 / 2 | 25,296 | 10 | 32,768 |
+| events_full | 2 / 2 | 25,284 | 10 | 32,768 |
+| grant_full | 3 / 3 | 25,288 | 10 | 32,768 |
+| sqlite_full | 14 / 14 | 25,324 | 10 | 53,248 |
+| disk_full | 2 / 2 | 25,296 | 10 | 32,768 |
+| read_only | 2 / 2 | 25,296 | 10 | 32,768 |
+| late_commit | 4 / 4 | 25,308 | 10 | 32,768 |
 
-Operation/event limits refuse new admission without deleting records. A revoke
-that cannot record its event still stops access and retires the process. Grant
-fullness preserves ordinary revoke/expiry. Formal tests also cover expiry with
-full audit capacity and expiry-write failure. Internal expiry needs no new audit
-slot but still needs SQLite write space.
+Each scenario reuses its same root. After writer stop and immediately after boot,
+committed grant/operation/audit counts match; ordered operation/audit history
+digests and catalog/writer.lock device/inode IDs match. All PENDING/ACTIVE rows
+become INVALIDATED with revision+1; terminal rows are retained. Old data and new
+operations using old epochs are refused. Fresh request plus separate approval
+adds exactly one grant and two operations/audit events, then completes twenty
+verified roundtrips. This checks retention and consistency, not physical durability.
 
-SQLite page-budget FULL is an actual SQLite error, not a mocked storage response.
-The disk-full scenario fills a 1-MiB tmpfs until free bytes are zero and attempts
-real revoke; it is kernel filesystem ENOSPC, not a physical disk test. The live
-write-denial scenario removes directory write permission and observes
-SQLITE_READONLY_DIRECTORY during revoke. After stop, an actual readonly remount
-separately rejects startup with EROFS at writer.lock opening. This proves startup
-refusal on readonly storage, not an injection into the SQLite boot transaction.
-Writable capacity/permissions are restored before restart.
+The late approval is held past application timeout, then actually committed ACTIVE
+on disk. Runtime access stays refused. After repair/restart, the exact timed-out
+UUID returns a historical ACTIVE result, but data admission remains NO_ACCESS
+before and after that replay. Reading history never executes an old approval.
 
-In the late-commit scenario, the application times out and retires authority,
-then the held real approval transaction is released and ACTIVE is read back from
-the catalog. Data remains refused both before and after repair/restart. A durable
-ACTIVE row is not runtime permission. Historical results remain readable and
-explicitly historical; their replay never re-executes an approval. Tests compare
-immutable history before/after restart.
+Catalog-full admission has the expected refusal code. Operation/event-full revoke
+cannot persist, but still fences and retires authority. Grant-full revoke remains
+durably REVOKED/COMMITTED with READY health. Formal tests also require actual
+expiry closure with full audit capacity and expiry-write failure.
 
-DEGRADED has no online reset. Status reports first failure, recovery guidance and
-capacity counts marked inexact while degraded or a mutation is in flight.
-Catalog recovery increases explicit finite limits after stopping the service;
-no GC, history deletion, blank-database reset or indefinite rollover is qualified.
-See [operator recovery](RECOVERY.md).
+SQLite page-limit FULL is real. The filesystem-full trial fills a 1-MiB tmpfs to
+zero free bytes and attempts revoke, producing SQLITE_FULL. Live directory write
+permission removal produces SQLITE_READONLY_DIRECTORY during revoke. After stop,
+a separate actual readonly remount refuses startup at writer.lock opening with
+EROFS. This does not inject failure inside SQLite's boot transaction or simulate
+physical media. Permissions/capacity are repaired before a successful restart.
 
-## Controlled VM timing and resources
+## Timing and memory scope
 
-Twenty ordered 8,192-byte roundtrips verified 163,840 bytes in each direction in
-2.017 ms after session admission (excludes TLS/setup/approval).
-A separate live revoke RPC took 44.170 ms, including
-fixture client launch, mTLS/control, persistence and local cleanup. The client's
-positive EOF observation interval was 47.509 ms
-from its own earlier wait start. These are different intervals, not repeat samples.
-Sessions after revoke: zero. Point observation after the ordinary roundtrip trial:
-25,056 KiB RSS, 10 FDs, 32,768 managed allocated bytes.
+One VM trial verifies twenty 8,192-byte roundtrips, 163,840 bytes each direction,
+in 2.447 ms after session admission; approval/TLS/setup are excluded.
+A separate revoke RPC takes 40.571 ms including fixture client
+launch, mTLS/control, persistence and local cleanup. Client EOF observation is
+45.727 ms from its own earlier wait start;
+these are distinct intervals, not repeated latency samples. Sessions after revoke:
+zero. Ordinary workload point sample: 25,052 KiB RSS, 10 FDs,
+32,768 managed allocated bytes.
 
-Per-scenario resource values above are sampled after repair and fresh forwarding,
-not peaks or growth tests. Gateway RSS excludes clients/backend/VM overhead;
-managed store size excludes config, PKI, venv, logs and VM image. The receipt's
-`fault_phase_seconds` includes fault induction and verification (including delayed
-commit readback/refusal after closure). It is not pure closure latency or recovery
-time. No baseline speedup, native performance, SLO, total disk quota or hard RSS
-bound follows from these observations.
+Per-case samples above follow repair and fresh forwarding, not peak/growth tests.
+Gateway RSS excludes client/backend/VM overhead; store excludes PKI, config, logs,
+venv and VM image. `fault_phase_seconds` includes fixture induction and verification,
+including late-commit readback after closure; it is not a closure/recovery bound.
+No speedup, SLO, native/physical result, hard RSS bound or total disk quota follows.
 
-## Recovery witness, controls and failures
+## Reboot, evidence controls and limits
 
-One normal VM reboot retains ACTIVE/PENDING catalog bytes/hash/rows and operation
-count unchanged after boot, before a new gateway is started. Boot UUID changes;
-epoch advances to 3; old grants become INVALIDATED,
-old data returns NO_ACCESS and a stale mutation returns STALE_EPOCH. Fresh approval
-and forwarding work. This remains manual startup, not systemd autostart.
+One normal VM reboot preserves ACTIVE/PENDING catalog bytes/hash/rows and operation
+count until the new gateway is started. Boot UUID changes; epoch advances to
+3; grants invalidate, old data returns NO_ACCESS and a
+stale mutation returns STALE_EPOCH. Fresh approval forwards correctly. Startup is
+manual; systemd automatic startup is not qualified.
 
-The offline verifier rejects **42 corrupted receipts**, including missing
-recovery cases, false closure, failed epochs, false FULL/readonly evidence and
-unobserved late commit. Normal and optimized Python checks agree. This validates
-record structure/invariants, not cryptographic authenticity of fabricated evidence.
-All owned processes/namespaces were cleaned, VM and disk deleted, preexisting
-profiles unchanged. No stage failure/timeout was accepted.
+The verifier rejects **60 corruptions**, including contradictory/missing late
+refusal exits, missing catalog admission/revoke, lost old rows/counts/history/file
+IDs and explicit cleanup errors. It also works under Python -O. Receipt validation
+is not cryptographic proof or independent reproduction. All stages passed without
+timeout; all owned processes/namespaces cleaned; dedicated VM/disk removed and
+preexisting profiles unchanged.
 
-[Milestone attempt 01](../evidence/milestone-attempt-01.json) failed because Linux
-refused a live readonly remount with writable files open. [Attempt 02](../evidence/milestone-attempt-02.json)
-failed a too-specific startup-error observer. [Attempt 03](../evidence/milestone-attempt-03.json)
-passed on its frozen sources; it is superseded by precise fault-phase timer naming.
-Their original JSON/HTML remain intact and do not qualify revised sources.
-[Earlier reviewed exploration results](REVIEWED_EXPLORATION_RESULTS.md) retain
-previous measurements and review context; no speedup/regression comparison is made.
+[Original milestone evidence](../evidence/milestone-01.json) and
+[initial milestone results](MILESTONE_1_INITIAL_RESULTS.md) remain historical;
+[earlier exploration results](REVIEWED_EXPLORATION_RESULTS.md) and all failed
+attempts are retained. Earlier measurements are not speedup/regression baselines.
 
-Remaining gates: formal service packaging/systemd, fresh install/operator walkthrough,
-bounded sustained resource observations, broader control pressure and credential
-lifecycle as needed. Global DEGRADED on approval/revoke revision conflict remains
-an availability limitation. No power loss, actual suspend, boot-zero-gap,
-long-term endurance, automatic rollover or arbitrary journal-corruption recovery
-is claimed. Repository remains Private; no project license selected.
+DEGRADED still retires the whole service on some approval/revoke conflicts.
+Repair requires restart and new approval. Catalog recovery raises finite limits
+(up to configured bounds); it provides headroom, not GC, rollover or indefinite
+operation. Formal systemd deployment, sustained resource behavior, broader control
+pressure and credential lifecycle remain later gates. Power loss, actual suspend,
+boot-zero-gap, arbitrary corruption repair and long-term stability are unqualified.
+Private repository; no project license selected.

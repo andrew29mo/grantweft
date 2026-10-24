@@ -76,3 +76,13 @@ passing EROFS injection. These are VM filesystem tests, not physical-media failu
 A corrupt or unrecoverable catalog is not automatically discarded. It requires
 separate operator diagnosis/restoration; the tested writable-capacity repair
 workflow does not qualify recovery from arbitrary journal corruption.
+
+## Reviewed milestone evidence
+
+The reviewed runner checks stopped versus postboot committed counts, operation/
+audit history digests, catalog and lock file IDs, and old grant transitions before
+any fresh mutations. It also retries the exact delayed approval UUID after restart
+and requires both historical-only output and actual NO_ACCESS. These are bounded
+consistency observations, not physical-media durability or automatic rollover.
+Duplicate registered fingerprints are rejected before state/lock/worker creation;
+invalid configuration cannot leave an idle database thread hanging startup.

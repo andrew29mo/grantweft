@@ -1,5 +1,7 @@
 """Bounded storage faults around the installed unprivileged gateway, in a fresh VM."""
 import concurrent.futures
+from contextlib import closing
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -45,6 +47,18 @@ def closure(p):
 
 def state():return vm.rpc('approver',{'action':'status'})
 
+def catalog_snapshot(root):
+    """Read-only receipt after writer exit / after boot, before fresh mutations."""
+    with closing(sqlite3.connect('file:'+str(root/'catalog.sqlite')+'?mode=ro',uri=True)) as db:
+        counts={t:db.execute('select count(*) from '+t).fetchone()[0] for t in ('ops','events','grants')}
+        history={t:db.execute(query).fetchall() for t,query in (
+            ('ops','select principal,id,payload,result from ops order by principal,id'),
+            ('events','select seq,value from events order by seq'))}
+        grants=[dict(zip(('id','state','revision','epoch'),r)) for r in db.execute('select id,state,revision,epoch from grants order by id')]
+    return {'counts':counts,'grants':grants,
+            'history_sha256':hashlib.sha256(json.dumps(history,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
+            'file_ids':{n:{'device':(root/n).stat().st_dev,'inode':(root/n).stat().st_ino} for n in ('catalog.sqlite','writer.lock')}}
+
 def main():
     if not __debug__:raise RuntimeError('Qualification requires normal Python')
     procs=[];owned=[];mount=None;v={'passed':False,'gateway_uid':65534,'scenarios':[]}
@@ -68,7 +82,8 @@ def main():
             if mode=='late_commit':
                 pending=vm.request(epoch,'b');hold=barriers/'hold-approve';hold.touch()
                 with concurrent.futures.ThreadPoolExecutor() as pool:
-                    f=pool.submit(vm.approve,epoch,pending)
+                    approval=dict(action='approve',operation=str(uuid.uuid4()),epoch=epoch,grant=pending['id'],revision=pending['revision'])
+                    f=pool.submit(vm.rpc,'approver',approval)
                     vm.wait(lambda:(barriers/'entered-approve').exists())
                     try:f.result(timeout=4)
                     except subprocess.CalledProcessError as exc:
@@ -115,6 +130,7 @@ def main():
                 expect_code('a',dict(action='request',operation=str(uuid.uuid4()),epoch=epoch,service='demo',duration=30),'DEGRADED')
             row['old_data_refusal']=denied(g)
             stop(gw)
+            row['catalog_before_restart']=catalog_snapshot(root)
             if mode=='read_only':
                 # Boot must fail without creating ready state; then repair the actual mount.
                 vm.call(['mount','-o','remount,ro',root])
@@ -130,9 +146,17 @@ def main():
                 cfg.update(max_ops=256,max_events=256,max_grants=64,max_store_pages=1024);path.write_text(json.dumps(cfg))
             gw,_,info=vm.start_gateway(procs,root,path,barriers)
             row['epoch_before']=epoch;row['epoch_after']=info['epoch']
+            row['catalog_after_boot']=catalog_snapshot(root)
+            if row['catalog_before_restart']['counts']!=row['catalog_after_boot']['counts'] or row['catalog_before_restart']['history_sha256']!=row['catalog_after_boot']['history_sha256'] or row['catalog_before_restart']['file_ids']!=row['catalog_after_boot']['file_ids']:
+                raise RuntimeError('Recovery replaced or lost catalog/history')
             if info['epoch']<=epoch:raise RuntimeError('Epoch did not advance')
             row['old_after_restart_refusal']=denied(g);row['stale_refusal']=stale(epoch,g)
-            if mode=='late_commit':row['late_after_restart_refusal']=denied(pending,'b')
+            if mode=='late_commit':
+                row['late_after_restart_refusal']=denied(pending,'b')
+                row['late_history_replay']=vm.rpc('approver',approval)
+                if row['late_history_replay'].get('historical') is not True or row['late_history_replay']['original_result']['grant']['state']!='ACTIVE':
+                    raise RuntimeError('Late committed history missing')
+                row['late_after_replay_refusal']=denied(pending,'b')
             fresh=vm.approve(info['epoch'],vm.request(info['epoch']));row['fresh_roundtrip']=vm.probe('echo',fresh)
             row['status_after_repair']=state()
             if row['status_after_repair']['degraded']:raise RuntimeError('Repair not recovered')

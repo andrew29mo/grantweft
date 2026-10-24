@@ -4,7 +4,7 @@ Four explorations must qualify the same minimal production modules. Model/review
 agreement is not evidence. The four groups qualified review-v2 (34 tests/platform: 28 formal service + six observer/cleanup controls,
 installed Linux namespace trials and one normal VM reboot). Receipts, failed
 attempts and exact limits live in evidence/README.md. The review repairs are documented in [REVIEW.md](REVIEW.md).
-Milestone 1 extends this to 41 tests/platform: 35 formal service + six controls,
+Milestone 1 extends this to 42 tests/platform: 36 formal service + six controls,
 and seven installed-service recovery scenarios. No implementation is a production
 deployment guarantee.
 
@@ -26,6 +26,11 @@ deployment guarantee.
   require fresh request/approval. Delayed commit after timeout remains unusable.
 - Same formal product tests run natively and against installed Linux wheel,
   with module/source hashes and per-scenario JSON/HTML receipts.
+
+- Reviewed receipts additionally require retained operation/audit history, exact
+  stopped/postboot counts, stable catalog/lock file IDs, old grant transitions and
+  historical-only replay of the exact timed-out approval UUID. Invalid duplicate
+  fingerprints must exit before state/lock/worker creation.
 
 ## Remaining operational MVP gates
 

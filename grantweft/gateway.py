@@ -37,6 +37,9 @@ class Gateway:
         if not isinstance(service['id'],str) or not 1<=len(service['id'])<=64 or type(service['port']) is not int or not 1<=service['port']<=65535:raise Refused('CONFIG_SERVICE')
         for name,identity in self.cfg['principals'].items():
             if not 1<=len(name)<=64 or identity['role'] not in ('requester','approver') or len(identity['sha256'])!=64:raise Refused('CONFIG_IDENTITY')
+        self.fingerprint = {v['sha256']:k for k,v in self.cfg['principals'].items()}
+        if len(self.fingerprint) != len(self.cfg['principals']):
+            raise Refused('DUPLICATE_IDENTITY')
         self.root = Path(root).resolve(); self.root.mkdir(mode=0o700, parents=True, exist_ok=True)
         if self.root.stat().st_mode & 0o077:
             raise Refused('STORE_PERMISSIONS')
@@ -51,9 +54,6 @@ class Gateway:
         self.sessions = {}; self.connections = {'data':set(), 'control':set()}
         self.degraded = False; self.failure = None; self.catalog = {}; self.generation = 1; self.ready = False
         self.servers = []; self.tasks = set(); self.facts = {'admitted':0,'refused':0,'closed':0,'forwarded_bytes':0,'backpressure_events':0}
-        self.fingerprint = {v['sha256']:k for k,v in self.cfg['principals'].items()}
-        if len(self.fingerprint) != len(self.cfg['principals']):
-            raise Refused('DUPLICATE_IDENTITY')
 
     def ssl_context(self):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)

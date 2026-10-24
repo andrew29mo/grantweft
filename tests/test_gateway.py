@@ -319,7 +319,8 @@ class GatewayTests(unittest.TestCase):
         h=self.h(db_seconds=.3);live=h.approve(h.request());s=h.access(live);pending=h.request('b')
         hold=h.barriers/'hold-approve';hold.touch()
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            f=pool.submit(h.mutate,'approver','approve',pending)
+            approval={'action':'approve','operation':str(uuid.uuid4()),'epoch':h.ready['epoch'],'grant':pending['id'],'revision':pending['revision']}
+            f=pool.submit(h.call,'approver',approval)
             h.wait(lambda:(h.barriers/'entered-approve').exists())
             with self.assertRaisesRegex(Refused,'STORAGE_FAILED'):f.result(timeout=2)
             self.ended(s);self.denied(h,pending,'b');hold.unlink()
@@ -331,6 +332,9 @@ class GatewayTests(unittest.TestCase):
         with self.assertRaisesRegex(Refused,'DEGRADED'):h.request()
         h.stop();h.start();self.denied(h,pending,'b');self.denied(h,live)
         self.assertTrue(all(g['state']=='INVALIDATED' for g in h.status()['grants']))
+        replay=h.call('approver',approval);self.assertTrue(replay['historical'])
+        self.assertEqual(replay['original_result']['grant']['state'],'ACTIVE')
+        self.denied(h,pending,'b')
     def test_expiry_write_failure_degrades_and_repair_does_not_revive(self):
         h=self.h();g=h.approve(h.request(duration=.25));s=h.access(g)
         fail=h.barriers/'fail-mark';fail.touch()
@@ -352,3 +356,12 @@ class GatewayTests(unittest.TestCase):
         self.denied(h,g);fresh=h.approve(h.request())
         with h.access(fresh) as session:
             send(session,DATA,b'new-page-budget');self.assertEqual(receive(session),(DATA,b'new-page-budget'))
+    def test_duplicate_identity_exits_before_creating_store_or_worker(self):
+        with tempfile.TemporaryDirectory(prefix='gw-invalid-config-') as base:
+            root=Path(base)/'store';config=Path(base)/'config.json'
+            config.write_text(json.dumps({'service':{'id':'demo','host':'127.0.0.1','port':9000},
+                'principals':{'a':{'sha256':'a'*64,'role':'requester'},
+                              'approver':{'sha256':'a'*64,'role':'approver'}}}))
+            p=subprocess.run([sys.executable,'-m','grantweft.gateway','--config',str(config),'--root',str(root)],capture_output=True,text=True,timeout=2)
+            self.assertNotEqual(p.returncode,0);self.assertIn('DUPLICATE_IDENTITY',p.stderr)
+            self.assertFalse(root.exists(),'Invalid config must not create state/worker')

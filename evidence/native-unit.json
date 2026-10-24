@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "count": 41,
+  "count": 42,
   "tests": [
     "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
     "test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence",
@@ -10,6 +10,7 @@
     "test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate",
     "test_gateway.GatewayTests.test_delayed_connected_session_cannot_survive_revoke",
     "test_gateway.GatewayTests.test_deny_cancel_and_request_expiry",
+    "test_gateway.GatewayTests.test_duplicate_identity_exits_before_creating_store_or_worker",
     "test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect",
     "test_gateway.GatewayTests.test_expiry_write_failure_degrades_and_repair_does_not_revive",
     "test_gateway.GatewayTests.test_full_ops_and_events_still_stop_access_and_recover_with_limits",
@@ -47,25 +48,25 @@
   "failures": 0,
   "errors": 0,
   "skipped": 0,
-  "seconds": 30.29087158400216,
+  "seconds": 30.354591332987184,
   "platform": "Darwin",
   "source": {
     "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
     "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
-    "grantweft/gateway.py": "0654e4e89edf96f9f1ab57385534fa40f7f5b788efa0e51b7bf200b129660ed6",
+    "grantweft/gateway.py": "f0dbf75da7ab86f78d41775068c400c034a61f9675738bf55143bab0d075dc4d",
     "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
     "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
     "pyproject.toml": "d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090",
     "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
-    "tests/test_gateway.py": "ac8fdc2ab73f8edeb9bd004c6bebd991f7867ae650dfdab4a5c60c7fa28457a0",
+    "tests/test_gateway.py": "a1be4deabb05b964f2d12fbb708efed76af184d76e4ada5e728db3ea67067ca5",
     "tests/test_review.py": "a4a1b2f43d2e4bbbccb95b61dde91499d379a0c45c580b342df830f1a84c37bc",
     "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
     "tools/probe.py": "8fbce21b9e94e54a5766cec3d31deba4528f7d3ab628eeb13320006c3cb00411",
-    "tools/report.py": "52f898b69c9a288c41951e3eb945bf0411003cbd0cfe77d90a8f06893bc89184",
+    "tools/report.py": "923ec26d7546918156b26e651af06e12a9572601fe028537e2158664b55d87c5",
     "tools/unit.py": "58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7",
     "tools/validate.py": "6d95396c5ce32c0e9ba846b468eea9e47ca350768634923a97e16c69b0364c36",
     "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
-    "tools/vm_recovery.py": "a72fb7d6804fa03a6d3c10f0ba563ce2f885569191fe6620cda1adf99aac8a64"
+    "tools/vm_recovery.py": "966692cebbdca95716f6c3ebdaf3d77d860b5d16d6c7f698cf054cc902f6b51f"
   },
-  "source_sha256": "907560f00ba0d95eff7a1b5d7e29883542c76d31a48a5857253f89300b058f40"
+  "source_sha256": "32e57f3573efd1d9b40ffd55fde677eb0c7766b8d41314dc61b70914c7d10fc4"
 }

@@ -1,9 +1,13 @@
 # Evidence and provenance
 
-- [Current JSON](latest.json) / [HTML](latest.html): recovery-v3, matching frozen
-  sources/installed runtime, 41 identical tests/platform (35 formal + six controls),
+- [Current JSON](latest.json) / [HTML](latest.html): recovery-review-v4, matching frozen
+  sources/installed runtime, 42 identical tests/platform (36 formal + six controls),
   seven storage/capacity/late-commit recovery scenarios, one normal VM reboot,
-  42 corruption controls and complete cleanup.
+  60 corruption controls and complete cleanup.
+- [Original milestone](milestone-01.json) / [HTML](milestone-01.html): recovery-v3,
+  41 tests/platform and 42 controls; superseded by the reviewed contract.
+- [Manual milestone review counterexamples](milestone-review-observations.json) and
+  [review findings](../docs/MILESTONE_1_REVIEW.md).
 - [Native receipt](native-unit.json) / [Linux receipt](linux-unit.json).
 - [Milestone attempt 01](milestone-attempt-01.json) / [HTML](milestone-attempt-01.html):
   failed live readonly remount (busy writable files).

@@ -31,43 +31,41 @@ service. This is a verified safety-first limitation, not transparent race recove
 Storage hooks are explicit `--barriers` test fixtures; never set them in deployment.
 A stop cannot retract bytes already passed to kernel buffers or undo backend work.
 
-## Milestone 1: explicit safe recovery
+## Reviewed milestone 1: explicit safe recovery
 
-DEGRADED permanently retires current process authority. Authenticated status
-reports the first failure/action/SQLite code, effective access and finite capacity.
-Storage repair alone cannot resume access. Operators repair storage or raise
-explicit finite limits, then restart using the same catalog and stable lock.
-Startup invalidates old grants and advances epoch before opening listeners.
-Historical operation replies remain historical and never re-execute approvals.
-See [recovery procedure and limits](docs/RECOVERY.md).
+DEGRADED retires current process authority. Authenticated status reports first
+failure/action/SQLite code, effective access and finite capacity. Storage repair
+alone cannot resume access. Operators repair storage or raise finite limits and
+restart with the same catalog/lock; startup invalidates old grants and advances
+epoch before listening. Historical operations never re-execute approvals.
+See [recovery procedure](docs/RECOVERY.md) and [review repairs](docs/MILESTONE_1_REVIEW.md).
 
-The current source-bound run passed the same **41 tests on macOS and installed
-Linux**: 35 formal service tests plus six observer/cleanup controls. Seven Linux
-VM scenarios cover operation/event/grant fullness, actual SQLite FULL, full tmpfs,
-live directory write denial plus readonly-filesystem startup refusal, and a late
-approval commit after timeout. Full capacity still allows effective stopping;
-repaired restart refuses old grants/operations and requires fresh approval.
+The reviewed source-bound run passes **42 tests on macOS and installed Linux**:
+36 formal service/CLI tests plus six observer/cleanup controls. Seven Linux VM
+scenarios cover operation/event/grant fullness, real SQLite FULL, full tmpfs,
+live directory write denial plus readonly startup refusal, and approval committed
+late after timeout. Full capacity still stops access. Repair/restart preserves
+catalog/lock identities, operation/audit history and counts, invalidates old grants,
+refuses stale operations and requires fresh approval. Even replaying the original
+timed-out approval UUID reads history without reopening access.
 
-Late approval was actually read back as ACTIVE on disk after timeout, while data
-remained denied. One normal VM reboot also preserved ACTIVE/PENDING journal state
-before recovery, excluding shutdown cleanup as an explanation. Installed module
-hashes match the frozen sources, with product source removed from import reach.
-The gateway runs unprivileged; backend bypass is checked in isolated namespaces.
-**42 report corruption controls** were rejected.
+One normal VM reboot retains ACTIVE/PENDING journal state before new startup,
+excluding shutdown cleanup as its explanation. The installed unprivileged gateway
+matches frozen sources, with product source removed from import reach. Direct
+backend bypass is checked in isolated namespaces. **60 report corruption controls**
+are rejected; raw failed and superseded attempts are retained.
 
-One controlled VM trial verified twenty ordered 8-KiB roundtrips in
-**2.02 ms after admission**; a separate revoke RPC took **44.17 ms**
-including fixture client launch and TLS/control exchange. The client observed
-positive EOF and zero sessions remained. Sampled gateway RSS: **25,056 KiB**,
-FDs: **10**, managed allocated store: **32,768 bytes**.
-These are single virtualized point observations, not peaks, speedup or SLOs.
-See [current results](docs/EXPLORATION_RESULTS.md) and [JSON/HTML evidence](evidence/README.md),
-including failed and superseded attempts.
+A single VM trial verifies twenty ordered 8-KiB roundtrips in **2.45 ms after admission**;
+a separate revoke RPC takes **40.57 ms** including fixture client startup and
+TLS/control exchange. Positive EOF and zero remaining sessions are observed.
+Sampled RSS **25,052 KiB**, FDs **10**, managed store **32,768 bytes**.
+These are virtualized point observations, not peaks, speedups or SLOs.
+See [results and limits](docs/EXPLORATION_RESULTS.md) and [JSON/HTML evidence](evidence/README.md).
 
-Catalogs remain finite with no automatic GC/rollover; raising limits is bounded
-headroom, not indefinite operation. Formal systemd deployment, sustained resource
-behavior, power loss and boot-zero-gap remain unqualified. Live write-denial and
-readonly-startup tests do not imply physical-media durability.
+Catalogs remain finite without automatic GC/rollover; increasing limits provides
+bounded headroom. Global DEGRADED can disrupt unrelated grants. Formal systemd
+deployment, sustained operation, power loss and boot-zero-gap remain unqualified.
+Filesystem fault tests do not establish physical-media durability.
 
 ## Run portable formal-service tests
 

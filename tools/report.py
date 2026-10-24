@@ -1,6 +1,6 @@
 """Versioned evidence contract; explicit checks also run under python -O."""
 import copy,html,json,math,hashlib,uuid
-CONTRACT='grantweft-recovery-v3'
+CONTRACT='grantweft-recovery-review-v4'
 STAGES=('initial','create','dependencies','upload','install','provenance','native','linux','linux-read','cases','cases-read','recovery','recovery-read','prepare','prepared-read','schedule-reboot','finish','finished-read','delete','final')
 CLOSE_REASONS=('EOFError','ConnectionResetError','SSLEOFError','SSLZeroReturnError')
 
@@ -9,18 +9,25 @@ def require(condition,message):
 
 def number(x):return type(x) in (int,float) and math.isfinite(x)
 
+def refusal(r,code):
+    require(type(r['exit_code']) is int and r['exit_code']!=0 and r['code']==code,'Missing/contradictory refusal')
+
+def no_errors(r):
+    require(not any(k in r for k in ('error','verification_error','cleanup_error','mount_cleanup_error')),'Explicit failure marker')
+
 def trial(r):
     require(r['roundtrips']==20 and r['payload_bytes_per_roundtrip']==8192 and r['verified_bytes_each_direction']==163840 and number(r['seconds']) and 0<r['seconds']<60,'Wrong workload')
 
 def verify(v):
     require(v['contract']==CONTRACT and v['passed'] is True,'Wrong contract/not passed')
+    no_errors(v)
     require(v['source_changed'] is False,'Source changed during qualification')
     require(hashlib.sha256(json.dumps(v['source'],sort_keys=True,separators=(',',':')).encode()).hexdigest()==v['source_sha256'],'Invalid source fingerprint')
     for key,system in [('native','Darwin'),('linux','Linux')]:
-        r=v[key];require(r['platform']==system and r['passed'] is True and r['count']>=41 and r['count']==len(r['tests'])==len(set(r['tests'])) and not (r['failures'] or r['errors'] or r['skipped']),'Unit failure/platform/count')
+        r=v[key];require(r['platform']==system and r['passed'] is True and r['count']>=42 and r['count']==len(r['tests'])==len(set(r['tests'])) and not (r['failures'] or r['errors'] or r['skipped']),'Unit failure/platform/count')
         require(r['source']==v['source'] and r['source_sha256']==v['source_sha256'],'Unit source mismatch')
     require(v['native']['tests']==v['linux']['tests'],'Platform test sets differ')
-    names=('test_slow_commit_does_not_start_new_ttl','test_revoke_during_delayed_approval_cannot_reopen','test_process_pause_crosses_ttl_no_fresh_transfer_after_resume','test_second_process_cannot_take_lock_or_recover','test_bounded_db_queue_does_not_block_revoke_fence','test_slow_db_does_not_block_live_expiry','test_db_timeout_late_completion_cannot_reactivate','test_slow_consumer_revoke_discards_unsent_data','test_delayed_connected_session_cannot_survive_revoke','test_history_result_is_stable_after_expiry_and_restart','test_slow_approval_history_retains_original_commit','test_observed_backpressure_then_revoke_stops_transfer','test_full_ops_and_events_still_stop_access_and_recover_with_limits','test_grant_full_preserves_revoke_and_expiry_without_gc','test_catalog_full_expiry_does_not_need_new_audit_slot','test_storage_repair_requires_restart_and_preserves_history','test_slow_commit_after_retirement_stays_denied_through_repair','test_expiry_write_failure_degrades_and_repair_does_not_revive','test_sqlite_full_closes_live_access_and_recovers_with_page_budget')
+    names=('test_slow_commit_does_not_start_new_ttl','test_revoke_during_delayed_approval_cannot_reopen','test_process_pause_crosses_ttl_no_fresh_transfer_after_resume','test_second_process_cannot_take_lock_or_recover','test_bounded_db_queue_does_not_block_revoke_fence','test_slow_db_does_not_block_live_expiry','test_db_timeout_late_completion_cannot_reactivate','test_slow_consumer_revoke_discards_unsent_data','test_delayed_connected_session_cannot_survive_revoke','test_history_result_is_stable_after_expiry_and_restart','test_slow_approval_history_retains_original_commit','test_observed_backpressure_then_revoke_stops_transfer','test_full_ops_and_events_still_stop_access_and_recover_with_limits','test_grant_full_preserves_revoke_and_expiry_without_gc','test_catalog_full_expiry_does_not_need_new_audit_slot','test_storage_repair_requires_restart_and_preserves_history','test_slow_commit_after_retirement_stays_denied_through_repair','test_expiry_write_failure_degrades_and_repair_does_not_revive','test_sqlite_full_closes_live_access_and_recovers_with_page_budget','test_duplicate_identity_exits_before_creating_store_or_worker')
     require(all('test_gateway.GatewayTests.'+n in v['linux']['tests'] for n in names),'Formal test missing')
     for name in ('test_close_observer_rejects_live_idle_socket_timeout','test_close_observer_requires_positive_eof','test_cleanup_continues_after_forced_kill','test_cleanup_exception_still_saves_failed_receipt','test_startup_process_registered_before_readiness_failure'):
         require('test_review.EvidenceObserverTests.'+name in v['linux']['tests'],'Observer negative control missing')
@@ -31,32 +38,57 @@ def verify(v):
     require(stages in (STAGES,STAGES[:-1]+('delete-disk','final')),'Missing/duplicate/reordered stages')
     require(all(type(s['exit_code']) is int and s['exit_code']==0 and s['timed_out'] is False and number(s['seconds']) and s['seconds']>=0 for s in v['stages']),'Stage failed or timed out')
     for key in ('cases','prepared','finished','recovery'):
-        c=v[key];require(c['passed'] is True and c['cleanup']['owned_processes_reaped'] is c['cleanup']['namespaces_removed'] is True and c['cleanup']['errors']==[],'VM scenario/cleanup incomplete')
+        c=v[key];no_errors(c);require(c['passed'] is True and c['cleanup']['owned_processes_reaped'] is c['cleanup']['namespaces_removed'] is True and c['cleanup']['errors']==[],'VM scenario/cleanup incomplete')
         require(c['direct_backend']['direct_backend_refused'] is True and c['direct_backend']['failure_reason'] in ('TimeoutError','ConnectionRefusedError','OSError') and c['gateway_uid']==65534,'Isolation/permissions missing')
         require(c['topology']['forwarding'] is False and c['topology']['observed_ip_forward']==0,'Forwarding state unobserved')
     recovery=v['recovery']
     modes=('ops_full','events_full','grant_full','sqlite_full','disk_full','read_only','late_commit')
     require(tuple(r['mode'] for r in recovery['scenarios'])==modes,'Missing recovery scenario')
     for r in recovery['scenarios']:
-        mode=r['mode'];require(r['passed'] is True and r['epoch_after']>r['epoch_before'],'Recovery failed/epoch')
+        mode=r['mode'];no_errors(r);require(r['passed'] is True and r['epoch_after']>r['epoch_before'],'Recovery failed/epoch')
         require(r['closure']['connection_ended'] is True and r['closure']['close_reason'] in CLOSE_REASONS,'Recovery closure unobserved')
         require(number(r['fault_phase_seconds']) and 0<r['fault_phase_seconds']<30,'Fault phase timing missing')
         before=r['status_before_repair'];after=r['status_after_repair']
         require(after['degraded'] is False and after['health']=='READY' and all(g['access']=='DENIED' for g in after['grants'] if g['epoch']!=after['epoch']),'Recovery authority unsafe')
-        require(all(c['exact'] is True for c in after['capacity'].values()),'Recovered capacity unknown')
+        require(before['epoch']==r['epoch_before'] and after['epoch']==r['epoch_after'],'Status epoch mismatch')
+        old={g['id']:g for g in before['grants']};new={g['id']:g for g in after['grants']}
+        require(old and old.keys()<=new.keys(),'Old grant rows lost')
+        require(all(new[gid]['access']=='DENIED' for gid in old),'Old grants reactivated')
+        a=r['catalog_before_restart'];b=r['catalog_after_boot']
+        require(a['counts']==b['counts'] and a['history_sha256']==b['history_sha256'] and a['file_ids']==b['file_ids'],'Catalog/history replaced or changed')
+        require(len(a['history_sha256'])==64 and all(c in '0123456789abcdef' for c in a['history_sha256']),'Missing history digest')
+        require(set(a['file_ids'])=={'catalog.sqlite','writer.lock'} and all(type(x['inode']) is int and x['inode']>0 and type(x['device']) is int for x in a['file_ids'].values()),'Store identities missing')
+        persisted={g['id']:g for g in a['grants']};booted={g['id']:g for g in b['grants']}
+        require(persisted and persisted.keys()==booted.keys() and old.keys()<=persisted.keys(),'Catalog rows lost')
+        for gid,g in persisted.items():
+            expected=g|({'state':'INVALIDATED','revision':g['revision']+1} if g['state'] in ('PENDING','ACTIVE') else {})
+            require(booted[gid]==expected,'Boot did not invalidate old authority')
+        for name,extra in (('ops',2),('events',2),('grants',1)):
+            cap=after['capacity'][name]
+            require(type(a['counts'][name]) is int and a['counts'][name]>=before['capacity'][name]['used'] and a['counts'][name]>0,'Committed count inconsistent')
+            require(cap['exact'] is True and cap['used']==a['counts'][name]+extra and cap['limit']>=cap['used'] and cap['full']==(cap['used']>=cap['limit']),'Recovered capacity inconsistent')
         require(r['resources']['rss_kib']>0 and r['resources']['fds']>0 and r['resources']['disk_allocated_bytes']>0,'Recovery resources absent')
         for key,code in [('old_data_refusal','NO_ACCESS'),('old_after_restart_refusal','NO_ACCESS'),('stale_refusal','STALE_EPOCH')]:
-            require(r[key]['exit_code']!=0 and r[key]['code']==code,'Old recovery authority accepted')
+            refusal(r[key],code)
+        if mode in ('ops_full','events_full','grant_full'):
+            refusal(r['admission_refusal'],'GRANT_FULL' if mode=='grant_full' else 'CATALOG_FULL')
+        if mode=='grant_full':
+            revoke=r['revoke'];gr=revoke['original_result']['grant']
+            require(revoke['ok'] is True and revoke['historical'] is False and revoke['cleanup']=='COMPLETE' and gr['state']=='REVOKED' and gr['id'] in old,'Grant-full revoke failed')
+            require(before['degraded'] is False and before['health']=='READY' and old[gr['id']]['state']=='REVOKED' and old[gr['id']]['persistence']=='COMMITTED','Grant-full revoke did not commit')
         if mode!='grant_full':
             require(before['degraded'] is True and before['health']=='DEGRADED' and before['recovery']['required'] is True and before['recovery']['online_reset_supported'] is False,'Degraded recovery not explicit')
             require(before['failure']['code'] and all(c['exact'] is False for c in before['capacity'].values()),'Degraded diagnostics absent')
-            require(r['refusal']['exit_code']!=0,'Fault falsely successful')
+            refusal(r['refusal'],'CATALOG_FULL' if mode in ('ops_full','events_full') else 'STORAGE_FAILED')
         if mode in ('sqlite_full','disk_full'):require(before['failure']['sqlite_code']=='SQLITE_FULL','No real SQLite FULL')
         if mode=='disk_full':require(r['free_bytes_after_fill']==0,'Filesystem not full')
         if mode=='read_only':require(before['failure']['sqlite_code'].startswith('SQLITE_READONLY') and r['readonly_restart_refusal']['exit_code']!=0 and ('Read-only file system' in r['readonly_restart_refusal']['exception'] or 'readonly database' in r['readonly_restart_refusal']['exception']) and r['live_fault']=='directory-write-permission-removed' and r['startup_fault']=='actual-readonly-filesystem','No real readonly refusal')
         if mode=='late_commit':
             require(r['late_commit_observed_on_disk'] is r['degraded_before_release'] is True,'Late completion not exercised')
-            require(r['late_data_refusal']['code']==r['late_after_restart_refusal']['code']=='NO_ACCESS','Late completion reactivated access')
+            for key in ('late_data_refusal','late_after_restart_refusal','late_after_replay_refusal'):refusal(r[key],'NO_ACCESS')
+            replay=r['late_history_replay'];grant=replay['original_result']['grant']
+            require(replay['ok'] is True and replay['historical'] is True and grant['state']=='ACTIVE' and persisted[grant['id']]['state']=='ACTIVE','Late history lost/re-executed')
+            require(replay['current']['epoch']==after['epoch'] and all(g['access']=='DENIED' for g in replay['current']['grants']),'Historical replay activated access')
         trial(r['fresh_roundtrip'])
     f=v['finished'];p=v['prepared']
     require(p['gateway_killed_before_reboot'] is True and f['boot_before']==p['boot_before'] and f['boot_before']!=f['boot_after'],'No actual reboot')
@@ -87,6 +119,24 @@ def controls(v):
                   lambda x:x['recovery']['scenarios'][5]['readonly_restart_refusal'].update(exit_code=0),
                   lambda x:x['recovery']['scenarios'][6].update(late_commit_observed_on_disk=False),
                   lambda x:x['recovery']['scenarios'][0]['status_after_repair'].update(degraded=True)]
+    mutations += [lambda x:x['recovery']['scenarios'][6]['late_data_refusal'].update(exit_code=0),
+                  lambda x:x['recovery']['scenarios'][6]['late_after_restart_refusal'].pop('exit_code'),
+                  lambda x:x['recovery']['scenarios'][6]['late_after_replay_refusal'].update(exit_code=0),
+                  lambda x:x['recovery']['scenarios'][0].pop('admission_refusal'),
+                  lambda x:x['recovery']['scenarios'][1]['admission_refusal'].update(exit_code=0),
+                  lambda x:x['recovery']['scenarios'][2]['admission_refusal'].update(code='UNEXPECTED'),
+                  lambda x:x['recovery']['scenarios'][2].pop('revoke'),
+                  lambda x:x['recovery']['scenarios'][2]['revoke']['original_result']['grant'].update(state='ACTIVE'),
+                  lambda x:x['recovery']['scenarios'][2]['status_before_repair'].update(degraded=True),
+                  lambda x:x['recovery']['scenarios'][0]['status_after_repair'].update(grants=[]),
+                  lambda x:x['recovery']['scenarios'][0]['status_after_repair']['capacity']['ops'].update(used=0),
+                  lambda x:x['recovery']['scenarios'][0]['catalog_after_boot'].update(history_sha256='0'*64),
+                  lambda x:x['recovery']['scenarios'][0]['catalog_after_boot']['file_ids']['writer.lock'].update(inode=0),
+                  lambda x:x.update(cleanup_error='RuntimeError'),
+                  lambda x:x['recovery'].update(cleanup_error='RuntimeError'),
+                  lambda x:x['recovery'].update(mount_cleanup_error=True),
+                  lambda x:x['recovery']['scenarios'][0]['refusal'].update(code='UNEXPECTED'),
+                  lambda x:x['recovery']['scenarios'][6]['late_history_replay'].update(historical=False)]
     for mutate in mutations:
         b=copy.deepcopy(v);mutate(b)
         try:verify(b)
