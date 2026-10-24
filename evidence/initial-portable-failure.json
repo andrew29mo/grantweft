@@ -1,0 +1,41 @@
+{
+  "passed": false,
+  "count": 18,
+  "tests": [
+    "test_gateway.GatewayTests.test_application_half_close_preserves_reply",
+    "test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants",
+    "test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations",
+    "test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect",
+    "test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart",
+    "test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof",
+    "test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state",
+    "test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume",
+    "test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control",
+    "test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity",
+    "test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions",
+    "test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen",
+    "test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover",
+    "test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke",
+    "test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl",
+    "test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves",
+    "test_gateway.GatewayTests.test_truncated_frame_is_not_payload",
+    "test_gateway.GatewayTests.test_unknown_and_missing_client_certificate"
+  ],
+  "failures": 1,
+  "errors": 15,
+  "skipped": 0,
+  "seconds": 12.29826745801256,
+  "platform": "Darwin",
+  "source": {
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/gateway.py": "90a2b59a8bbc4c276e86dedf17578bc079a4624e292b5413da6b666f1acf127d",
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/store.py": "4eddc06f29d0dd22699869d0122e60ec83eae62dc2af26a21036c8db74b87421",
+    "pyproject.toml": "d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090",
+    "tests/support.py": "36030440bf392393978f2acdb1325b512e7ab68db8f430d6620c333c5b785180",
+    "tests/test_gateway.py": "007e1cb8329e5dbdf2eaf8f5db86112fbd3c9e5499392e9e06275d693858e331",
+    "tools/unit.py": "af81215dd076d727dd0489ecfe029d9e08dea7832df24b043990234793dd6a14"
+  },
+  "source_sha256": "aa5911ba93e1bec1fb513076fbd763fc8a07c453c488d636d899b60c14b42051"
+}

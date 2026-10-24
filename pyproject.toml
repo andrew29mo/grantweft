@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "grantweft"
+version = "0.1.0"
+description = "Bounded temporary service access gateway technical explorations"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+grantweft = "grantweft.client:main"
+grantweft-gateway = "grantweft.gateway:main"
+
+[tool.setuptools.packages.find]
+include = ["grantweft*"]

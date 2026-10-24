@@ -1,0 +1,218 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Grantweft explorations</title><style>body{font:16px system-ui;max-width:1050px;margin:32px auto;padding:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><h1>Grantweft: four bounded technical explorations</h1><p>Formal mTLS service, installed package, client/gateway/backend namespaces. Single controlled Linux VM observations, not native/physical performance or an SLO. Normal VM reboot only; no power loss, actual suspend or systemd autostart qualification. Approval/revocation revision conflicts conservatively degrade the service. Production readiness is not claimed.</p><p>Passed: False</p><pre>{
+  &quot;passed&quot;: false,
+  &quot;recorded_at_utc&quot;: &quot;2026-10-24T12:40:36.763631+00:00&quot;,
+  &quot;source&quot;: {
+    &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+    &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+    &quot;grantweft/gateway.py&quot;: &quot;ec1c1a28d086ac70ce9bfb615243c8cdb4b12576d5b7c8205b1507f43b190ed0&quot;,
+    &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+    &quot;grantweft/store.py&quot;: &quot;b4382d475d5b6758c3ef74dea5e7dc817019de53e021ab75e3ae11fc00369929&quot;,
+    &quot;pyproject.toml&quot;: &quot;d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090&quot;,
+    &quot;tests/support.py&quot;: &quot;36030440bf392393978f2acdb1325b512e7ab68db8f430d6620c333c5b785180&quot;,
+    &quot;tests/test_gateway.py&quot;: &quot;be4160e8370616c600702e707a2043e129bdb1f1d672db631397b988964f86ab&quot;,
+    &quot;tools/endpoint.py&quot;: &quot;f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a&quot;,
+    &quot;tools/probe.py&quot;: &quot;cfabe7671bd2ca356553f85f91ae7408b4f096c3c10cd16796ef859bd3b7a78a&quot;,
+    &quot;tools/report.py&quot;: &quot;aae78904d67f72f29b41eb570d852c79ef379a24e447524c29cc2b76d88044da&quot;,
+    &quot;tools/unit.py&quot;: &quot;58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7&quot;,
+    &quot;tools/validate.py&quot;: &quot;e522d1cfe63033a2ff86dd8684e05d7b9e88e2eea10b030f4d671d59d07eccd6&quot;,
+    &quot;tools/vm_cases.py&quot;: &quot;c92c9dc858283a24d5851da33386ab5d1872e3a31843df1126972ad4f3299f34&quot;
+  },
+  &quot;source_sha256&quot;: &quot;49a81e3a673e5bf82e7c49d417ee7c8b0c0145515fa0787f73d6bf6a9363485a&quot;,
+  &quot;source_changed&quot;: false,
+  &quot;host_mounts&quot;: &quot;none&quot;,
+  &quot;wheel_modules_match&quot;: true,
+  &quot;wheel_sha256&quot;: &quot;56f32836b5b8e45baf673a5797a36dda5545c3a30d5e3cb962ac27661a6407a1&quot;,
+  &quot;stages&quot;: [
+    {
+      &quot;name&quot;: &quot;initial&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.30591500000446104
+    },
+    {
+      &quot;name&quot;: &quot;create&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 20.7033102089772
+    },
+    {
+      &quot;name&quot;: &quot;dependencies&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 14.623320874990895
+    },
+    {
+      &quot;name&quot;: &quot;upload&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.28002983299666084
+    },
+    {
+      &quot;name&quot;: &quot;install&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 1.38105820902274
+    },
+    {
+      &quot;name&quot;: &quot;provenance&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.35051045898580924
+    },
+    {
+      &quot;name&quot;: &quot;native&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 20.06651450000936
+    },
+    {
+      &quot;name&quot;: &quot;linux&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 22.88725400000112
+    },
+    {
+      &quot;name&quot;: &quot;linux-read&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.364955083001405
+    },
+    {
+      &quot;name&quot;: &quot;cases&quot;,
+      &quot;exit_code&quot;: 1,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.3007238749996759
+    },
+    {
+      &quot;name&quot;: &quot;delete&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 1.4092404580151197
+    },
+    {
+      &quot;name&quot;: &quot;final&quot;,
+      &quot;exit_code&quot;: 0,
+      &quot;timed_out&quot;: false,
+      &quot;seconds&quot;: 0.2653830829949584
+    }
+  ],
+  &quot;installed_modules&quot;: {
+    &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+    &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+    &quot;grantweft/gateway.py&quot;: &quot;ec1c1a28d086ac70ce9bfb615243c8cdb4b12576d5b7c8205b1507f43b190ed0&quot;,
+    &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+    &quot;grantweft/store.py&quot;: &quot;b4382d475d5b6758c3ef74dea5e7dc817019de53e021ab75e3ae11fc00369929&quot;
+  },
+  &quot;installed_source_absent&quot;: true,
+  &quot;sqlite&quot;: &quot;3.45.1&quot;,
+  &quot;openssl&quot;: &quot;OpenSSL 3.0.13 30 Jan 2024&quot;,
+  &quot;python&quot;: &quot;3.12.3&quot;,
+  &quot;native&quot;: {
+    &quot;passed&quot;: true,
+    &quot;count&quot;: 24,
+    &quot;tests&quot;: [
+      &quot;test_gateway.GatewayTests.test_application_half_close_preserves_reply&quot;,
+      &quot;test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence&quot;,
+      &quot;test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants&quot;,
+      &quot;test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations&quot;,
+      &quot;test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate&quot;,
+      &quot;test_gateway.GatewayTests.test_deny_cancel_and_request_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect&quot;,
+      &quot;test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart&quot;,
+      &quot;test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected&quot;,
+      &quot;test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof&quot;,
+      &quot;test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state&quot;,
+      &quot;test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume&quot;,
+      &quot;test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control&quot;,
+      &quot;test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen&quot;,
+      &quot;test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover&quot;,
+      &quot;test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves&quot;,
+      &quot;test_gateway.GatewayTests.test_truncated_frame_is_not_payload&quot;,
+      &quot;test_gateway.GatewayTests.test_unknown_and_missing_client_certificate&quot;
+    ],
+    &quot;failures&quot;: 0,
+    &quot;errors&quot;: 0,
+    &quot;skipped&quot;: 0,
+    &quot;seconds&quot;: 19.95735179199255,
+    &quot;platform&quot;: &quot;Darwin&quot;,
+    &quot;source&quot;: {
+      &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+      &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+      &quot;grantweft/gateway.py&quot;: &quot;ec1c1a28d086ac70ce9bfb615243c8cdb4b12576d5b7c8205b1507f43b190ed0&quot;,
+      &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+      &quot;grantweft/store.py&quot;: &quot;b4382d475d5b6758c3ef74dea5e7dc817019de53e021ab75e3ae11fc00369929&quot;,
+      &quot;pyproject.toml&quot;: &quot;d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090&quot;,
+      &quot;tests/support.py&quot;: &quot;36030440bf392393978f2acdb1325b512e7ab68db8f430d6620c333c5b785180&quot;,
+      &quot;tests/test_gateway.py&quot;: &quot;be4160e8370616c600702e707a2043e129bdb1f1d672db631397b988964f86ab&quot;,
+      &quot;tools/endpoint.py&quot;: &quot;f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a&quot;,
+      &quot;tools/probe.py&quot;: &quot;cfabe7671bd2ca356553f85f91ae7408b4f096c3c10cd16796ef859bd3b7a78a&quot;,
+      &quot;tools/report.py&quot;: &quot;aae78904d67f72f29b41eb570d852c79ef379a24e447524c29cc2b76d88044da&quot;,
+      &quot;tools/unit.py&quot;: &quot;58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7&quot;,
+      &quot;tools/validate.py&quot;: &quot;e522d1cfe63033a2ff86dd8684e05d7b9e88e2eea10b030f4d671d59d07eccd6&quot;,
+      &quot;tools/vm_cases.py&quot;: &quot;c92c9dc858283a24d5851da33386ab5d1872e3a31843df1126972ad4f3299f34&quot;
+    },
+    &quot;source_sha256&quot;: &quot;49a81e3a673e5bf82e7c49d417ee7c8b0c0145515fa0787f73d6bf6a9363485a&quot;
+  },
+  &quot;linux&quot;: {
+    &quot;passed&quot;: true,
+    &quot;count&quot;: 24,
+    &quot;tests&quot;: [
+      &quot;test_gateway.GatewayTests.test_application_half_close_preserves_reply&quot;,
+      &quot;test_gateway.GatewayTests.test_bounded_db_queue_does_not_block_revoke_fence&quot;,
+      &quot;test_gateway.GatewayTests.test_catalog_capacity_does_not_delete_old_grants&quot;,
+      &quot;test_gateway.GatewayTests.test_crash_restart_invalidates_old_grants_and_fences_operations&quot;,
+      &quot;test_gateway.GatewayTests.test_db_timeout_late_completion_cannot_reactivate&quot;,
+      &quot;test_gateway.GatewayTests.test_deny_cancel_and_request_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_expiry_closes_session_and_prevents_reconnect&quot;,
+      &quot;test_gateway.GatewayTests.test_idempotent_history_after_revoke_and_restart&quot;,
+      &quot;test_gateway.GatewayTests.test_invalid_duration_and_duplicate_json_are_rejected&quot;,
+      &quot;test_gateway.GatewayTests.test_malformed_frame_and_data_after_eof&quot;,
+      &quot;test_gateway.GatewayTests.test_old_revision_cannot_revoke_new_state&quot;,
+      &quot;test_gateway.GatewayTests.test_process_pause_crosses_ttl_no_fresh_transfer_after_resume&quot;,
+      &quot;test_gateway.GatewayTests.test_raw_handshake_capacity_preserves_control&quot;,
+      &quot;test_gateway.GatewayTests.test_real_mtls_approval_payload_and_identity&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_closes_live_and_idle_and_new_sessions&quot;,
+      &quot;test_gateway.GatewayTests.test_revoke_during_delayed_approval_cannot_reopen&quot;,
+      &quot;test_gateway.GatewayTests.test_second_process_cannot_take_lock_or_recover&quot;,
+      &quot;test_gateway.GatewayTests.test_session_capacity_preserves_control_revoke&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_commit_does_not_start_new_ttl&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_consumer_revoke_discards_unsent_data&quot;,
+      &quot;test_gateway.GatewayTests.test_slow_db_does_not_block_live_expiry&quot;,
+      &quot;test_gateway.GatewayTests.test_storage_failure_stops_existing_and_never_approves&quot;,
+      &quot;test_gateway.GatewayTests.test_truncated_frame_is_not_payload&quot;,
+      &quot;test_gateway.GatewayTests.test_unknown_and_missing_client_certificate&quot;
+    ],
+    &quot;failures&quot;: 0,
+    &quot;errors&quot;: 0,
+    &quot;skipped&quot;: 0,
+    &quot;seconds&quot;: 22.510736866000002,
+    &quot;platform&quot;: &quot;Linux&quot;,
+    &quot;source&quot;: {
+      &quot;grantweft/__init__.py&quot;: &quot;5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f&quot;,
+      &quot;grantweft/client.py&quot;: &quot;7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e&quot;,
+      &quot;grantweft/gateway.py&quot;: &quot;ec1c1a28d086ac70ce9bfb615243c8cdb4b12576d5b7c8205b1507f43b190ed0&quot;,
+      &quot;grantweft/protocol.py&quot;: &quot;5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a&quot;,
+      &quot;grantweft/store.py&quot;: &quot;b4382d475d5b6758c3ef74dea5e7dc817019de53e021ab75e3ae11fc00369929&quot;,
+      &quot;pyproject.toml&quot;: &quot;d7695d3832c447fff47d2cd50503faab2e0db9eb49da362a224d445f1074e090&quot;,
+      &quot;tests/support.py&quot;: &quot;36030440bf392393978f2acdb1325b512e7ab68db8f430d6620c333c5b785180&quot;,
+      &quot;tests/test_gateway.py&quot;: &quot;be4160e8370616c600702e707a2043e129bdb1f1d672db631397b988964f86ab&quot;,
+      &quot;tools/endpoint.py&quot;: &quot;f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a&quot;,
+      &quot;tools/probe.py&quot;: &quot;cfabe7671bd2ca356553f85f91ae7408b4f096c3c10cd16796ef859bd3b7a78a&quot;,
+      &quot;tools/report.py&quot;: &quot;aae78904d67f72f29b41eb570d852c79ef379a24e447524c29cc2b76d88044da&quot;,
+      &quot;tools/unit.py&quot;: &quot;58ba1f9f36492825e8ee6f501c379565dbc8958c2557a5654a802beddcbea1b7&quot;,
+      &quot;tools/validate.py&quot;: &quot;e522d1cfe63033a2ff86dd8684e05d7b9e88e2eea10b030f4d671d59d07eccd6&quot;,
+      &quot;tools/vm_cases.py&quot;: &quot;c92c9dc858283a24d5851da33386ab5d1872e3a31843df1126972ad4f3299f34&quot;
+    },
+    &quot;source_sha256&quot;: &quot;49a81e3a673e5bf82e7c49d417ee7c8b0c0145515fa0787f73d6bf6a9363485a&quot;
+  },
+  &quot;error&quot;: &quot;RuntimeError: cases failed/timeout; see ignored private log&quot;,
+  &quot;vm_deleted&quot;: true,
+  &quot;disk_removed&quot;: true,
+  &quot;preexisting_profiles_unchanged&quot;: true
+}</pre></html>
