@@ -1,5 +1,8 @@
 Historical pre-review deployment qualification; only the recorded sources are qualified.
 
+Repository-visibility statements below describe their recorded revision.
+Grantweft is now Public; see [publication checks](PUBLICATION.md).
+
 License-status statements below describe the recorded pre-MIT revision. The
 project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
 

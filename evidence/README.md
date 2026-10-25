@@ -70,7 +70,7 @@ represented as new VM runs.
 Historical/failed receipts preserve original bytes and source fingerprints. Their
 JSON and HTML encode identical records, but only latest is checked against the
 current contract. Raw paths/logs, credentials/private keys, databases, wheels and
-VM images remain ignored. Repository remains Private; project source and
+VM images remain ignored. Repository is Public; project source and
 documentation use MIT. Earlier license-status statements are historical.
 
 Recheck without starting a VM (also works with `python -O`):

@@ -139,5 +139,6 @@ tested.** Actual suspend, long-term resources/rollover, credential lifecycle,
 uninterruptible kernel I/O, hostile local root/same-UID processes and arbitrary
 production networks remain outside scope. Global DEGRADED may disrupt unrelated
 grants; capacity repair still requires bounded limits and a restart/new approval.
-Repository remains Private. License was unset at this recorded qualification;
+Repository visibility was Private at this recorded qualification; it is now
+Public (see [publication](PUBLICATION.md)). License was unset at qualification;
 the project now uses MIT, as documented in [license review](LICENSE_REVIEW.md).

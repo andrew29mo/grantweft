@@ -1,5 +1,8 @@
 # Installed systemd deployment
 
+Repository-visibility statements below describe their recorded revision.
+Grantweft is now Public; see [publication checks](PUBLICATION.md).
+
 This Linux deployment uses the runtime wheel, a dedicated `grantweft` account and
 the unit shipped inside that wheel. The gateway requires no root or capabilities.
 Root performs installation/configuration and systemd manages its lifecycle. The

@@ -4,7 +4,7 @@ A bounded temporary-access gateway: authenticated request, separate approval,
 framed TLS-to-TCP access, and expiry/revocation of existing sessions.
 
 This repository contains a **bounded single-node MVP with installed-service and
-local VM qualification**. GitHub stays Private. Project source and documentation
+local VM qualification**. The repository is Public. Project source and documentation
 are licensed under the [MIT License](LICENSE). Python/OpenSSL/SQLite and external
 VM/build tools retain [their own terms](THIRD_PARTY_NOTICES.md); no upstream
 binaries, test keys, VM images or source databases are committed.
@@ -104,6 +104,8 @@ checkout is required for qualification tools; runtime wheels contain only
 - [Exploration receipts](evidence/README.md)
 - [Prepublication review before MIT adoption](docs/PREPUBLICATION_REVIEW.md)
 - [MIT adoption and third-party review](docs/LICENSE_REVIEW.md)
+- [Publication and repository security checks](docs/PUBLICATION.md)
+- [Private vulnerability reporting](SECURITY.md)
 
 Linux timings/RSS are virtualized observations and are labelled separately from
 native macOS test duration. A short trial is not a long-term resource bound,

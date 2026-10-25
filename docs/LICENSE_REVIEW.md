@@ -1,5 +1,8 @@
 # MIT adoption and dependency review
 
+Repository-visibility statements below describe their recorded revision.
+Grantweft is now Public; see [publication checks](PUBLICATION.md).
+
 Date: 2026-10-25 (Asia/Taipei). Pre-adoption parent:
 `badf7c898e71ac3f0f7cc3aa9f1ec6ca5a74dc2f`.
 The owner selected MIT for Grantweft. The repository remains Private.
