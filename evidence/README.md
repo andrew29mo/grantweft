@@ -1,5 +1,11 @@
 # Evidence and provenance
 
+The project now uses [MIT](../LICENSE). Recorded qualification fingerprints
+precede this license-only metadata update. [License adoption receipt](license-adoption.json)
+and [review](../docs/LICENSE_REVIEW.md) bind the current metadata to unchanged
+runtime/test/tool inputs. Existing JSON/HTML measurements are not rewritten or
+represented as new VM runs.
+
 - [Additional prepublication macOS test receipt](prepublication-native-01.json):
   51 tests against the unchanged qualified source. This supplemental run does not
   replace the paired native/Linux receipts or VM measurements in latest.
@@ -64,7 +70,8 @@
 Historical/failed receipts preserve original bytes and source fingerprints. Their
 JSON and HTML encode identical records, but only latest is checked against the
 current contract. Raw paths/logs, credentials/private keys, databases, wheels and
-VM images remain ignored. Private repository, no project license selected.
+VM images remain ignored. Repository remains Private; project source and
+documentation use MIT. Earlier license-status statements are historical.
 
 Recheck without starting a VM (also works with `python -O`):
 
@@ -72,6 +79,7 @@ Recheck without starting a VM (also works with `python -O`):
 .venv/bin/python -c 'import json; from tools.report import verify, controls; v=json.load(open("evidence/latest.json")); print(verify(v), controls(v))'
 ```
 
-This checks evidence structure, not independent reproduction or cryptographic
-proof. The VM/test runner requires normal Python; failed/timed-out stages or
+This checks the recorded evidence structure, not the current checkout or an
+independent reproduction/cryptographic proof. For the post-MIT checkout, also
+run the [metadata-only bridge check](../docs/LICENSE_REVIEW.md#recheck-the-checkout-relationship). The VM/test runner requires normal Python; failed/timed-out stages or
 incomplete cleanup cannot pass. See [reproduction](../docs/VALIDATION.md).

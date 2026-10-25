@@ -1,5 +1,8 @@
 # Prepublication review
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 Date: 2026-10-25 (Asia/Taipei). Reviewed parent:
 `1210234a34cd2e9ba102c89ddd884cb7603e3702`.
 Repository: `andrew29mo/grantweft`, main, Private, sole collaborator/owner

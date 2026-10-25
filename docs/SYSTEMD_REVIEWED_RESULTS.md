@@ -1,5 +1,8 @@
 # Historical reviewed installed-service outcomes
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 Archived v6 source-specific run; see [current results](EXPLORATION_RESULTS.md).
 
 Source fingerprint: `032ac1d3d22e26b602013e878667e1b29d8fa3ad48da826d69227a66f0d9327a`.

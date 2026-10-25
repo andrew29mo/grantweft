@@ -1,5 +1,8 @@
 Superseded by the reviewed milestone; this document describes only its recorded sources.
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 # Historical initial milestone 1 outcomes
 
 Recorded source fingerprint: `907560f00ba0d95eff7a1b5d7e29883542c76d31a48a5857253f89300b058f40`.

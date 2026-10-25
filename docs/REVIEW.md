@@ -1,5 +1,8 @@
 # Review of the four technical explorations
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 Historical source-specific review. Current qualification and boundaries are in
 [current results](EXPLORATION_RESULTS.md).
 

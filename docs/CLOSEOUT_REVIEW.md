@@ -1,5 +1,8 @@
 # Review of boot recovery and bounded operation
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 Reviewed parent: `5f501e14f8ec184e68897522fffd5155307cb22f`.
 Two read-only reviewers first inspected the diff, formal runtime, raw VM evidence
 and report contract independently. Neither reviewer reran the VM. The main agent

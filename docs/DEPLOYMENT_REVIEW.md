@@ -1,5 +1,8 @@
 # Historical review of the installed deployment
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 Reviewed parent: `fc92369bf459bb1620e0dc5b035a6f2b49a3a603`.
 Two read-only agents independently inspected service/runtime lifecycle and evidence.
 The main agent reproduced the verifier counterexamples, repaired qualification

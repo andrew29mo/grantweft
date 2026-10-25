@@ -1,5 +1,8 @@
 # Historical initial boot recovery and bounded-operation outcomes
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 Archived v7 source-specific run. See [current results](EXPLORATION_RESULTS.md).
 
 Source fingerprint: `983b090f01fe3489ab2dd1ce924463ccd385e5a02adc1e74546a886ec1820984`.

@@ -1,5 +1,10 @@
 # Reviewed boot recovery and bounded-operation outcomes
 
+The project has since adopted [MIT](../LICENSE). This receipt retains its original
+pre-license source fingerprint and measurements; [license review](LICENSE_REVIEW.md)
+records the metadata-only delta and unchanged runtime payload. No new VM
+performance/recovery claim is made by license adoption.
+
 Source fingerprint: `a05bc2a1f07b564345fb685a0713e6db4e81e14863bff2e3ebdca944a97b82ec`.
 [JSON](../evidence/latest.json) / [HTML](../evidence/latest.html) encode the same
 `grantweft-closeout-review-v8` receipt. The current main-agent run uses a fresh no-mount
@@ -134,4 +139,5 @@ tested.** Actual suspend, long-term resources/rollover, credential lifecycle,
 uninterruptible kernel I/O, hostile local root/same-UID processes and arbitrary
 production networks remain outside scope. Global DEGRADED may disrupt unrelated
 grants; capacity repair still requires bounded limits and a restart/new approval.
-Repository remains Private; no project license selected.
+Repository remains Private. License was unset at this recorded qualification;
+the project now uses MIT, as documented in [license review](LICENSE_REVIEW.md).

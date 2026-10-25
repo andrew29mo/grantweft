@@ -1,0 +1,137 @@
+{
+  "schema": "grantweft-license-adoption-v1",
+  "passed": true,
+  "recorded_date": "2026-10-25",
+  "reference_commit": "badf7c898e71ac3f0f7cc3aa9f1ec6ca5a74dc2f",
+  "qualification_contract": "grantweft-closeout-review-v8",
+  "qualification_source_sha256": "a05bc2a1f07b564345fb685a0713e6db4e81e14863bff2e3ebdca944a97b82ec",
+  "current_source": {
+    "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+    "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+    "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+    "grantweft/gateway.py": "50badb8f35cd3e5e8f564d9657ae078aa57d14a20cb02b33b5d582ae73514cbb",
+    "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+    "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+    "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438",
+    "pyproject.toml": "c78e1389da37f299a166409e8ed89017d7859a1cd86d48b5d7bedeb5a73ac706",
+    "tests/support.py": "2bcb0121dd8c118066389430d3a139b6cb30cc73b52aa2c74ffdd158fb150596",
+    "tests/test_gateway.py": "6c079a2fd441a027244e9773e30d518039b87a86f55585e980cea22e3065c5cf",
+    "tests/test_review.py": "49e35f9076223344d55cbf9e54e6540d0be7d2c564eb91101d152d900c225010",
+    "tools/closeout_contract.py": "b47d23d18b8dd32e888bf0ffeb7544dd3e1010cdd24fb633bb5282a989c3d4f6",
+    "tools/endpoint.py": "f7603f22156255fe0d4a71d4cf8cc92708ae8b7cdc922b6a7bc0b7cb9e81670a",
+    "tools/probe.py": "9add5f92ee96a93dbbdf13d0d006e29bcbeef6b8640d8ad88a7141200151f170",
+    "tools/report.py": "7f194644685506f005a4dceda4149c4d1d90a3f5179453c0a30645e426f63168",
+    "tools/unit.py": "0656454f24529e9a59d3f1d603aff71e8a09d1cd9cc89db6e6f0c7f1cce01b5d",
+    "tools/validate.py": "872a2a3ba55667813cd2242b5d796159a707bcb7997a184a0a6f9657045f82c9",
+    "tools/vm_cases.py": "1be3d4700717e32e9d602047578b78f626a10a93fd232a3a4223573945a1f34f",
+    "tools/vm_closeout.py": "31a0e1ce973366737ad397bf3be056fd5a3e5eca3bd34b482f0abba1039ab5f6",
+    "tools/vm_recovery.py": "4f2789a26feca0091c062cab6da7a6e4297149b4b9b3ce30cb739e5e26a98f20",
+    "tools/vm_service.py": "a9049ada2960871376312afac9cf28f2563c7450f75a4df73c279a7ac677021c"
+  },
+  "current_source_sha256": "1e4d75d1ca9ee14efac662b11d5b1c6f50fa54d0609e5dc01bfa06b989a31d3a",
+  "changed_qualified_inputs": [
+    "pyproject.toml"
+  ],
+  "qualified_pyproject_toml": "[build-system]\nrequires = [\"setuptools>=77\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"grantweft\"\nversion = \"0.1.0\"\ndescription = \"Bounded temporary service access gateway technical explorations\"\nrequires-python = \">=3.12\"\ndependencies = []\n\n[project.scripts]\ngrantweft = \"grantweft.client:main\"\ngrantweft-gateway = \"grantweft.gateway:main\"\n\n[tool.setuptools.packages.find]\ninclude = [\"grantweft*\"]\n\n[tool.setuptools.package-data]\ngrantweft = [\"systemd/*.service\"]\n",
+  "metadata_changes": {
+    "project.license": "MIT",
+    "project.license-files": [
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md"
+    ]
+  },
+  "all_other_configuration_unchanged": true,
+  "runtime_test_tool_inputs_unchanged": true,
+  "notice_sha256": {
+    "LICENSE": "0a5f48c5847660a83b6372cf47ef20c88bc20a0ae051dcc623707d081d8ad504",
+    "THIRD_PARTY_NOTICES.md": "9d952913f39158821c15e82614ff29b65580c11032837c05fe23af5ee449ee3a"
+  },
+  "artifacts": {
+    "wheel": {
+      "filename": "grantweft-0.1.0-py3-none-any.whl",
+      "sha256": "1739b246988995bc63fde6bc66f6f4f09a1857defbd82a54e8173f1921368816",
+      "license_expression": "MIT",
+      "license_files": [
+        "LICENSE",
+        "THIRD_PARTY_NOTICES.md"
+      ],
+      "runtime_payload_matches_qualified": true,
+      "inventory": [
+        "grantweft/__init__.py",
+        "grantweft/client.py",
+        "grantweft/deploy.py",
+        "grantweft/gateway.py",
+        "grantweft/protocol.py",
+        "grantweft/store.py",
+        "grantweft/systemd/grantweft.service",
+        "grantweft-0.1.0.dist-info/licenses/LICENSE",
+        "grantweft-0.1.0.dist-info/licenses/THIRD_PARTY_NOTICES.md",
+        "grantweft-0.1.0.dist-info/METADATA",
+        "grantweft-0.1.0.dist-info/WHEEL",
+        "grantweft-0.1.0.dist-info/entry_points.txt",
+        "grantweft-0.1.0.dist-info/top_level.txt",
+        "grantweft-0.1.0.dist-info/RECORD"
+      ]
+    },
+    "sdist_rebuilt_wheel": {
+      "filename": "grantweft-0.1.0-py3-none-any.whl",
+      "sha256": "6108efee73249c317f43cf33b74ee8a9c260b474f500501b2242f8561f93598d",
+      "license_expression": "MIT",
+      "license_files": [
+        "LICENSE",
+        "THIRD_PARTY_NOTICES.md"
+      ],
+      "runtime_payload_matches_qualified": true,
+      "inventory": [
+        "grantweft/__init__.py",
+        "grantweft/client.py",
+        "grantweft/deploy.py",
+        "grantweft/gateway.py",
+        "grantweft/protocol.py",
+        "grantweft/store.py",
+        "grantweft/systemd/grantweft.service",
+        "grantweft-0.1.0.dist-info/licenses/LICENSE",
+        "grantweft-0.1.0.dist-info/licenses/THIRD_PARTY_NOTICES.md",
+        "grantweft-0.1.0.dist-info/METADATA",
+        "grantweft-0.1.0.dist-info/WHEEL",
+        "grantweft-0.1.0.dist-info/entry_points.txt",
+        "grantweft-0.1.0.dist-info/top_level.txt",
+        "grantweft-0.1.0.dist-info/RECORD"
+      ]
+    },
+    "sdist": {
+      "filename": "grantweft-0.1.0.tar.gz",
+      "sha256": "0bb723148dc2f3acb5f9bbfd1932eaeb52708894aa7e18155a15ad6fae325c0d",
+      "license_files": [
+        "LICENSE",
+        "THIRD_PARTY_NOTICES.md"
+      ],
+      "runtime_payload_matches_qualified": true
+    }
+  },
+  "installed_wheel": {
+    "license_expression": "MIT",
+    "license_files": [
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md"
+    ],
+    "runtime_modules": {
+      "grantweft/store.py": "f164eff80b186a717a9e616d1e05b8ef705284849367b2d90039e552395c16d4",
+      "grantweft/gateway.py": "50badb8f35cd3e5e8f564d9657ae078aa57d14a20cb02b33b5d582ae73514cbb",
+      "grantweft/deploy.py": "1ed316e6dc8a43d1896b96026ea082613d2ec46bbd906c67d9b2eec406e28dbc",
+      "grantweft/protocol.py": "5d05db05fb6584dcf752feeb1b94d020f68c425f4041b94f8c5cf85319720b7a",
+      "grantweft/client.py": "7ed92794fc462988cdff1399ca8df2d39d2c1dff83ef8663c175fc228933671e",
+      "grantweft/__init__.py": "5bcff1a3c11962d3cf1c118dd805b8671dd64682ea9af4c99e76a43198e8a87f",
+      "grantweft/systemd/grantweft.service": "c2916335a33c66f9a112d40b830fde3427edcd08e91aba3300ab4aabd74ca438"
+    }
+  },
+  "cli_help_checks": {
+    "grantweft": true,
+    "grantweft-gateway": true
+  },
+  "historical_measurements_unchanged": true,
+  "functional_tests_rerun": false,
+  "linux_vm_rerun": false,
+  "new_performance_measurements": false,
+  "scope": "License/notice and package metadata adoption only; archived native/Linux/systemd/VM evidence retains its original fingerprint. No new execution/performance/recovery qualification is inferred."
+}

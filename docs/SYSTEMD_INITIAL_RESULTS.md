@@ -1,5 +1,8 @@
 Historical pre-review deployment qualification; only the recorded sources are qualified.
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 # Installed-service and recovery outcomes
 
 Source fingerprint: `bdca477cf50634c7fb2bf923dcce2340a584d91977160bec0a730fe5b87eb4b7`.

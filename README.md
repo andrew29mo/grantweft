@@ -4,10 +4,15 @@ A bounded temporary-access gateway: authenticated request, separate approval,
 framed TLS-to-TCP access, and expiry/revocation of existing sessions.
 
 This repository contains a **bounded single-node MVP with installed-service and
-local VM qualification**. GitHub stays Private. No project license has been
-selected or granted. Python/OpenSSL/SQLite and external VM/build tools retain
-their respective terms; no upstream binaries, test keys, VM images or source
-databases are committed.
+local VM qualification**. GitHub stays Private. Project source and documentation
+are licensed under the [MIT License](LICENSE). Python/OpenSSL/SQLite and external
+VM/build tools retain [their own terms](THIRD_PARTY_NOTICES.md); no upstream
+binaries, test keys, VM images or source databases are committed.
+
+License adoption changes package metadata and notices only. The recorded VM
+measurements retain their original source fingerprints; the
+[license adoption review](docs/LICENSE_REVIEW.md) documents the exact metadata-only
+delta and verifies unchanged runtime payloads.
 
 ## Implemented scope
 
@@ -97,7 +102,8 @@ checkout is required for qualification tools; runtime wheels contain only
 - [Linux VM topology and reproduction](docs/VALIDATION.md)
 - [MVP acceptance and remaining gaps](docs/ACCEPTANCE.md)
 - [Exploration receipts](evidence/README.md)
-- [Prepublication review](docs/PREPUBLICATION_REVIEW.md)
+- [Prepublication review before MIT adoption](docs/PREPUBLICATION_REVIEW.md)
+- [MIT adoption and third-party review](docs/LICENSE_REVIEW.md)
 
 Linux timings/RSS are virtualized observations and are labelled separately from
 native macOS test duration. A short trial is not a long-term resource bound,

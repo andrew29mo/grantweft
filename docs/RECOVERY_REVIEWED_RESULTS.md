@@ -1,5 +1,8 @@
 # Historical reviewed recovery milestone
 
+License-status statements below describe the recorded pre-MIT revision. The
+project now uses [MIT](../LICENSE); see [adoption review](LICENSE_REVIEW.md).
+
 Source fingerprint: `32e57f3573efd1d9b40ffd55fde677eb0c7766b8d41314dc61b70914c7d10fc4`.
 [JSON](../evidence/recovery-reviewed-01.json) / [HTML](../evidence/recovery-reviewed-01.html) encode the same
 `grantweft-recovery-review-v4` receipt. Two read-only agents reviewed implementation and evidence;
