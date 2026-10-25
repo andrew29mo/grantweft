@@ -1,5 +1,8 @@
 # Review of milestone 1
 
+Historical source-specific review. Current qualification and boundaries are in
+[current results](EXPLORATION_RESULTS.md).
+
 Reviewed parent: `1a91800666381a5b99f6a1e41e3f963e40253820`.
 Two read-only reviewers independently inspected product authority and evidence.
 The main agent reproduced the counterexamples, implemented repairs and performs

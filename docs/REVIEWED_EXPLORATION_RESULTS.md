@@ -2,7 +2,7 @@
 
 Superseded by milestone 1; these numbers qualify only the source fingerprint below.
 
-Current source fingerprint:
+Recorded source fingerprint:
 `e56c6648ae3439fc3148e9b3b28b0ba473fd7fc6e4c7b602f24ab9466569a204`.
 [JSON](../evidence/review-01.json) and [HTML](../evidence/review-01.html) retain the same
 complete `grantweft-review-v2` record. This is a bounded exploration qualification,

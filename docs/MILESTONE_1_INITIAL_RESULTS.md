@@ -2,7 +2,7 @@ Superseded by the reviewed milestone; this document describes only its recorded 
 
 # Historical initial milestone 1 outcomes
 
-Current source fingerprint: `907560f00ba0d95eff7a1b5d7e29883542c76d31a48a5857253f89300b058f40`.
+Recorded source fingerprint: `907560f00ba0d95eff7a1b5d7e29883542c76d31a48a5857253f89300b058f40`.
 [JSON](../evidence/milestone-01.json) / [HTML](../evidence/milestone-01.html) contain the same
 complete `grantweft-recovery-v3` record. This qualifies milestone 1 on the recorded
 sources, not a complete operational release or independent third-party audit.

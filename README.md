@@ -9,7 +9,7 @@ selected or granted. Python/OpenSSL/SQLite and external VM/build tools retain
 their respective terms; no upstream binaries, test keys, VM images or source
 databases are committed.
 
-## Delivered exploration scope
+## Implemented scope
 
 - Individual client certificates mapped to fixed principals and requester/approver
   roles; fixed backend service ID and numeric address. No arbitrary destination.
@@ -97,6 +97,7 @@ checkout is required for qualification tools; runtime wheels contain only
 - [Linux VM topology and reproduction](docs/VALIDATION.md)
 - [MVP acceptance and remaining gaps](docs/ACCEPTANCE.md)
 - [Exploration receipts](evidence/README.md)
+- [Prepublication review](docs/PREPUBLICATION_REVIEW.md)
 
 Linux timings/RSS are virtualized observations and are labelled separately from
 native macOS test duration. A short trial is not a long-term resource bound,

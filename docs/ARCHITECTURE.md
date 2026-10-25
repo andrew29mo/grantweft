@@ -1,6 +1,9 @@
 # Architecture and frozen transaction order
 
-Status: four bounded explorations plus milestone 1 repair/restart; formal deployment acceptance remains separate.
+Status: bounded single-node MVP with installed-systemd lifecycle, enabled boot
+recovery, readonly-fault repair and a 600-second same-process qualification.
+See [current results](EXPLORATION_RESULTS.md) and
+[acceptance boundaries](ACCEPTANCE.md); this is not a production guarantee.
 Single Linux gateway process, one asyncio socket-authority loop, one bounded
 SQLite worker thread, fixed client-certificate fingerprints/roles and one fixed
 numeric TCP backend. Python >=3.12, stdlib ssl/asyncio/sqlite3/fcntl. No privileged
@@ -111,3 +114,10 @@ The shipped Type=notify systemd unit and root-only installation command are
 specified in [DEPLOYMENT.md](DEPLOYMENT.md). Runtime keeps no root/capabilities;
 DEGRADED stays alive until explicit repair/restart. The service does not use a
 privileged worker or automatic online recovery.
+
+Enabled boot recovery is exercised with a read-only pre-service journal witness
+and explicit VM network/storage dependencies. The normal-reboot and readonly
+repair cases preserve catalog/history and invalidate previous authority. The
+forty-cycle workload retains the same process identity throughout. These are
+source-bound observations in an isolated Linux VM, not arbitrary host boot
+provisioning, power-loss or boot-zero-gap qualification. See [closeout](CLOSEOUT.md).

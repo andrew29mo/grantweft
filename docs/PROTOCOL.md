@@ -7,7 +7,9 @@ one backend session. No multiplexing, tunnel reuse, compression or arbitrary pro
 Each frame: unsigned 8-bit type followed by unsigned 32-bit big-endian payload
 length, then exactly that many bytes. Maximum payload 16,384 bytes. Incremental
 reads require the complete payload before forwarding; oversized declared lengths
-are rejected before allocation. JSON rejects nonfinite numbers and duplicate keys.
+are rejected before allocation. JSON rejects NaN/Infinity literals and duplicate
+keys. Duration validation also rejects numeric values that overflow to a
+nonfinite floating-point result.
 
 | Type | Meaning |
 | --- | --- |

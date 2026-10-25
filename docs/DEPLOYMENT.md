@@ -102,9 +102,12 @@ claimed.
 
 ## Tested boundary
 
-The fixture installs the wheel and unit, then adds only NetworkNamespacePath in a
-VM-owned drop-in. The main process's actual argv, UID, capabilities and no-new-
-privileges are observed. Root fixture provisions topology and certificates;
+The installed-service lifecycle stage installs the wheel and unit, then adds
+only NetworkNamespacePath in a VM-owned drop-in. The separate enabled-boot stage
+also adds explicit Requires/After dependencies on its VM-only setup/backend
+services; these root fixtures prepare namespaces/storage and capture the read-only
+journal witness. Neither stage replaces the shipped ExecStart. The main process's
+actual argv, UID, capabilities and no-new-privileges are observed. Root fixture provisions topology and certificates;
 production network provisioning is outside the installer. The drop-in is removed
 and all unit processes/namespaces are cleaned before the dedicated VM is deleted.
 

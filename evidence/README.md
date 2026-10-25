@@ -1,5 +1,8 @@
 # Evidence and provenance
 
+- [Additional prepublication macOS test receipt](prepublication-native-01.json):
+  51 tests against the unchanged qualified source. This supplemental run does not
+  replace the paired native/Linux receipts or VM measurements in latest.
 - [Current JSON](latest.json) / [HTML](latest.html): closeout-review-v8, matching frozen
   sources/installed runtime, 51 identical tests/platform (38 formal + thirteen controls),
   seven storage scenarios, installed systemd lifecycle, retained manual-start reboot,

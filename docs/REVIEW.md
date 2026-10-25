@@ -1,5 +1,8 @@
 # Review of the four technical explorations
 
+Historical source-specific review. Current qualification and boundaries are in
+[current results](EXPLORATION_RESULTS.md).
+
 Reviewed parent: `f42981dbe6987b39e3948abd0f54f5b1c5101548`. Two read-only
 reviewers independently inspected authority/transport and evidence/recovery.
 Parent reproduced the historical-result failure and old-verifier/timeout false
